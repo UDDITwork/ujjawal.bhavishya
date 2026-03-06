@@ -70,62 +70,55 @@ function playPopSound() {
   }
 }
 
-// Floating chatbot icon — raw PNG, no box/circle/border
+// Clean floating chat button
 function ChatOrb({ isOpen, hasNewMessage }: { isOpen: boolean; hasNewMessage: boolean }) {
   return (
-    <div className="relative w-16 h-16">
-      {/* Pulsing glow when has new message */}
+    <div className="relative">
+      {/* Pulsing ring when has new message */}
       {hasNewMessage && !isOpen && (
         <motion.div
-          className="absolute inset-[-8px] rounded-full"
-          animate={{
-            boxShadow: [
-              '0 0 0px rgba(16,185,129,0)',
-              '0 0 25px rgba(16,185,129,0.5)',
-              '0 0 0px rgba(16,185,129,0)',
-            ],
-          }}
+          className="absolute inset-0 rounded-full bg-emerald-400"
+          animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
       )}
-      <AnimatePresence mode="wait">
-        {isOpen ? (
-          <motion.div
-            key="close"
-            initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-            animate={{ rotate: 0, opacity: 1, scale: 1 }}
-            exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.2 }}
-            className="w-16 h-16 flex items-center justify-center"
-          >
-            <svg
-              className="w-8 h-8 text-gray-700 drop-shadow-md"
+      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/25 flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.svg
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="w-6 h-6 text-white"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2.5}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </motion.div>
-        ) : (
-          <motion.img
-            key="chatbot"
-            src="/chatbot icon.png"
-            alt="Chat with IKLAVYA"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-            className="w-16 h-16 object-contain drop-shadow-lg"
-            draggable={false}
-          />
-        )}
-      </AnimatePresence>
+            </motion.svg>
+          ) : (
+            <motion.svg
+              key="chat"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+              className="w-7 h-7 text-white"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 2C6.477 2 2 5.813 2 10.5c0 2.592 1.376 4.912 3.543 6.48-.237 1.498-.87 2.87-1.465 3.828a.5.5 0 00.549.746c2.006-.441 3.706-1.2 4.876-1.874.8.136 1.63.22 2.497.22 5.523 0 10-3.813 10-8.5S17.523 2 12 2z" />
+            </motion.svg>
+          )}
+        </AnimatePresence>
+      </div>
       {/* Notification dot */}
       {hasNewMessage && !isOpen && (
         <motion.div
-          className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-white"
+          className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full border-2 border-white"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 500 }}
