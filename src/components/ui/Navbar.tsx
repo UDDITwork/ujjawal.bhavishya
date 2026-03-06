@@ -53,7 +53,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+      <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
@@ -62,31 +62,15 @@ export default function Navbar() {
               </span>
             </Link>
 
-            <div className="hidden lg:flex items-center gap-1">
-              {allLinks.map((link) => {
-                const isActive = pathname === link.href
-                return (
-                  <Link key={link.href} href={link.href} aria-current={isActive ? 'page' : undefined}>
-                    <div
-                      className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-green-50/40 text-green-800'
-                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                      }`}
-                    >
-                      <link.icon size={14} aria-hidden="true" />
-                      {link.label}
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-
             <div className="flex items-center gap-3">
               {isLoading ? (
-                <div className="hidden sm:block w-24 h-10 rounded-lg bg-gray-100 animate-pulse" />
+                <div className="w-24 h-10 rounded-lg bg-gray-100 animate-pulse" />
               ) : user ? (
-                <div className="hidden sm:flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                    <LayoutDashboard size={16} />
+                    <span className="hidden sm:inline">Dashboard</span>
+                  </Link>
                   <Link href="/dashboard">
                     {user.profile_image ? (
                       <Image
@@ -104,22 +88,22 @@ export default function Navbar() {
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                   >
                     <LogOut size={14} />
-                    Logout
+                    <span className="hidden sm:inline">Logout</span>
                   </button>
                 </div>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
                   <Link href="/login">
-                    <button className="px-4 py-2 sm:py-2.5 min-h-[40px] rounded-lg border border-gray-300 text-gray-700 text-xs font-medium hover:bg-gray-50 transition-colors duration-200">
+                    <button className="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
                       Login
                     </button>
                   </Link>
                   <Link href="/register">
-                    <button className="px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-lg border-2 border-green-800 hover:bg-green-50 text-green-800 text-xs font-medium transition-colors duration-200">
-                      Register
+                    <button className="px-5 py-2.5 rounded-lg bg-green-700 hover:bg-green-800 text-white text-sm font-medium transition-colors">
+                      Get Started
                     </button>
                   </Link>
                 </div>
@@ -129,7 +113,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
-                className="lg:hidden w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
+                className="sm:hidden w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
               >
                 {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
@@ -138,6 +122,7 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile menu — shows feature links + auth on small screens */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -145,7 +130,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 inset-x-0 z-40 bg-white border-b border-gray-200 lg:hidden shadow-sm"
+            className="fixed top-16 inset-x-0 z-40 bg-white border-b border-gray-200 sm:hidden shadow-lg"
           >
             <div className="p-3 grid grid-cols-3 gap-1.5">
               {allLinks.map((link) => {
@@ -157,7 +142,7 @@ export default function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <div
-                      className={`flex flex-col items-center gap-1.5 p-2.5 sm:p-3 min-h-[60px] rounded-xl text-center transition-colors duration-200 ${
+                      className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl text-center transition-colors duration-200 ${
                         isActive
                           ? 'bg-green-50/40 text-green-800'
                           : 'text-gray-500 hover:bg-gray-50'
@@ -204,13 +189,13 @@ export default function Navbar() {
               ) : (
                 <div className="flex items-center gap-2">
                   <Link href="/login" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                    <button className="w-full px-4 py-2.5 min-h-[40px] rounded-lg border border-gray-300 text-gray-700 text-xs font-medium hover:bg-gray-50 transition-colors">
+                    <button className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-xs font-medium hover:bg-gray-50 transition-colors">
                       Login
                     </button>
                   </Link>
                   <Link href="/register" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                    <button className="w-full px-4 py-2.5 min-h-[44px] rounded-lg border-2 border-green-800 text-green-800 text-xs font-medium hover:bg-green-50 transition-colors">
-                      Register
+                    <button className="w-full px-4 py-2.5 rounded-lg bg-green-700 text-white text-xs font-medium hover:bg-green-800 transition-colors">
+                      Get Started
                     </button>
                   </Link>
                 </div>
