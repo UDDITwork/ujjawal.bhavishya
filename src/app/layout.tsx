@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import Navbar from '@/components/ui/Navbar'
+import ChatBot from '@/components/ui/ChatBot'
 import AuthProvider from '@/components/providers/AuthProvider'
 
 const inter = Inter({
@@ -128,6 +129,7 @@ export default function RootLayout({
           <Navbar />
           <main className="pt-16">{children}</main>
           <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+          <ChatBot />
         </AuthProvider>
       </body>
     </html>
