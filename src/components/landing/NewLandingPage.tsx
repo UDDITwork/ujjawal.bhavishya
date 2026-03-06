@@ -386,8 +386,8 @@ export default function NewLandingPage() {
         <RevealSection>
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-20">
-              <h2 className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">Our Own AI Job Readiness Suite</h2>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold">Everything Powered by In-House AI, Trained on Indian Hiring Data.</h3>
+              <p className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">Our Own AI Job Readiness Suite</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold">Everything Powered by In-House AI, Trained on Indian Hiring Data.</h2>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-12 items-start">
@@ -431,8 +431,8 @@ export default function NewLandingPage() {
         <RevealSection>
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-sm font-black text-emerald-600 uppercase tracking-[0.4em] mb-4">The Process</h2>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">How Iklavya Works</h3>
+              <p className="text-sm font-black text-emerald-600 uppercase tracking-[0.4em] mb-4">The Process</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">How Iklavya Works</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 relative">
@@ -508,8 +508,8 @@ export default function NewLandingPage() {
               </div>
 
               <div className="space-y-10">
-                <h2 className="text-sm font-black text-orange-500 uppercase tracking-[0.4em]">Live Competitions</h2>
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold leading-tight text-slate-900">Prove Your Worth <br /> on the National Stage.</h3>
+                <p className="text-sm font-black text-orange-500 uppercase tracking-[0.4em]">Live Competitions</p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold leading-tight text-slate-900">Prove Your Worth <br /> on the National Stage.</h2>
                 <p className="text-lg text-slate-600 font-light leading-relaxed">
                   Don&apos;t just claim skills. Prove them. Compete in live quiz broadcasts, group discussion practice, and communication challenges. Top performers get direct job assistance and &quot;Direct-to-Interview&quot; passes from our 150+ employer partners.
                 </p>
@@ -572,8 +572,8 @@ export default function NewLandingPage() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col lg:flex-row gap-20 items-center">
               <div className="flex-1 space-y-10">
-                <h2 className="text-sm font-black text-amber-800 uppercase tracking-[0.4em]">Personalized Learning</h2>
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold leading-tight">Demand-Based <br /> Skilling Courses.</h3>
+                <p className="text-sm font-black text-amber-800 uppercase tracking-[0.4em]">Personalized Learning</p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold leading-tight">Demand-Based <br /> Skilling Courses.</h2>
                 <p className="text-lg text-slate-600 font-light">
                   Our courses focus on in-demand technologies, practical workplace competencies, and industry-relevant tools &mdash; not outdated syllabus content. Every lesson adapts based on your assessment performance. If you struggle with confidence, we inject communication modules. If you lack workplace skills, we build leadership and negotiation labs into your path.
                 </p>
@@ -620,8 +620,8 @@ export default function NewLandingPage() {
         <RevealSection>
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">Social Proof</h2>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">What Archers Say</h3>
+              <p className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">Social Proof</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">What Archers Say</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -943,7 +943,7 @@ export default function NewLandingPage() {
                 className="object-contain"
               />
             </div>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900">Your Degree Shows You Studied. <br /> iKlavya Proves You Are Ready.</h3>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900">Your Degree Shows You Studied. <br /> iKlavya Proves You Are Ready.</h2>
             <p className="text-slate-500 text-lg font-light">From educated graduate to verified candidate to confident professional to real hiring opportunities. Built in India. Built for Indian youth. Built for Indian employers.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link href="/register">

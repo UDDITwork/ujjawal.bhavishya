@@ -53,7 +53,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+      <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export default function Navbar() {
               {allLinks.map((link) => {
                 const isActive = pathname === link.href
                 return (
-                  <Link key={link.href} href={link.href}>
+                  <Link key={link.href} href={link.href} aria-current={isActive ? 'page' : undefined}>
                     <div
                       className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium transition-colors duration-200 ${
                         isActive
@@ -74,7 +74,7 @@ export default function Navbar() {
                           : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                       }`}
                     >
-                      <link.icon size={14} />
+                      <link.icon size={14} aria-hidden="true" />
                       {link.label}
                     </div>
                   </Link>
@@ -127,6 +127,8 @@ export default function Navbar() {
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileMenuOpen}
                 className="lg:hidden w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
               >
                 {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
