@@ -58,7 +58,7 @@ const heroLabels = [
 // --- Question tabs data ---
 const questionTabs = [
   { question: 'Are you a Student?', href: '/students', icon: GraduationCap, color: 'border-green-800', textColor: 'text-green-800', bg: 'bg-green-50/60' },
-  { question: 'Are you an Educational Institute?', href: '/students#institutions', icon: Building2, color: 'border-amber-700', textColor: 'text-amber-700', bg: 'bg-amber-50/60' },
+  { question: 'Are you an Educational Institute?', href: '/institutions', icon: Building2, color: 'border-amber-700', textColor: 'text-amber-700', bg: 'bg-amber-50/60' },
   { question: 'Are you an Employer?', href: '/for-employers', icon: Briefcase, color: 'border-orange-600', textColor: 'text-orange-600', bg: 'bg-orange-50/60' },
 ]
 

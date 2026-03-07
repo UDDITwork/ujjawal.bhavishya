@@ -8,7 +8,7 @@ import Image from 'next/image'
 import {
   Mic, BookOpen, FileText, BarChart3, Zap,
   MessageCircle, Award, Shield, Users, Menu, X,
-  LayoutDashboard, LogOut, Briefcase
+  LayoutDashboard, LogOut, Briefcase, GraduationCap, Building2
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
@@ -61,6 +61,29 @@ export default function Navbar() {
                 IKLAVYA
               </span>
             </Link>
+
+            {/* Main page links */}
+            <div className="hidden sm:flex items-center gap-1">
+              {[
+                { href: '/students', label: 'Students', icon: GraduationCap, color: 'text-green-800' },
+                { href: '/institutions', label: 'Institutions', icon: Building2, color: 'text-amber-700' },
+                { href: '/for-employers', label: 'Employers', icon: Briefcase, color: 'text-orange-600' },
+              ].map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <Link key={link.href} href={link.href}>
+                    <div className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? `${link.color} bg-gray-50`
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`}>
+                      <link.icon size={16} />
+                      <span>{link.label}</span>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
 
             <div className="flex items-center gap-3">
               {isLoading ? (
@@ -132,6 +155,24 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed top-16 inset-x-0 z-40 bg-white border-b border-gray-200 sm:hidden shadow-lg"
           >
+            {/* Main page links for mobile */}
+            <div className="p-3 border-b border-gray-100 grid grid-cols-3 gap-1.5">
+              {[
+                { href: '/students', label: 'Students', icon: GraduationCap, color: 'text-green-800', bg: 'bg-green-50/40' },
+                { href: '/institutions', label: 'Institutions', icon: Building2, color: 'text-amber-700', bg: 'bg-amber-50/40' },
+                { href: '/for-employers', label: 'Employers', icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50/40' },
+              ].map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
+                  <div className={`flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-colors ${
+                    pathname === link.href ? `${link.bg} ${link.color}` : 'text-gray-600 hover:bg-gray-50'
+                  }`}>
+                    <link.icon size={20} />
+                    <span className="text-[11px] font-bold">{link.label}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
             <div className="p-3 grid grid-cols-3 gap-1.5">
               {allLinks.map((link) => {
                 const isActive = pathname === link.href
