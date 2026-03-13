@@ -349,29 +349,20 @@ export default function DashboardPage() {
   const firstName = user?.name?.split(' ')[0] || 'there'
 
   useEffect(() => {
-    fetch('/api/profile')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (data?.gender) setProfileGender(data.gender)
-      })
-      .catch(() => {})
-  }, [])
-
-  useEffect(() => {
     async function load() {
-      const [careerRes, resumeRes] = await Promise.allSettled([
-        fetch('/api/sessions'),
-        fetch('/api/resume/sessions'),
-      ])
-      if (careerRes.status === 'fulfilled' && careerRes.value.ok) {
-        const data = await careerRes.value.json()
-        setCareerSessions(data.sessions || [])
+      try {
+        const res = await fetch('/api/dashboard')
+        if (res.ok) {
+          const data = await res.json()
+          setCareerSessions(data.sessions || [])
+          setResumeSessions(data.resumeSessions || [])
+          if (data.profile?.gender) setProfileGender(data.profile.gender)
+        }
+      } catch {
+        // silently fail
+      } finally {
+        setLoading(false)
       }
-      if (resumeRes.status === 'fulfilled' && resumeRes.value.ok) {
-        const data = await resumeRes.value.json()
-        setResumeSessions(data.sessions || [])
-      }
-      setLoading(false)
     }
     load()
   }, [])
@@ -520,8 +511,32 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-32">
-        <Loader2 size={24} className="animate-spin text-gray-400" />
+      <div className="p-6 sm:p-8 max-w-6xl animate-pulse">
+        {/* Welcome skeleton */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-12 rounded-full bg-gray-200" />
+          <div>
+            <div className="h-5 w-48 bg-gray-200 rounded mb-2" />
+            <div className="h-3 w-32 bg-gray-100 rounded" />
+          </div>
+        </div>
+        {/* Stat cards skeleton */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="w-9 h-9 rounded-lg bg-gray-100 mb-3" />
+              <div className="h-6 w-16 bg-gray-200 rounded mb-1.5" />
+              <div className="h-3 w-24 bg-gray-100 rounded" />
+            </div>
+          ))}
+        </div>
+        {/* Heatmap skeleton */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-5 h-40" />
+        {/* Bottom row skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+          <div className="lg:col-span-3 bg-white rounded-xl border border-gray-200 p-5 h-64" />
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5 h-64" />
+        </div>
       </div>
     )
   }
