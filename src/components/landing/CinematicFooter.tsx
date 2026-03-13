@@ -224,7 +224,7 @@ export default function CinematicFooter() {
                   alt={logo.alt}
                   width={200}
                   height={80}
-                  className="max-h-14 sm:max-h-[4.5rem] w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300"
+                  className="max-h-14 sm:max-h-[4.5rem] w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             ))}
