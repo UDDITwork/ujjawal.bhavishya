@@ -84,7 +84,7 @@ export async function generateVoiceover(
  * Skips files that already exist (incremental generation).
  *
  * Output naming: {moduleSlug}-segment-{index}.mp3
- * Saved to: remotion/audio/
+ * Saved to: public/audio/
  */
 export async function generateAllVoiceovers(
   scripts: CourseScript[]

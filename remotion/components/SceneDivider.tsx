@@ -73,7 +73,7 @@ export const SceneDivider: React.FC<SceneDividerProps> = ({
         >
           <defs>
             <pattern
-              id="divider-grid"
+              id={`divider-grid-${direction}`}
               width="40"
               height="40"
               patternUnits="userSpaceOnUse"
@@ -86,7 +86,7 @@ export const SceneDivider: React.FC<SceneDividerProps> = ({
               />
             </pattern>
           </defs>
-          <rect width="200%" height="100%" fill="url(#divider-grid)" />
+          <rect width="200%" height="100%" fill={`url(#divider-grid-${direction})`} />
         </svg>
       </AbsoluteFill>
 

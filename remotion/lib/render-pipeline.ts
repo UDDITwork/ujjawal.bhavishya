@@ -74,13 +74,41 @@ async function main(): Promise<void> {
     await generateAllVoiceovers(scripts)
   }
 
+  // ── Step 1.5: Validate audio files exist ────────────────────────────
+  const AUDIO_DIR = path.resolve(ROOT_DIR, 'public', 'audio')
+  const scriptsToRender: typeof scripts = []
+
+  console.log('\n[pipeline] Validating audio files...')
+  for (const script of scripts) {
+    let allPresent = true
+    for (let i = 0; i < script.segments.length; i++) {
+      const audioPath = path.join(AUDIO_DIR, `${script.id}-segment-${i}.mp3`)
+      if (!fs.existsSync(audioPath)) {
+        console.warn(`  MISSING: ${script.id}-segment-${i}.mp3`)
+        allPresent = false
+      }
+    }
+    if (allPresent) {
+      scriptsToRender.push(script)
+    } else {
+      console.warn(`  SKIPPING render for "${script.id}" — missing audio files`)
+    }
+  }
+
+  if (scriptsToRender.length === 0) {
+    console.error('\n  No modules have complete audio. Cannot render any videos.')
+    process.exit(1)
+  }
+
+  console.log(`  ${scriptsToRender.length}/${scripts.length} modules ready to render`)
+
   // ── Step 2: Render videos ───────────────────────────────────────────
   console.log('\n[pipeline] Step 2: Rendering module videos via Remotion...')
   ensureDir(OUTPUT_DIR)
 
   const results: { slug: string; status: 'ok' | 'failed'; error?: string }[] = []
 
-  for (const script of scripts) {
+  for (const script of scriptsToRender) {
     const compositionId = slugToCompositionId(script.id)
     const outputFile = path.join(OUTPUT_DIR, `${script.id}.mp4`)
 
@@ -103,7 +131,7 @@ async function main(): Promise<void> {
         cwd: ROOT_DIR,
         stdio: 'inherit',
         env: { ...process.env },
-        timeout: 10 * 60 * 1000, // 10 minutes per module
+        timeout: 20 * 60 * 1000, // 20 minutes per module
       })
 
       results.push({ slug: script.id, status: 'ok' })
