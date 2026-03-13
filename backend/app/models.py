@@ -246,3 +246,87 @@ class Resume(Base):
     updated_at: Mapped[str] = mapped_column(
         String(50), nullable=False, default=utc_now, onupdate=utc_now
     )
+
+
+# ─── Classroom ────────────────────────────────────────────
+
+
+class CourseModule(Base):
+    __tablename__ = "course_modules"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    slug: Mapped[str] = mapped_column(
+        String(200), nullable=False, unique=True, index=True
+    )
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+    video_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    thumbnail_url: Mapped[str] = mapped_column(String(500), nullable=True)
+    duration_seconds: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=600
+    )  # 10 minutes default
+    category: Mapped[str] = mapped_column(
+        String(100), nullable=False, default="soft-skills"
+    )
+    order_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    is_published: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=1
+    )  # 0 or 1
+    segments_json: Mapped[str] = mapped_column(
+        Text, nullable=True
+    )  # JSON: [{title, start_sec, end_sec}]
+    created_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )
+
+
+class ModuleQuiz(Base):
+    __tablename__ = "module_quizzes"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    module_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("course_modules.id"), nullable=False, index=True
+    )
+    trigger_at_seconds: Mapped[int] = mapped_column(
+        Integer, nullable=False
+    )  # 150, 300, 450
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    options_json: Mapped[str] = mapped_column(
+        Text, nullable=False
+    )  # JSON: ["Option A", "Option B", ...]
+    correct_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    hint: Mapped[str] = mapped_column(Text, nullable=True)
+    order_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
+class UserModuleProgress(Base):
+    __tablename__ = "user_module_progress"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False, index=True
+    )
+    module_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("course_modules.id"), nullable=False, index=True
+    )
+    last_position_seconds: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )
+    quizzes_passed_json: Mapped[str] = mapped_column(
+        Text, nullable=True
+    )  # JSON: [150, 300] = quiz timestamps passed
+    is_completed: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )  # 0 or 1
+    score: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )  # total correct answers
+    updated_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now, onupdate=utc_now
+    )

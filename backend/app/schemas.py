@@ -245,3 +245,74 @@ class ResumeTemplateUpdateRequest(BaseModel):
 
 class ResumeListResponse(BaseModel):
     resumes: list[ResumeResponse]
+
+
+# ─── Classroom ──────────────────────────────────────────────
+
+class CourseModuleResponse(BaseModel):
+    id: str
+    title: str
+    slug: str
+    description: Optional[str] = None
+    video_url: str
+    thumbnail_url: Optional[str] = None
+    duration_seconds: int
+    category: str
+    order_index: int
+    segments_json: Optional[str] = None
+    created_at: str
+
+    model_config = {"from_attributes": True}
+
+
+class CourseModuleListResponse(BaseModel):
+    modules: list[CourseModuleResponse]
+
+
+class ModuleQuizResponse(BaseModel):
+    id: str
+    module_id: str
+    trigger_at_seconds: int
+    question: str
+    options_json: str
+    hint: Optional[str] = None
+    order_index: int
+
+    model_config = {"from_attributes": True}
+
+
+class ModuleDetailResponse(BaseModel):
+    module: CourseModuleResponse
+    quizzes: list[ModuleQuizResponse]
+
+
+class UserProgressResponse(BaseModel):
+    id: str
+    user_id: str
+    module_id: str
+    last_position_seconds: int
+    quizzes_passed_json: Optional[str] = None
+    is_completed: int
+    score: int
+    updated_at: str
+
+    model_config = {"from_attributes": True}
+
+
+class ProgressSyncRequest(BaseModel):
+    module_id: str = Field(min_length=1, max_length=36)
+    last_position_seconds: int = Field(ge=0)
+    quizzes_passed_json: Optional[str] = None
+    score: Optional[int] = Field(default=None, ge=0)
+    is_completed: Optional[int] = Field(default=None, ge=0, le=1)
+
+
+class QuizAnswerRequest(BaseModel):
+    quiz_id: str = Field(min_length=1, max_length=36)
+    selected_index: int = Field(ge=0)
+
+
+class QuizAnswerResponse(BaseModel):
+    correct: bool
+    correct_index: int
+    hint: Optional[str] = None
