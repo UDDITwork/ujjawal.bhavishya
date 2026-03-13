@@ -6,6 +6,8 @@ const COOKIE_NAME = 'iklavya-token'
 
 const protectedPaths = ['/dashboard', '/admin', '/session', '/sessions', '/profile', '/resume-builder', '/resume-session']
 const authPaths = ['/login', '/register']
+// Public landing pages that should redirect to dashboard when authenticated
+const landingPaths = ['/', '/students', '/institutions', '/for-employers']
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get(COOKIE_NAME)?.value
@@ -13,6 +15,7 @@ export async function middleware(request: NextRequest) {
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
   const isAuthPage = authPaths.some((p) => pathname.startsWith(p))
+  const isLandingPage = landingPaths.includes(pathname)
 
   if (isProtected) {
     if (!token) {
@@ -27,12 +30,13 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (isAuthPage && token) {
+  // Redirect authenticated users away from auth pages and landing pages
+  if ((isAuthPage || isLandingPage) && token) {
     try {
       await jwtVerify(token, secret)
       return NextResponse.redirect(new URL('/dashboard', request.url))
     } catch {
-      // Token invalid, let them proceed to login
+      // Token invalid, let them proceed
     }
   }
 
@@ -40,5 +44,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/admin/:path*', '/session/:path*', '/sessions/:path*', '/profile/:path*', '/resume-builder/:path*', '/resume-session/:path*', '/login', '/register', '/career-guidance/:path*'],
+  matcher: ['/', '/students', '/institutions', '/for-employers', '/dashboard/:path*', '/admin/:path*', '/session/:path*', '/sessions/:path*', '/profile/:path*', '/resume-builder/:path*', '/resume-session/:path*', '/login', '/register', '/career-guidance/:path*'],
 }

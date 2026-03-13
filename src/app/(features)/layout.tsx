@@ -1,4 +1,4 @@
-import CinematicFooter from '@/components/landing/CinematicFooter'
+import ConditionalFooter from '@/components/landing/ConditionalFooter'
 
 export default function FeaturesLayout({
   children,
@@ -8,7 +8,7 @@ export default function FeaturesLayout({
   return (
     <>
       {children}
-      <CinematicFooter />
+      <ConditionalFooter />
     </>
   )
 }
