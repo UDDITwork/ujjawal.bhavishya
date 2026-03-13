@@ -103,7 +103,7 @@ export default function ResumeBuilderPage() {
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-800 text-white text-sm font-medium hover:bg-green-900 transition-colors shadow-sm disabled:opacity-50"
             >
               {creating ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-              Naya Resume Banao
+              Create New Resume
             </button>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function ResumeBuilderPage() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-green-800 text-white text-sm font-medium hover:bg-green-900 transition-colors shadow-sm disabled:opacity-50"
             >
               {creating ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-              Naya Resume Banao
+              Create New Resume
             </button>
           </div>
         </motion.div>

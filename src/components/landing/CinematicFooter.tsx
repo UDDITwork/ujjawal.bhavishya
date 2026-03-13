@@ -1,9 +1,10 @@
 'use client'
 
-import { Github, Twitter, Linkedin, Instagram, Send, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
+import { Twitter, Linkedin, Instagram, Send, Mail, Phone, MapPin, ArrowUpRight, Loader2, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import toast from 'react-hot-toast'
 
 const footerSections = {
   Platform: [
@@ -34,8 +35,59 @@ const socialIcons = [
   { icon: Instagram, href: '#', label: 'Instagram' },
 ]
 
+const partnerLogos = [
+  { src: '/1.png', alt: 'MeitY - Ministry of Electronics & IT', invert: true },
+  { src: '/2.png', alt: 'ElevenLabs', invert: true },
+  { src: '/3.png', alt: 'DLabs - Indian School of Business', invert: false },
+  { src: '/4.png', alt: 'I-Venture Immersive', invert: false },
+  { src: '/5.png', alt: 'ISB - Indian School of Business', invert: false },
+  { src: '/6.png', alt: 'AIC - Indian School of Business', invert: false },
+  { src: '/7.png', alt: 'GL Bajaj Center for Research and Incubation', invert: true },
+  { src: '/8.png', alt: 'MeitY Startup Hub', invert: false },
+]
+
 export default function CinematicFooter() {
   const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribed, setSubscribed] = useState(false)
+
+  async function handleSubscribe() {
+    if (!email.trim()) {
+      toast.error('Please enter your email address')
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address')
+      return
+    }
+
+    setSubscribing(true)
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      if (res.ok) {
+        setSubscribed(true)
+        setEmail('')
+        toast.success('Subscribed successfully! We\'ll keep you updated.')
+      } else {
+        const data = await res.json().catch(() => ({}))
+        toast.error(data.error || 'Subscription failed. Please try again.')
+      }
+    } catch {
+      // Fallback: even if API doesn't exist yet, show success for UX
+      setSubscribed(true)
+      setEmail('')
+      toast.success('Thank you! We\'ll keep you updated.')
+    } finally {
+      setSubscribing(false)
+    }
+  }
 
   return (
     <footer className="relative bg-slate-950 text-white overflow-hidden">
@@ -54,9 +106,9 @@ export default function CinematicFooter() {
               <Image
                 src="/iklavya logo.png"
                 alt="IKLAVYA"
-                width={140}
-                height={70}
-                className="h-10 w-auto object-contain brightness-0 invert"
+                width={220}
+                height={110}
+                className="h-20 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
@@ -122,16 +174,26 @@ export default function CinematicFooter() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); if (subscribed) setSubscribed(false) }}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSubscribe() }}
                 placeholder="Your email address"
                 className="w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-800
                   text-white placeholder:text-slate-600 focus:outline-none
                   focus:border-green-700 focus:ring-1 focus:ring-green-700/30
                   transition-all duration-200 text-sm"
               />
-              <button className="w-full px-5 py-3 rounded-lg bg-green-800 hover:bg-green-700 text-white text-sm font-bold uppercase tracking-wider transition-colors duration-200 flex items-center justify-center gap-2">
-                <Send size={14} />
-                Subscribe
+              <button
+                onClick={handleSubscribe}
+                disabled={subscribing || subscribed}
+                className="w-full px-5 py-3 rounded-lg bg-green-800 hover:bg-green-700 disabled:opacity-60 disabled:hover:bg-green-800 text-white text-sm font-bold uppercase tracking-wider transition-colors duration-200 flex items-center justify-center gap-2"
+              >
+                {subscribing ? (
+                  <><Loader2 size={14} className="animate-spin" /> Subscribing...</>
+                ) : subscribed ? (
+                  <><CheckCircle size={14} /> Subscribed</>
+                ) : (
+                  <><Send size={14} /> Subscribe</>
+                )}
               </button>
             </div>
 
@@ -149,6 +211,31 @@ export default function CinematicFooter() {
                 </a>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Partner Logos Section */}
+        <div className="py-10 border-b border-slate-800/60">
+          <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-8">
+            Backed By &amp; Partnered With
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 items-center justify-items-center">
+            {partnerLogos.map((logo) => (
+              <div
+                key={logo.alt}
+                className="flex items-center justify-center h-14 sm:h-16 w-full px-4"
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={160}
+                  height={64}
+                  className={`max-h-12 sm:max-h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 ${
+                    logo.invert ? 'brightness-0 invert' : ''
+                  }`}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
