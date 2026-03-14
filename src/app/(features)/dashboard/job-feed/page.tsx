@@ -161,6 +161,29 @@ function getAccentForJob(job: { category: string }): string {
   return ACCENT_COLORS[job.category] || ACCENT_COLORS.all
 }
 
+function cleanDescription(raw: string): string {
+  let text = raw
+  // Remove markdown images ![alt](url)
+  text = text.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+  // Convert markdown links [text](url) to just text
+  text = text.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  // Remove raw URLs
+  text = text.replace(/https?:\/\/[^\s)]+/g, '')
+  // Remove markdown headers ##
+  text = text.replace(/#{1,6}\s*/g, '')
+  // Remove markdown bold/italic
+  text = text.replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
+  // Remove leftover markdown syntax
+  text = text.replace(/[[\]()]/g, '')
+  // Remove "Skip to content", "Sort by", navigation junk
+  text = text.replace(/Skip to content|Sort by\s*\w+|Refine Your Search|View More|Show less|Show more|Quick apply|Apply now/gi, '')
+  // Collapse whitespace
+  text = text.replace(/\s+/g, ' ').trim()
+  // Remove leading dashes/bullets
+  text = text.replace(/^[-–—•*]+\s*/, '')
+  return text
+}
+
 /* ------------------------------------------------------------------ */
 /*  Skeleton Card                                                      */
 /* ------------------------------------------------------------------ */
@@ -249,58 +272,57 @@ function JobCard({
   onApply: () => void
   onShare: () => void
 }) {
-  const accent = job.accentColor || getAccentForJob(job)
   const matchBadge = getMatchBadge(job.matchScore)
   const initials = getCompanyInitials(job.company)
-  const shortDesc = job.description.slice(0, 100)
-  const hasMoreDesc = job.description.length > 100
+  const cleaned = cleanDescription(job.description)
+  const shortDesc = cleaned.slice(0, 140)
+  const hasMoreDesc = cleaned.length > 140
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
-      {/* Accent stripe */}
-      <div className="h-[3px]" style={{ backgroundColor: accent }} />
-
+    <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 overflow-hidden">
       {/* Header row */}
-      <div className="flex items-start gap-3 px-4 pt-4 pb-2">
-        <div
-          className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-          style={{ backgroundColor: accent + '22', color: accent }}
-        >
+      <div className="flex items-start gap-3 p-4 pb-0">
+        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 text-xs font-bold shrink-0">
           {initials}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-[15px] font-bold text-gray-900 leading-snug">{job.title}</h3>
-            {job.matchScore > 0 && (
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${matchBadge.bg} ${matchBadge.text} ${matchBadge.border}`}>
-                {job.matchScore}% match
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-gray-400 mt-0.5">{job.company}</p>
+          <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2">{job.title}</h3>
+          <p className="text-xs text-gray-500 mt-0.5">{job.company}</p>
         </div>
-        <button
-          onClick={onToggleSave}
-          className={`p-1.5 rounded-lg transition-colors shrink-0 ${
-            isSaved ? 'text-green-700 bg-green-50' : 'text-gray-300 hover:text-gray-500 hover:bg-gray-50'
-          }`}
-        >
-          {isSaved ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
-        </button>
+        <div className="flex items-center gap-1.5 shrink-0">
+          {job.matchScore > 0 && (
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${matchBadge.bg} ${matchBadge.text} ${matchBadge.border}`}>
+              {job.matchScore}%
+            </span>
+          )}
+          <button
+            onClick={onToggleSave}
+            className={`p-1.5 rounded-lg transition-colors ${
+              isSaved ? 'text-green-700 bg-green-50' : 'text-gray-300 hover:text-gray-500 hover:bg-gray-50'
+            }`}
+          >
+            {isSaved ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+          </button>
+        </div>
       </div>
 
       {/* Meta row */}
-      <div className="flex flex-wrap items-center gap-3 px-4 pb-2 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-xs text-gray-500">
+        {job.location && job.location !== 'India' && (
+          <span className="inline-flex items-center gap-1">
+            <MapPin size={11} className="text-gray-400" />
+            {job.location}
+          </span>
+        )}
         <span className="inline-flex items-center gap-1">
-          <MapPin size={12} className="text-gray-400" />
-          {job.location}
-        </span>
-        <span className="inline-flex items-center gap-1">
-          <Briefcase size={12} className="text-gray-400" />
+          <Briefcase size={11} className="text-gray-400" />
           {job.type}
         </span>
-        <span className="inline-flex items-center gap-1">
-          <Clock size={12} className="text-gray-400" />
+        {job.experience && job.experience !== 'Fresher' && (
+          <span className="text-gray-400">{job.experience}</span>
+        )}
+        <span className="inline-flex items-center gap-1 text-gray-400">
+          <Clock size={11} />
           {timeAgo(job.postedAt)}
         </span>
       </div>
@@ -308,8 +330,8 @@ function JobCard({
       {/* Salary */}
       {job.salary && job.salary !== 'Not disclosed' && (
         <div className="px-4 pb-2">
-          <span className="text-sm font-bold text-gray-900 inline-flex items-center gap-1">
-            <IndianRupee size={13} className="text-gray-600" />
+          <span className="text-sm font-semibold text-gray-900 inline-flex items-center gap-0.5">
+            <IndianRupee size={12} />
             {job.salary}
           </span>
         </div>
@@ -317,11 +339,11 @@ function JobCard({
 
       {/* Tags */}
       {job.tags.length > 0 && (
-        <div className="px-4 pb-2 flex flex-wrap gap-1.5">
-          {job.tags.map((tag) => (
+        <div className="px-4 pb-2 flex flex-wrap gap-1">
+          {job.tags.slice(0, 5).map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-medium text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100"
+              className="text-[10px] font-medium text-gray-500 bg-gray-50 px-2 py-0.5 rounded border border-gray-100"
             >
               {tag}
             </span>
@@ -330,51 +352,52 @@ function JobCard({
       )}
 
       {/* Description */}
-      <div className="px-4 pb-3">
-        <p className="text-sm text-gray-600 leading-relaxed">
-          {isExpanded ? job.description : (hasMoreDesc ? shortDesc + '...' : job.description)}
-        </p>
+      {cleaned && (
+        <div className="px-4 pb-3">
+          <p className="text-xs text-gray-500 leading-relaxed">
+            {isExpanded ? cleaned : (hasMoreDesc ? shortDesc + '...' : cleaned)}
+          </p>
 
-        {/* Expanded: requirements */}
-        {isExpanded && job.requirements.length > 0 && (
-          <div className="mt-3">
-            <p className="text-xs font-semibold text-gray-700 mb-1.5">Requirements</p>
-            <ul className="space-y-1">
-              {job.requirements.map((req, i) => (
-                <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
-                  <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-300 shrink-0" />
-                  {req}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {/* Expanded: requirements */}
+          {isExpanded && job.requirements.length > 0 && (
+            <div className="mt-2">
+              <p className="text-xs font-semibold text-gray-700 mb-1">Requirements</p>
+              <ul className="space-y-0.5">
+                {job.requirements.slice(0, 8).map((req, i) => (
+                  <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
+                    <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-300 shrink-0" />
+                    {cleanDescription(req)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-        {(hasMoreDesc || job.requirements.length > 0) && (
-          <button
-            onClick={onToggleExpand}
-            className="text-xs text-gray-400 hover:text-gray-600 mt-2 font-medium inline-flex items-center gap-0.5"
-          >
-            {isExpanded ? (
-              <>Show less <ChevronUp size={12} /></>
-            ) : (
-              <>View details <ChevronDown size={12} /></>
-            )}
-          </button>
-        )}
-      </div>
+          {(hasMoreDesc || job.requirements.length > 0) && (
+            <button
+              onClick={onToggleExpand}
+              className="text-xs text-gray-400 hover:text-gray-600 mt-1.5 font-medium inline-flex items-center gap-0.5"
+            >
+              {isExpanded ? (
+                <>Show less <ChevronUp size={12} /></>
+              ) : (
+                <>View details <ChevronDown size={12} /></>
+              )}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Action row */}
-      <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-50">
+      <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100">
         <button
           onClick={onApply}
           disabled={isApplied}
-          className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60 disabled:cursor-default"
-          style={
+          className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
             isApplied
-              ? { backgroundColor: '#f3f4f6', color: '#9ca3af' }
-              : { backgroundColor: accent, color: '#fff' }
-          }
+              ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-default'
+              : 'bg-white text-gray-900 border-green-600 hover:bg-green-50'
+          }`}
         >
           {isApplied ? (
             <><Check size={14} /> Applied</>

@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -26,6 +26,86 @@ const navLinks = [
   { href: '/support', label: 'Support', icon: Users },
   { href: '/admin', label: 'Admin', icon: Shield },
 ]
+
+function LiveClock() {
+  const [now, setNow] = useState<Date | null>(null)
+
+  useEffect(() => {
+    setNow(new Date())
+    const t = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(t)
+  }, [])
+
+  if (!now) return null
+
+  const hours = now.getHours()
+  const minutes = now.getMinutes()
+  const seconds = now.getSeconds()
+  const h12 = hours % 12 || 12
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+  const pad = (n: number) => n.toString().padStart(2, '0')
+
+  const day = now.toLocaleDateString('en-IN', { weekday: 'short' })
+  const date = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+
+  // Analog clock angles
+  const hourAngle = ((hours % 12) + minutes / 60) * 30
+  const minuteAngle = (minutes + seconds / 60) * 6
+  const secondAngle = seconds * 6
+
+  return (
+    <div className="hidden sm:flex items-center gap-3">
+      {/* Tiny analog clock */}
+      <svg width="32" height="32" viewBox="0 0 32 32" className="shrink-0">
+        <circle cx="16" cy="16" r="14.5" fill="none" stroke="#D1D5DB" strokeWidth="1" />
+        {/* Hour ticks */}
+        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+          <line
+            key={deg}
+            x1="16"
+            y1="3"
+            x2="16"
+            y2={deg % 90 === 0 ? '5.5' : '4.5'}
+            stroke={deg % 90 === 0 ? '#374151' : '#9CA3AF'}
+            strokeWidth={deg % 90 === 0 ? '1.2' : '0.8'}
+            strokeLinecap="round"
+            transform={`rotate(${deg} 16 16)`}
+          />
+        ))}
+        {/* Hour hand */}
+        <line
+          x1="16" y1="16" x2="16" y2="8"
+          stroke="#374151" strokeWidth="1.6" strokeLinecap="round"
+          transform={`rotate(${hourAngle} 16 16)`}
+        />
+        {/* Minute hand */}
+        <line
+          x1="16" y1="16" x2="16" y2="5.5"
+          stroke="#374151" strokeWidth="1.1" strokeLinecap="round"
+          transform={`rotate(${minuteAngle} 16 16)`}
+        />
+        {/* Second hand */}
+        <line
+          x1="16" y1="18" x2="16" y2="5"
+          stroke="#DC2626" strokeWidth="0.5" strokeLinecap="round"
+          transform={`rotate(${secondAngle} 16 16)`}
+        />
+        <circle cx="16" cy="16" r="1.2" fill="#374151" />
+      </svg>
+
+      {/* Digital time + date */}
+      <div className="leading-tight">
+        <p className="text-sm font-semibold text-gray-800 tabular-nums tracking-wide">
+          {h12}:{pad(minutes)}
+          <span className="text-[10px] font-medium text-gray-400 ml-0.5">{ampm}</span>
+        </p>
+        <p className="text-[10px] text-gray-400 font-medium">
+          {day}, {date}
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -53,6 +133,9 @@ export default function Navbar() {
     ? [{ href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard }, ...navLinks]
     : navLinks
 
+  // Show Students/Institutions/Employers only when NOT logged in and NOT on dashboard
+  const showPageLinks = !user && !isDashboard
+
   return (
     <>
       <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -64,8 +147,8 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Main page links — hidden on dashboard */}
-            {!isDashboard && (
+            {/* Page links for guests only */}
+            {showPageLinks && (
               <div className="hidden sm:flex items-center gap-1">
                 {[
                   { href: '/students', label: 'Students', icon: GraduationCap, color: 'text-green-800' },
@@ -88,6 +171,9 @@ export default function Navbar() {
                 })}
               </div>
             )}
+
+            {/* Live clock for logged-in users (non-dashboard) */}
+            {user && !isDashboard && <LiveClock />}
 
             <div className="flex items-center gap-3">
               {isLoading ? (
@@ -142,7 +228,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu — shows feature links + auth on small screens */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -152,8 +238,8 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed top-16 inset-x-0 z-40 bg-white border-b border-gray-200 sm:hidden shadow-lg"
           >
-            {/* Main page links for mobile — hidden on dashboard */}
-            {!isDashboard && (
+            {/* Page links for guests only (mobile) */}
+            {showPageLinks && (
               <div className="p-3 border-b border-gray-100 grid grid-cols-3 gap-1.5">
                 {[
                   { href: '/students', label: 'Students', icon: GraduationCap, color: 'text-green-800', bg: 'bg-green-50/40' },
