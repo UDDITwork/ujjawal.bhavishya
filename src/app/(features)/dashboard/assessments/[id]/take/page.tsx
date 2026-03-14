@@ -50,7 +50,7 @@ export default function AssessmentTakePage({
 
     async function startAssessment() {
       try {
-        const res = await fetch(`/api/assessments/${id}/start`, { method: 'POST' })
+        const res = await fetch(`/api/dashboard/assessments/${id}/start`, { method: 'POST' })
         const data = await res.json()
 
         if (!res.ok) {
@@ -118,7 +118,7 @@ export default function AssessmentTakePage({
       const currentJson = JSON.stringify(answersArray)
       if (currentJson === lastSavedRef.current) return // skip if nothing changed
 
-      fetch(`/api/assessments/${id}/autosave`, {
+      fetch(`/api/dashboard/assessments/${id}/autosave`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -161,7 +161,7 @@ export default function AssessmentTakePage({
 
     try {
       const answersArray = getAnswersArray()
-      const res = await fetch(`/api/assessments/${id}/submit`, {
+      const res = await fetch(`/api/dashboard/assessments/${id}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -178,7 +178,7 @@ export default function AssessmentTakePage({
 
       toast.success('Assessment submitted successfully!')
       reset()
-      router.push(`/assessments/${id}/result/${attemptId}`)
+      router.push(`/dashboard/assessments/${id}/result/${attemptId}`)
     } catch (err) {
       hasSubmittedRef.current = false
       setSubmitting(false)
@@ -248,7 +248,7 @@ export default function AssessmentTakePage({
   // Exit handler
   const handleExit = useCallback(() => {
     reset()
-    router.push('/assessments')
+    router.push('/dashboard/assessments')
   }, [reset, router])
 
   // Build answered set for QuestionNav (by question array index, not question ID)
@@ -290,7 +290,7 @@ export default function AssessmentTakePage({
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Unable to Start Assessment</h2>
           <p className="text-gray-600 mb-6">{error}</p>
           <button
-            onClick={() => router.push('/assessments')}
+            onClick={() => router.push('/dashboard/assessments')}
             className="px-6 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
           >
             Go Back

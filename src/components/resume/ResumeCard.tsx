@@ -21,9 +21,7 @@ export default function ResumeCard({ session }: { session: ResumeSession }) {
 
   return (
     <div
-      className={`spotlight-card rounded-xl bg-white border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-200 border-l-4 ${
-        isActive ? 'border-l-amber-500' : 'border-l-green-600'
-      }`}
+      className="rounded-xl bg-white border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-200"
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-2">

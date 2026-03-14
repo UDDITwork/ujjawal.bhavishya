@@ -136,7 +136,7 @@ export default function AssessmentsPage() {
                 onClick={async () => {
                   setSeeding(true)
                   try {
-                    const res = await fetch('/api/assessments/seed')
+                    const res = await fetch('/api/dashboard/assessments/seed')
                     if (res.ok) {
                       await loadData()
                     }
@@ -218,7 +218,7 @@ export default function AssessmentsPage() {
                     )}
 
                     {assessment.user_status === 'available' && (
-                      <Link href={`/assessments/${assessment.id}/take`}>
+                      <Link href={`/dashboard/assessments/${assessment.id}/take`}>
                         <div className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-green-600 text-white hover:bg-green-700 transition-colors cursor-pointer">
                           <ClipboardCheck size={14} />
                           <span className="text-xs font-semibold">
@@ -243,7 +243,7 @@ export default function AssessmentsPage() {
                             </span>
                           )}
                         </div>
-                        <Link href={`/assessments/${assessment.id}/take`}>
+                        <Link href={`/dashboard/assessments/${assessment.id}/take`}>
                           <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer">
                             <Award size={14} />
                             <span className="text-xs font-semibold">
@@ -277,7 +277,7 @@ export default function AssessmentsPage() {
                             </span>
                           </div>
                         ) : (
-                          <Link href={`/assessments/${assessment.id}/take`}>
+                          <Link href={`/dashboard/assessments/${assessment.id}/take`}>
                             <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-colors cursor-pointer">
                               <ClipboardCheck size={14} />
                               <span className="text-xs font-semibold">

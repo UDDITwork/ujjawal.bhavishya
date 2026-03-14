@@ -230,7 +230,7 @@ export default function ResultPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <AlertCircle className="w-12 h-12 text-red-400" />
         <p className="text-gray-600">{error}</p>
-        <Link href="/assessments" className="text-green-600 hover:underline text-sm">
+        <Link href="/dashboard/assessments" className="text-green-600 hover:underline text-sm">
           Back to Assessments
         </Link>
       </div>
@@ -251,7 +251,7 @@ export default function ResultPage() {
       {/* Header */}
       <motion.div variants={fadeInUp} transition={fadeInUpTransition}>
         <Link
-          href="/assessments"
+          href="/dashboard/assessments"
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-4"
         >
           <ArrowLeft size={16} /> Back to Assessments
@@ -343,7 +343,7 @@ export default function ResultPage() {
         )}
 
         <Link
-          href="/assessments"
+          href="/dashboard/assessments"
           className="inline-flex items-center gap-2 px-6 py-3 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors"
         >
           <ArrowLeft size={16} /> All Assessments

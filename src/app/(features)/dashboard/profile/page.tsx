@@ -474,7 +474,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.1 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-blue-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-700">
                   <User size={16} />
@@ -560,7 +560,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.15 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-green-600 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-700">
                   <GraduationCap size={16} />
@@ -645,7 +645,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.2 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-indigo-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-700">
                   <Briefcase size={16} />
@@ -734,7 +734,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.25 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-amber-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-700">
                   <Briefcase size={16} />
@@ -757,7 +757,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.3 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-cyan-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-700">
                   <Code size={16} />
@@ -780,7 +780,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.35 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-violet-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center text-violet-700">
                   <FileText size={16} />
@@ -803,7 +803,7 @@ export default function ProfilePage() {
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.4 }}
           >
-            <div className="bg-white rounded-2xl border border-gray-200 border-l-4 border-l-emerald-500 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-700">
                   <Heart size={16} />

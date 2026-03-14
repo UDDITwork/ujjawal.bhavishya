@@ -23,9 +23,7 @@ export default function SessionCard({ session }: { session: Session }) {
   return (
     <Link href={`/session/${session.id}`} className="block">
     <div
-      className={`spotlight-card rounded-xl bg-white border border-gray-200 shadow-sm p-5 hover:shadow-md transition-all duration-200 border-l-4 cursor-pointer ${
-        isActive ? 'border-l-green-600' : 'border-l-gray-300'
-      }`}
+      className="rounded-xl bg-white border border-gray-200 shadow-sm p-5 hover:shadow-md transition-all duration-200 cursor-pointer"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">

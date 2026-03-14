@@ -23,7 +23,7 @@ const footerSections = {
   ],
   Company: [
     { label: 'About Us', href: '/about' },
-    { label: 'Classroom', href: '/classroom' },
+    { label: 'Classroom', href: '/dashboard/classroom' },
     { label: 'Support', href: '/support' },
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms of Service', href: '/support' },

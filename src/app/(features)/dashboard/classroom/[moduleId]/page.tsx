@@ -86,7 +86,7 @@ export default function ClassroomModulePage() {
         <BookOpen size={48} className="text-gray-300" />
         <p className="text-gray-500">{error || 'Module not found'}</p>
         <Link
-          href="/classroom"
+          href="/dashboard/classroom"
           className="text-sm text-green-700 hover:text-green-800 font-medium"
         >
           Back to Classroom
@@ -105,7 +105,7 @@ export default function ClassroomModulePage() {
         transition={fadeInUpTransition}
       >
         <Link
-          href="/classroom"
+          href="/dashboard/classroom"
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors mb-4"
         >
           <ArrowLeft size={14} />

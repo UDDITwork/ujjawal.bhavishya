@@ -16,7 +16,7 @@ import { useAuthStore } from '@/store/auth-store'
 const navLinks = [
   { href: '/ai-interview', label: 'Interview', icon: Mic },
   { href: '/ai-courses', label: 'Courses', icon: BookOpen },
-  { href: '/classroom', label: 'Classroom', icon: PlaySquare },
+  { href: '/dashboard/classroom', label: 'Classroom', icon: PlaySquare },
   { href: '/dashboard/resume-builder', label: 'Resume', icon: FileText },
   { href: '/skill-assessment', label: 'Skills', icon: BarChart3 },
   { href: '/live-quiz', label: 'Quiz', icon: Zap },

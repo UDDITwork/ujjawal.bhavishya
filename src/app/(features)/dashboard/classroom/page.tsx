@@ -206,7 +206,7 @@ export default function ClassroomPage() {
             return (
               <motion.div key={mod.id} variants={staggerItem}>
                 <Link
-                  href={status === 'locked' ? '#' : `/classroom/${mod.id}`}
+                  href={status === 'locked' ? '#' : `/dashboard/classroom/${mod.id}`}
                   onClick={(e) => {
                     if (status === 'locked') e.preventDefault()
                   }}
