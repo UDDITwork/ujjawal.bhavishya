@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import auth, profile, sessions, resume, classroom, jobs
+from app.routers import auth, profile, sessions, resume, classroom, jobs, mentorship, assessments
 
 Base.metadata.create_all(bind=engine)
 
@@ -31,6 +31,8 @@ app.include_router(sessions.router)
 app.include_router(resume.router)
 app.include_router(classroom.router)
 app.include_router(jobs.router)
+app.include_router(mentorship.router)
+app.include_router(assessments.router)
 
 
 @app.get("/health")

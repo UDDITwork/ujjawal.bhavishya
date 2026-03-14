@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   LayoutDashboard, MessageSquare, User, LogOut, Menu, X, FileText,
-  ChevronDown, Plus, Loader2, PlaySquare, Briefcase
+  ChevronDown, Plus, Loader2, PlaySquare, Briefcase, Users
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
@@ -23,6 +23,7 @@ const sidebarLinks = [
   { href: '/dashboard/career-guidance', label: 'Career Guidance', icon: MessageSquare, expandable: true },
   { href: '/dashboard/resume-builder', label: 'Resume Builder', icon: FileText },
   { href: '/dashboard/job-feed', label: 'Job Feed', icon: Briefcase },
+  { href: '/dashboard/mentorship', label: 'Mentorship', icon: Users },
   { href: '/classroom', label: 'Classroom', icon: PlaySquare },
   { href: '/dashboard/profile', label: 'Profile', icon: User },
 ]

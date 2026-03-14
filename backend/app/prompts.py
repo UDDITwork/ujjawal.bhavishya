@@ -317,3 +317,120 @@ def build_resume_system_prompt(user, profile=None, force_resume=False):
         user_context=user_context,
         force_resume_instruction=force_resume_instruction,
     )
+
+
+# ─── Mentorship Hub ────────────────────────────────────────
+
+MENTORSHIP_SYSTEM_PROMPT = """You are IKLAVYA's personal mentorship assistant. You combine the warmth of a supportive mentor with deep knowledge of the student's journey on the platform.
+
+## Your Personality
+- Empathetic and patient — students come to you with confusion, frustration, and self-doubt
+- Validate feelings before offering advice ("I understand that can feel overwhelming...")
+- Be practical — always give actionable next steps, not just motivation
+- Reference the student's actual data when relevant
+- You are NOT a generic chatbot. You know this student through their platform activity.
+
+## Available Mentors
+When a student needs specialized human guidance, recommend connecting with one of these mentors:
+{mentor_profiles}
+
+## What You Can Help With
+- Career confusion and decision-making
+- Skill gap analysis based on their profile
+- Resume and interview preparation guidance
+- Emotional support around career anxiety
+- Recommending specific platform features (Career Guidance sessions, Resume Builder, Skill Assessments)
+- Connecting students with the right mentor
+
+## Guidelines
+- Keep responses warm but concise (3-5 sentences unless detail is needed)
+- Ask clarifying questions when the student's concern is vague
+- If the student seems distressed, prioritize emotional support before advice
+- Use simple language — many users are Indian college students
+- Never fabricate data about the student — only reference what you actually know
+- If you don't have enough context, say so honestly and suggest they complete their profile
+
+{user_context}
+{activity_context}"""
+
+
+def build_mentorship_system_prompt(
+    user, profile=None, context_summary=None,
+    recent_sessions=None, recent_applications=None, resume_count=0,
+):
+    """Build system prompt for mentorship chatbot with full user context."""
+
+    # User context (reuse pattern from career guidance)
+    parts = [f"\n## Student Information\n- Name: {user.name}\n- Institution: {user.college}"]
+
+    if profile:
+        if profile.education_level:
+            parts.append(f"- Education: {profile.education_level}")
+        if profile.stream:
+            parts.append(f"- Stream: {profile.stream}")
+        if profile.class_or_year:
+            parts.append(f"- Year: {profile.class_or_year}")
+        if profile.cgpa:
+            parts.append(f"- CGPA: {profile.cgpa}")
+        if profile.city and profile.state:
+            parts.append(f"- Location: {profile.city}, {profile.state}")
+
+        skills = _parse_json_list(profile.skills)
+        if skills:
+            parts.append(f"- Skills: {skills}")
+
+        strengths = _parse_json_list(profile.strengths)
+        if strengths:
+            parts.append(f"- Strengths: {strengths}")
+
+        weaknesses = _parse_json_list(profile.weaknesses)
+        if weaknesses:
+            parts.append(f"- Weaknesses: {weaknesses}")
+
+        interests = _parse_json_list(profile.interests)
+        if interests:
+            parts.append(f"- Interests: {interests}")
+
+        if profile.career_aspiration_raw:
+            parts.append(f"- Career Aspiration: {profile.career_aspiration_raw}")
+
+        if profile.summary:
+            parts.append(f"- Professional Summary: {profile.summary}")
+
+    user_context = "\n".join(parts)
+
+    # Activity context
+    activity_parts = ["\n## Platform Activity"]
+
+    if context_summary and context_summary.cumulative_summary:
+        activity_parts.append(
+            f"\n### Career Guidance Insights\n{context_summary.cumulative_summary}"
+        )
+
+    if recent_sessions:
+        session_list = ", ".join(
+            f"{s.title} ({s.status})" for s in recent_sessions
+        )
+        activity_parts.append(f"- Recent sessions: {session_list}")
+
+    if recent_applications:
+        job_list = ", ".join(
+            f"{job.title} at {job.company}" for _app, job in recent_applications[:5]
+        )
+        activity_parts.append(f"- Jobs explored: {job_list}")
+
+    activity_parts.append(f"- Resumes built: {resume_count}")
+
+    activity_context = "\n".join(activity_parts)
+
+    # Mentor profiles
+    mentor_profiles = """- Priya Sharma — Resume Building & ATS Optimization (5+ years helping students craft winning resumes)
+- Arjun Mehta — Communication & Interview Skills (Corporate trainer, 200+ mock interviews)
+- Dr. Kavita Reddy — Career Planning & Higher Education (PhD counselor, career path guidance)
+- Rahul Verma — Technical Skills & Coding (Ex-Google engineer, mentors aspiring developers)"""
+
+    return MENTORSHIP_SYSTEM_PROMPT.format(
+        user_context=user_context,
+        activity_context=activity_context,
+        mentor_profiles=mentor_profiles,
+    )

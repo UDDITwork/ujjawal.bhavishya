@@ -10,6 +10,7 @@ import {
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
+import { playPop } from '@/lib/sounds'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -419,21 +420,32 @@ function JobCard({
 
       {/* Action row */}
       <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100">
-        <button
-          onClick={onApply}
-          disabled={isApplied}
-          className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
-            isApplied
-              ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-default'
-              : 'bg-white text-gray-900 border-green-600 hover:bg-green-50'
-          }`}
-        >
-          {isApplied ? (
-            <><Check size={14} /> Applied</>
-          ) : (
-            <>Quick Apply</>
-          )}
-        </button>
+        {job.sourceUrl ? (
+          <a
+            href={job.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => { if (!isApplied) onApply() }}
+            className={`flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+              isApplied
+                ? 'bg-green-50 text-green-700 border-green-200'
+                : 'bg-white text-gray-900 border-green-600 hover:bg-green-50'
+            }`}
+          >
+            {isApplied ? (
+              <><Check size={14} /> Visited</>
+            ) : (
+              <>Apply on {job.sourceName || 'Source'} {'\u2192'}</>
+            )}
+          </a>
+        ) : (
+          <button
+            disabled
+            className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border bg-gray-50 text-gray-400 border-gray-200 cursor-default"
+          >
+            No link available
+          </button>
+        )}
         <button
           onClick={onShare}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors"
@@ -644,8 +656,9 @@ export default function JobFeedPage() {
 
   function handleApply(jobId: string) {
     // Optimistic update
+    playPop()
     setAppliedJobs(prev => new Set(prev).add(jobId))
-    toast.success('Application sent!')
+    toast.success('Opening job posting — good luck!')
 
     fetch('/api/jobs/apply', {
       method: 'POST',
