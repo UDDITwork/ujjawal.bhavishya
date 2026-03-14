@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getAuthCookie } from '@/lib/auth'
 
-// In-memory applied jobs per user (MVP — replace with DB later)
-const appliedJobsMap = new Map<string, Set<string>>()
+const API_URL = process.env.API_URL!
 
 export async function POST(request: Request) {
   try {
@@ -11,23 +10,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
     }
 
-    const { jobId } = await request.json()
-    if (!jobId) {
-      return NextResponse.json({ error: 'jobId required' }, { status: 400 })
-    }
+    const body = await request.json()
 
-    const userKey = token.slice(-16)
-
-    if (!appliedJobsMap.has(userKey)) {
-      appliedJobsMap.set(userKey, new Set())
-    }
-
-    appliedJobsMap.get(userKey)!.add(jobId)
-
-    return NextResponse.json({
-      applied: true,
-      jobId,
+    const res = await fetch(`${API_URL}/jobs/apply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
     })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { error: data.detail || 'Failed to apply' },
+        { status: res.status }
+      )
+    }
+
+    return NextResponse.json(data)
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

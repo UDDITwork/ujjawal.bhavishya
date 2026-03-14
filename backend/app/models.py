@@ -332,6 +332,19 @@ class Job(Base):
         String(50), nullable=False, default=utc_now
     )
 
+    # ── Filterable columns (populated at scrape time) ──
+    salary_min: Mapped[int] = mapped_column(Integer, nullable=True)  # INR per month
+    salary_max: Mapped[int] = mapped_column(Integer, nullable=True)
+    experience_min: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    experience_max: Mapped[int] = mapped_column(Integer, nullable=True)
+    job_type_enum: Mapped[str] = mapped_column(
+        String(30), nullable=True
+    )  # full-time, part-time, wfh, contract, internship
+    is_remote: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    city: Mapped[str] = mapped_column(String(100), nullable=True)
+    state: Mapped[str] = mapped_column(String(100), nullable=True)
+    scrape_batch_id: Mapped[str] = mapped_column(String(36), nullable=True)
+
 
 class JobApplication(Base):
     __tablename__ = "job_applications"

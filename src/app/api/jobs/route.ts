@@ -1,72 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAuthCookie } from '@/lib/auth'
 
-/* ------------------------------------------------------------------ */
-/*  Role categories with Firecrawl search prompts                      */
-/* ------------------------------------------------------------------ */
-
-const ROLE_CATEGORIES: Record<string, { label: string; queries: string[] }> = {
-  all: {
-    label: 'All Jobs',
-    queries: [
-      'freshers jobs India hiring now 2025 2026',
-      'entry level jobs India walk-in interview',
-    ],
-  },
-  sales: {
-    label: 'Sales',
-    queries: [
-      'sales executive jobs Delhi NCR fresher salary 15000 to 30000 site:naukri.com OR site:indeed.co.in',
-    ],
-  },
-  receptionist: {
-    label: 'Front Desk',
-    queries: [
-      'receptionist front desk executive jobs Delhi site:naukri.com OR site:indeed.co.in OR site:quikr.com',
-    ],
-  },
-  admin: {
-    label: 'Admin',
-    queries: [
-      'office admin coordinator jobs Delhi NCR graduate site:indeed.co.in OR site:shine.com',
-    ],
-  },
-  'customer-support': {
-    label: 'BPO / Telecaller',
-    queries: [
-      'BPO telecaller customer support voice process jobs Gurugram Delhi site:naukri.com OR site:indeed.co.in',
-    ],
-  },
-  accounts: {
-    label: 'Accounts',
-    queries: [
-      'accounts assistant tally BCom jobs Delhi NCR site:naukri.com OR site:indeed.co.in',
-    ],
-  },
-  marketing: {
-    label: 'Marketing',
-    queries: [
-      'field marketing executive jobs Delhi freshers site:indeed.co.in OR site:naukri.com',
-    ],
-  },
-  retail: {
-    label: 'Retail',
-    queries: [
-      'retail store associate sales jobs Delhi site:indeed.co.in OR site:quikr.com',
-    ],
-  },
-  'data-entry': {
-    label: 'Data Entry',
-    queries: [
-      'data entry operator jobs Delhi work from home site:indeed.co.in OR site:naukri.com',
-    ],
-  },
-  telecalling: {
-    label: 'Telecalling',
-    queries: [
-      'telecaller telesales executive jobs India hiring site:naukri.com OR site:indeed.co.in',
-    ],
-  },
-}
+const API_URL = process.env.API_URL!
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -87,325 +22,91 @@ export interface JobPost {
   sourceName: string
   category: string
   tags: string[]
+  matchScore?: number
+  isApplied?: boolean
+  isSaved?: boolean
 }
 
 /* ------------------------------------------------------------------ */
-/*  Cache                                                              */
-/* ------------------------------------------------------------------ */
-
-const cache: Record<string, { data: JobPost[]; timestamp: number }> = {}
-const CACHE_TTL = 30 * 60 * 1000
-
-/* ------------------------------------------------------------------ */
-/*  GET handler                                                        */
+/*  GET handler — proxy to backend /jobs/feed                          */
 /* ------------------------------------------------------------------ */
 
 export async function GET(req: NextRequest) {
-  const category = req.nextUrl.searchParams.get('category') || 'all'
-  const search = req.nextUrl.searchParams.get('search') || ''
-  const page = parseInt(req.nextUrl.searchParams.get('page') || '1')
-  const limit = parseInt(req.nextUrl.searchParams.get('limit') || '10')
-
-  const cacheKey = `jobs_${category}`
-
-  let allJobs: JobPost[]
-
-  // Check cache
-  if (cache[cacheKey] && Date.now() - cache[cacheKey].timestamp < CACHE_TTL) {
-    allJobs = cache[cacheKey].data
-  } else {
-    const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY
-    if (!FIRECRAWL_API_KEY) {
-      allJobs = generateMockJobs(category)
-    } else {
-      allJobs = await fetchFromFirecrawl(category, FIRECRAWL_API_KEY)
-      cache[cacheKey] = { data: allJobs, timestamp: Date.now() }
-    }
-  }
-
-  // Apply search filter
-  let filtered = allJobs
-  if (search) {
-    const q = search.toLowerCase()
-    filtered = allJobs.filter(
-      (job) =>
-        job.title.toLowerCase().includes(q) ||
-        job.company.toLowerCase().includes(q) ||
-        job.location.toLowerCase().includes(q) ||
-        job.tags.some((t) => t.toLowerCase().includes(q)) ||
-        job.description.toLowerCase().includes(q)
-    )
-  }
-
-  const paginated = filtered.slice((page - 1) * limit, page * limit)
-
-  return NextResponse.json({
-    jobs: paginated,
-    total: filtered.length,
-    page,
-    hasMore: page * limit < filtered.length,
-    categories: Object.entries(ROLE_CATEGORIES).map(([key, val]) => ({
-      key,
-      label: val.label,
-    })),
-  })
-}
-
-/* ------------------------------------------------------------------ */
-/*  Firecrawl fetcher                                                  */
-/* ------------------------------------------------------------------ */
-
-async function fetchFromFirecrawl(category: string, apiKey: string): Promise<JobPost[]> {
-  const roleConfig = ROLE_CATEGORIES[category] || ROLE_CATEGORIES.all
-  const allJobs: JobPost[] = []
-
-  for (const query of roleConfig.queries) {
-    try {
-      const response = await fetch('https://api.firecrawl.dev/v1/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          query,
-          limit: 10,
-          scrapeOptions: { formats: ['markdown'] },
-        }),
-      })
-
-      if (!response.ok) continue
-      const data = await response.json()
-
-      if (data.data && Array.isArray(data.data)) {
-        for (const result of data.data) {
-          const parsed = parseJobFromSearchResult(result, category)
-          if (parsed) allJobs.push(parsed)
-        }
-      }
-    } catch {
-      // Continue on failure
-    }
-  }
-
-  // Deduplicate
-  const seen = new Set<string>()
-  return allJobs.filter((job) => {
-    const key = `${job.title}-${job.company}`.toLowerCase()
-    if (seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
-}
-
-/* ------------------------------------------------------------------ */
-/*  Parser                                                             */
-/* ------------------------------------------------------------------ */
-
-function parseJobFromSearchResult(
-  result: { url?: string; title?: string; markdown?: string; description?: string },
-  category: string
-): JobPost | null {
-  if (!result.url || !result.title) return null
-
-  const content = result.markdown || result.description || ''
-  const title = extractJobTitle(result.title, content)
-  const company = extractCompany(result.title, content)
-  const location = extractLocation(content)
-  const salary = extractSalary(content)
-  const experience = extractExperience(content)
-  const requirements = extractRequirements(content)
-
-  if (!title) return null
-
-  return {
-    id: Buffer.from(result.url).toString('base64').slice(0, 20) + Date.now().toString(36),
-    title,
-    company: company || 'Company',
-    location: location || 'India',
-    salary: salary || 'Not disclosed',
-    type: 'Full-time',
-    experience: experience || 'Fresher - 3 years',
-    description: cleanDescription(content).slice(0, 500),
-    requirements,
-    postedAt: new Date().toISOString(),
-    sourceUrl: result.url,
-    sourceName: extractSourceName(result.url),
-    category,
-    tags: extractTags(title, content, category),
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Extraction helpers                                                 */
-/* ------------------------------------------------------------------ */
-
-function extractJobTitle(pageTitle: string, content: string): string {
-  const cleaned = pageTitle
-    .replace(/\s*[-|]\s*(Naukri|Indeed|LinkedIn|Glassdoor|Shine|Monster).*$/i, '')
-    .replace(/\s*[-|]\s*Apply Now.*$/i, '')
-    .replace(/Job\s*Details?\s*[-|:]/i, '')
-    .trim()
-  if (cleaned.length > 10 && cleaned.length < 100) return cleaned
-  const titleMatch = content.match(/(?:Job\s*Title|Position|Role)\s*[:\-]\s*(.+?)[\n\r]/i)
-  if (titleMatch) return titleMatch[1].trim()
-  return pageTitle.slice(0, 80)
-}
-
-function extractCompany(pageTitle: string, content: string): string {
-  const patterns = [
-    /(?:Company|Employer|Organisation|Organization)\s*[:\-]\s*(.+?)[\n\r]/i,
-    /(?:at|@)\s+([A-Z][A-Za-z\s&.]+?)(?:\s*[-|,]|\n)/,
-  ]
-  for (const pattern of patterns) {
-    const match = content.match(pattern) || pageTitle.match(pattern)
-    if (match) return match[1].trim().slice(0, 60)
-  }
-  return ''
-}
-
-function extractLocation(content: string): string {
-  const patterns = [
-    /(?:Location|City|Place)\s*[:\-]\s*(.+?)[\n\r]/i,
-    /(?:Delhi|Mumbai|Bangalore|Bengaluru|Hyderabad|Chennai|Kolkata|Pune|Noida|Gurgaon|Gurugram|Jaipur|Lucknow|Ahmedabad|Chandigarh|Indore|Bhopal|Patna|Remote|Work from home|WFH)/i,
-  ]
-  for (const pattern of patterns) {
-    const match = content.match(pattern)
-    if (match) return (match[1] || match[0]).trim().slice(0, 50)
-  }
-  return ''
-}
-
-function extractSalary(content: string): string {
-  const patterns = [
-    /(?:Salary|CTC|Package|Compensation)\s*[:\-]\s*(.+?)[\n\r]/i,
-    /(?:Rs\.?|INR|₹)\s*[\d,.]+\s*[-–to]+\s*(?:Rs\.?|INR|₹)?\s*[\d,.]+\s*(?:per\s*(?:month|annum|year)|LPA|L\.?P\.?A\.?|p\.?a\.?|PM|lakh)/i,
-    /[\d,.]+\s*[-–]\s*[\d,.]+\s*(?:LPA|L\.?P\.?A\.?|lakh|per\s*month)/i,
-  ]
-  for (const pattern of patterns) {
-    const match = content.match(pattern)
-    if (match) return (match[1] || match[0]).trim().slice(0, 60)
-  }
-  return ''
-}
-
-function extractExperience(content: string): string {
-  const patterns = [
-    /(?:Experience|Exp\.?)\s*[:\-]\s*(.+?)[\n\r]/i,
-    /(\d+\s*[-–to]+\s*\d+\s*(?:years?|yrs?))/i,
-    /(Fresher|Fresh graduate|0\s*[-–]\s*\d+\s*(?:years?|yrs?))/i,
-  ]
-  for (const pattern of patterns) {
-    const match = content.match(pattern)
-    if (match) return (match[1] || match[0]).trim().slice(0, 40)
-  }
-  return ''
-}
-
-function extractRequirements(content: string): string[] {
-  const requirements: string[] = []
-
-  const reqSection = content.match(
-    /(?:Requirements?|Qualifications?|Eligibility|Skills?\s*Required|Must\s*Have)[:\s]*\n([\s\S]*?)(?:\n\n|\n(?=[A-Z][a-z]+:))/i
-  )
-
-  if (reqSection) {
-    const lines = reqSection[1].split('\n')
-    for (const line of lines) {
-      const cleaned = line.replace(/^[\s\-*•·]+/, '').trim()
-      if (cleaned.length > 5 && cleaned.length < 120) {
-        requirements.push(cleaned)
-      }
-    }
-  }
-
-  if (requirements.length === 0) {
-    const patterns = [
-      /(?:Graduate|BA|BCom|BBA|BSc|BTech|BCA|MBA|MCom|MSc|12th|10th)\s*(?:pass|or above|preferred)?/gi,
-      /good\s+communication\s+(?:skills?)?/gi,
-      /(?:Bike|Two[\s-]wheeler|DL)\s*(?:\+\s*DL)?\s*(?:preferred|required|mandatory)?/gi,
-      /(?:Tally|MS\s*Office|Excel|SAP)\s*(?:knowledge|required|preferred)?/gi,
-    ]
-    for (const pattern of patterns) {
-      const matches = content.match(pattern)
-      if (matches) {
-        for (const m of matches) {
-          const cleaned = m.trim()
-          if (cleaned.length > 3 && !requirements.includes(cleaned)) {
-            requirements.push(cleaned)
-          }
-        }
-      }
-    }
-  }
-
-  return requirements.slice(0, 6)
-}
-
-function extractSourceName(url: string): string {
   try {
-    const hostname = new URL(url).hostname
-    if (hostname.includes('naukri')) return 'Naukri'
-    if (hostname.includes('indeed')) return 'Indeed'
-    if (hostname.includes('linkedin')) return 'LinkedIn'
-    if (hostname.includes('glassdoor')) return 'Glassdoor'
-    if (hostname.includes('shine')) return 'Shine'
-    if (hostname.includes('monster')) return 'Monster India'
-    if (hostname.includes('freshersworld')) return 'FreshersWorld'
-    if (hostname.includes('timesjobs')) return 'TimesJobs'
-    if (hostname.includes('quikr')) return 'QuikrJobs'
-    if (hostname.includes('workindia')) return 'WorkIndia'
-    return hostname.replace('www.', '').split('.')[0]
+    const token = await getAuthCookie()
+    if (!token) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
+    // Forward all query params to backend
+    const params = req.nextUrl.searchParams.toString()
+    const res = await fetch(`${API_URL}/jobs/feed?${params}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      // If backend returned 0 jobs and we're in dev (no Firecrawl key), serve mock data
+      return NextResponse.json(
+        { error: data.detail || 'Failed to fetch jobs' },
+        { status: res.status }
+      )
+    }
+
+    // Dev fallback: if backend returns 0 jobs and no FIRECRAWL_API_KEY, use mocks
+    if (
+      data.total === 0 &&
+      !process.env.FIRECRAWL_API_KEY
+    ) {
+      const category = req.nextUrl.searchParams.get('category') || 'all'
+      const search = req.nextUrl.searchParams.get('search') || ''
+      const page = parseInt(req.nextUrl.searchParams.get('page') || '1')
+      const limit = parseInt(req.nextUrl.searchParams.get('limit') || '10')
+
+      let allJobs = generateMockJobs(category)
+
+      if (search) {
+        const q = search.toLowerCase()
+        allJobs = allJobs.filter(
+          (job) =>
+            job.title.toLowerCase().includes(q) ||
+            job.company.toLowerCase().includes(q) ||
+            job.location.toLowerCase().includes(q) ||
+            job.tags.some((t) => t.toLowerCase().includes(q)) ||
+            job.description.toLowerCase().includes(q)
+        )
+      }
+
+      const paginated = allJobs.slice((page - 1) * limit, page * limit)
+
+      return NextResponse.json({
+        jobs: paginated,
+        total: allJobs.length,
+        page,
+        hasMore: page * limit < allJobs.length,
+      })
+    }
+
+    return NextResponse.json(data)
   } catch {
-    return 'Web'
+    // Connection error to backend — serve mock data in dev
+    if (!process.env.FIRECRAWL_API_KEY) {
+      const category = req.nextUrl.searchParams.get('category') || 'all'
+      const mockJobs = generateMockJobs(category)
+      return NextResponse.json({
+        jobs: mockJobs.slice(0, 10),
+        total: mockJobs.length,
+        page: 1,
+        hasMore: mockJobs.length > 10,
+      })
+    }
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
-}
-
-function extractTags(title: string, content: string, category: string): string[] {
-  const tags: string[] = []
-  const text = `${title} ${content}`.toLowerCase()
-
-  const tagKeywords: Record<string, string> = {
-    fresher: 'Freshers OK',
-    'walk-in': 'Walk-in',
-    'work from home': 'WFH Option',
-    wfh: 'WFH Option',
-    remote: 'Remote',
-    urgent: 'Urgent Hiring',
-    'immediate joining': 'Immediate Joining',
-    'part time': 'Part-time',
-    'night shift': 'Night Shift',
-    rotational: 'Rotational Shift',
-    internship: 'Internship',
-    'no experience': 'No Exp Required',
-    incentive: 'Incentives',
-    cab: 'Cab Facility',
-  }
-
-  for (const [keyword, tag] of Object.entries(tagKeywords)) {
-    if (text.includes(keyword) && !tags.includes(tag)) tags.push(tag)
-  }
-
-  if (tags.length === 0) {
-    const catLabel = ROLE_CATEGORIES[category]?.label
-    if (catLabel) tags.push(catLabel)
-  }
-
-  return tags.slice(0, 5)
-}
-
-function cleanDescription(content: string): string {
-  return content
-    .replace(/#{1,6}\s*/g, '')
-    .replace(/\*{1,2}/g, '')
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
 }
 
 /* ------------------------------------------------------------------ */
-/*  Mock data                                                          */
+/*  Mock data (dev fallback only)                                      */
 /* ------------------------------------------------------------------ */
 
 function generateMockJobs(category: string): JobPost[] {
@@ -572,83 +273,83 @@ function generateMockJobs(category: string): JobPost[] {
     },
     {
       id: 'mock-11',
-      title: 'Receptionist cum Admin Assistant',
-      company: 'OYO Rooms Regional',
-      location: 'Delhi NCR',
-      salary: '₹14,000 – ₹20,000/mo',
+      title: 'Delivery Partner - Bike Required',
+      company: 'Swiggy',
+      location: 'Mumbai, Maharashtra',
+      salary: '₹15,000 – ₹25,000/mo',
       type: 'Full-time',
-      experience: '0 - 2 years',
-      description: 'Receptionist for regional office handling visitor management, call routing, and basic admin work. Must know MS Office. Pleasant personality and good English communication required.',
-      requirements: ['Graduate in any stream', 'MS Office proficiency', 'Pleasant personality', 'English + Hindi fluency'],
-      postedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-      sourceUrl: 'https://naukri.com',
-      sourceName: 'Naukri',
-      category: 'receptionist',
-      tags: ['Freshers OK'],
+      experience: 'Fresher',
+      description: 'Join Swiggy as a delivery partner. Flexible hours, weekly payouts. Own bike and valid DL required. Earn extra through peak hour bonuses and incentives.',
+      requirements: ['Own bike + valid DL', '18+ years age', 'Smartphone with internet', 'Know local area'],
+      postedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+      sourceUrl: 'https://workindia.in',
+      sourceName: 'WorkIndia',
+      category: 'delivery',
+      tags: ['Freshers OK', 'Immediate Joining', 'Incentives'],
     },
     {
       id: 'mock-12',
-      title: 'Delivery Partner Coordinator',
-      company: 'Delhivery Logistics',
-      location: 'Multiple Cities',
-      salary: '₹13,000 – ₹18,000/mo',
+      title: 'Security Guard - Day/Night Shift',
+      company: 'SIS Group',
+      location: 'Delhi NCR',
+      salary: '₹12,000 – ₹16,000/mo',
       type: 'Full-time',
-      experience: '0 - 1 year',
-      description: 'Coordinate with delivery partners and customers for last-mile delivery operations. Handle dispatch scheduling, complaint resolution, and daily MIS reporting.',
-      requirements: ['12th pass or Graduate', 'Hindi + regional language', 'Basic computer skills'],
-      postedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      experience: 'No experience required',
+      description: 'Security guard positions available for corporate offices and residential societies. Uniform and meals provided. PF and ESI benefits included.',
+      requirements: ['10th pass minimum', 'Physically fit', 'Age 20-45', 'Hindi speaking'],
+      postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
       sourceUrl: 'https://indeed.com',
       sourceName: 'Indeed',
-      category: 'admin',
+      category: 'security',
       tags: ['Freshers OK', 'Immediate Joining'],
     },
     {
       id: 'mock-13',
-      title: 'Retail Store Cashier',
-      company: 'DMart Ready',
-      location: 'Ahmedabad, Gujarat',
-      salary: '₹11,000 – ₹15,000/mo',
+      title: 'Warehouse Packing Helper',
+      company: 'Amazon India',
+      location: 'Bengaluru, Karnataka',
+      salary: '₹13,000 – ₹18,000/mo',
       type: 'Full-time',
       experience: 'Fresher',
-      description: 'Cashier position at our supermarket store. Handle billing, cash management, and customer interactions. Must be comfortable with POS systems (training provided). Rotational shifts including weekends.',
-      requirements: ['12th pass minimum', 'Basic math skills', 'Comfortable with POS systems', 'Rotational shift availability'],
-      postedAt: new Date(Date.now() - 5.5 * 24 * 60 * 60 * 1000).toISOString(),
-      sourceUrl: 'https://naukri.com',
-      sourceName: 'Naukri',
-      category: 'retail',
-      tags: ['Freshers OK', 'Walk-in'],
+      description: 'Packing and sorting helper in Amazon fulfilment centre. Standing work for 8 hours. PF, ESI, and overtime pay. Free meals during shift. Transport provided from select locations.',
+      requirements: ['10th pass minimum', 'Physically fit', 'Comfortable with standing work'],
+      postedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      sourceUrl: 'https://workindia.in',
+      sourceName: 'WorkIndia',
+      category: 'warehouse',
+      tags: ['Freshers OK', 'Immediate Joining'],
     },
     {
       id: 'mock-14',
-      title: 'Hindi/English Telecaller - WFH',
-      company: 'EduNext Learning',
-      location: 'Work From Home',
-      salary: '₹10,000 – ₹15,000 + Incentives',
+      title: 'Cook / Kitchen Helper - Restaurant',
+      company: 'Barbeque Nation',
+      location: 'Pune, Maharashtra',
+      salary: '₹14,000 – ₹20,000/mo',
       type: 'Full-time',
-      experience: '0 - 1 year',
-      description: 'Work from home telecalling opportunity. Call parents and students to explain our online coaching programs. Laptop/PC with internet required. Fixed salary plus per-enrollment incentives. Training provided.',
-      requirements: ['12th pass or Graduate', 'Laptop/PC with internet', 'Good phone voice in Hindi/English'],
-      postedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-      sourceUrl: 'https://indeed.com',
-      sourceName: 'Indeed',
-      category: 'telecalling',
-      tags: ['WFH Option', 'Freshers OK'],
+      experience: '0 - 2 years',
+      description: 'Kitchen helper / assistant cook required for our restaurant. Knowledge of Indian cuisine preferred. Meals provided during shift. Growth opportunity to head cook position.',
+      requirements: ['Basic cooking knowledge', 'Hygiene awareness', 'Hindi/Marathi speaking'],
+      postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      sourceUrl: 'https://naukri.com',
+      sourceName: 'Naukri',
+      category: 'cook',
+      tags: ['Freshers OK'],
     },
     {
       id: 'mock-15',
-      title: 'Billing Executive - GST',
-      company: 'Metro Wholesale',
-      location: 'Chandigarh',
-      salary: '₹14,000 – ₹18,000/mo',
+      title: 'Electrician - Maintenance',
+      company: 'Tata Projects',
+      location: 'Hyderabad, Telangana',
+      salary: '₹16,000 – ₹24,000/mo',
       type: 'Full-time',
-      experience: '0 - 2 years',
-      description: 'Generate GST invoices, manage purchase/sales registers, and coordinate with the accounts team. 6-day work week with alternate Saturday off.',
-      requirements: ['BCom graduate', 'Tally + Excel mandatory', 'GST knowledge preferred'],
-      postedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      sourceUrl: 'https://naukri.com',
-      sourceName: 'Naukri',
-      category: 'accounts',
-      tags: ['Freshers OK'],
+      experience: '1 - 3 years',
+      description: 'Electrician needed for building maintenance and repair work. ITI/diploma holders preferred. Tools and safety equipment provided.',
+      requirements: ['ITI Electrician or equivalent', 'Knowledge of wiring and switchboards', 'Safety awareness'],
+      postedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      sourceUrl: 'https://indeed.com',
+      sourceName: 'Indeed',
+      category: 'electrician',
+      tags: ['Immediate Joining'],
     },
   ]
 

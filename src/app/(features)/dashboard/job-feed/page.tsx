@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Briefcase, MapPin, Clock, Bookmark, BookmarkCheck,
   Share2, Loader2, Search, ArrowUp, ChevronDown, ChevronUp,
-  Check, Send, IndianRupee, Building2
+  Check, IndianRupee, Building2, SlidersHorizontal, X
 } from 'lucide-react'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
@@ -31,12 +31,9 @@ interface JobPost {
   category: string
   tags: string[]
   matchScore: number
+  isApplied: boolean
+  isSaved: boolean
   accentColor: string
-}
-
-interface Category {
-  key: string
-  label: string
 }
 
 interface UserProfile {
@@ -61,6 +58,16 @@ const ACCENT_COLORS: Record<string, string> = {
   accounts: '#f59e0b',
   telecalling: '#f97316',
   marketing: '#ef4444',
+  delivery: '#10b981',
+  driver: '#6366f1',
+  security: '#475569',
+  housekeeping: '#d946ef',
+  warehouse: '#0ea5e9',
+  packing: '#84cc16',
+  helper: '#a855f7',
+  cook: '#e11d48',
+  electrician: '#eab308',
+  tailor: '#f472b6',
   all: '#16a34a',
 }
 
@@ -69,11 +76,58 @@ const CATEGORY_PILLS = [
   { key: 'sales', label: 'Sales' },
   { key: 'receptionist', label: 'Front Desk' },
   { key: 'admin', label: 'Admin' },
-  { key: 'customer-support', label: 'BPO / Telecaller' },
+  { key: 'customer-support', label: 'BPO' },
   { key: 'accounts', label: 'Accounts' },
   { key: 'marketing', label: 'Marketing' },
   { key: 'retail', label: 'Retail' },
   { key: 'data-entry', label: 'Data Entry' },
+  { key: 'telecalling', label: 'Telecalling' },
+  { key: 'delivery', label: 'Delivery' },
+  { key: 'driver', label: 'Driver' },
+  { key: 'security', label: 'Security' },
+  { key: 'housekeeping', label: 'Housekeeping' },
+  { key: 'warehouse', label: 'Warehouse' },
+  { key: 'packing', label: 'Packing' },
+  { key: 'helper', label: 'Helper' },
+  { key: 'cook', label: 'Cook' },
+  { key: 'electrician', label: 'Electrician' },
+  { key: 'tailor', label: 'Tailor' },
+]
+
+const SALARY_PRESETS = [
+  { label: 'Any', min: 0, max: 0 },
+  { label: 'Under ₹15K', min: 0, max: 15000 },
+  { label: '₹15K–25K', min: 15000, max: 25000 },
+  { label: '₹25K–40K', min: 25000, max: 40000 },
+  { label: '₹40K+', min: 40000, max: 0 },
+]
+
+const EXPERIENCE_PRESETS = [
+  { label: 'Any', min: -1, max: -1 },
+  { label: 'Fresher', min: 0, max: 0 },
+  { label: '0–1 yr', min: 0, max: 1 },
+  { label: '1–3 yr', min: 1, max: 3 },
+  { label: '3–5 yr', min: 3, max: 5 },
+  { label: '5+ yr', min: 5, max: -1 },
+]
+
+const JOB_TYPE_OPTIONS = [
+  { label: 'All Types', value: '' },
+  { label: 'Full-time', value: 'full-time' },
+  { label: 'Part-time', value: 'part-time' },
+  { label: 'WFH', value: 'wfh' },
+  { label: 'Contract', value: 'contract' },
+  { label: 'Internship', value: 'internship' },
+]
+
+const RECENCY_OPTIONS = [
+  { label: 'All Time', value: '' },
+  { label: 'Last 24h', value: '1d' },
+  { label: 'Last 2 days', value: '2d' },
+  { label: 'Last 3 days', value: '3d' },
+  { label: 'Last week', value: '1w' },
+  { label: 'Last 2 weeks', value: '2w' },
+  { label: 'Last month', value: '1m' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -103,7 +157,7 @@ function getCompanyInitials(name: string) {
   return name.slice(0, 2).toUpperCase()
 }
 
-function getAccentForJob(job: { category: string; company: string }): string {
+function getAccentForJob(job: { category: string }): string {
   return ACCENT_COLORS[job.category] || ACCENT_COLORS.all
 }
 
@@ -142,6 +196,33 @@ function SkeletonCard() {
         <div className="h-8 bg-gray-100 rounded-lg w-20" />
       </div>
     </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Filter Chip                                                        */
+/* ------------------------------------------------------------------ */
+
+function FilterChip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all duration-150 ${
+        active
+          ? 'bg-gray-900 text-white'
+          : 'bg-white text-gray-500 border border-gray-200 hover:border-gray-300'
+      }`}
+    >
+      {label}
+    </button>
   )
 }
 
@@ -337,6 +418,25 @@ export default function JobFeedPage() {
   const observerRef = useRef<HTMLDivElement>(null)
   const pillsRef = useRef<HTMLDivElement>(null)
 
+  // Filter state
+  const [showFilters, setShowFilters] = useState(false)
+  const [salaryPresetIdx, setSalaryPresetIdx] = useState(0) // index into SALARY_PRESETS
+  const [expPresetIdx, setExpPresetIdx] = useState(0) // index into EXPERIENCE_PRESETS
+  const [jobTypeFilter, setJobTypeFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
+  const [recencyFilter, setRecencyFilter] = useState('')
+
+  // Count active filters
+  const activeFilterCount = useMemo(() => {
+    let count = 0
+    if (salaryPresetIdx > 0) count++
+    if (expPresetIdx > 0) count++
+    if (jobTypeFilter) count++
+    if (locationFilter) count++
+    if (recencyFilter) count++
+    return count
+  }, [salaryPresetIdx, expPresetIdx, jobTypeFilter, locationFilter, recencyFilter])
+
   // Fetch user profile for match scoring
   useEffect(() => {
     fetch('/api/profile')
@@ -363,21 +463,48 @@ export default function JobFeedPage() {
       })
       if (search) params.set('search', search)
 
+      // Advanced filters
+      const salaryPreset = SALARY_PRESETS[salaryPresetIdx]
+      if (salaryPreset && salaryPresetIdx > 0) {
+        if (salaryPreset.min > 0) params.set('salary_min', String(salaryPreset.min))
+        if (salaryPreset.max > 0) params.set('salary_max', String(salaryPreset.max))
+      }
+      const expPreset = EXPERIENCE_PRESETS[expPresetIdx]
+      if (expPreset && expPresetIdx > 0) {
+        if (expPreset.min >= 0) params.set('experience_min', String(expPreset.min))
+        if (expPreset.max >= 0) params.set('experience_max', String(expPreset.max))
+      }
+      if (jobTypeFilter) params.set('job_type', jobTypeFilter)
+      if (locationFilter.trim()) params.set('location', locationFilter.trim())
+      if (recencyFilter) params.set('recency', recencyFilter)
+
       const res = await fetch(`/api/jobs?${params}`)
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
 
       const incoming: JobPost[] = (data.jobs || []).map((job: JobPost) => ({
         ...job,
-        matchScore: job.matchScore || computeMatchScore(job, userProfile),
+        matchScore: job.matchScore || 0,
         accentColor: ACCENT_COLORS[job.category] || ACCENT_COLORS.all,
         requirements: job.requirements || [],
       }))
 
+      // Sync saved/applied state from backend response
+      const newSaved = new Set<string>()
+      const newApplied = new Set<string>()
+      for (const job of incoming) {
+        if (job.isSaved) newSaved.add(job.id)
+        if (job.isApplied) newApplied.add(job.id)
+      }
+
       if (append) {
         setJobs(prev => [...prev, ...incoming])
+        setSavedJobs(prev => new Set([...prev, ...newSaved]))
+        setAppliedJobs(prev => new Set([...prev, ...newApplied]))
       } else {
         setJobs(incoming)
+        setSavedJobs(newSaved)
+        setAppliedJobs(newApplied)
       }
       setHasMore(data.hasMore || false)
       setTotalCount(data.total || 0)
@@ -387,9 +514,9 @@ export default function JobFeedPage() {
       setLoading(false)
       setLoadingMore(false)
     }
-  }, [userProfile])
+  }, [salaryPresetIdx, expPresetIdx, jobTypeFilter, locationFilter, recencyFilter])
 
-  // Re-fetch when category or search changes
+  // Re-fetch when category, search, or filters change
   useEffect(() => {
     setPage(1)
     fetchJobs(activeCategory, 1, debouncedSearch)
@@ -420,53 +547,69 @@ export default function JobFeedPage() {
     return () => container.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Local filter: also filter already-loaded jobs by search
-  const filteredJobs = useMemo(() => {
-    if (!debouncedSearch) return jobs
-    const q = debouncedSearch.toLowerCase()
-    return jobs.filter(
-      (j) =>
-        j.title.toLowerCase().includes(q) ||
-        j.company.toLowerCase().includes(q) ||
-        j.location.toLowerCase().includes(q) ||
-        j.tags.some((t) => t.toLowerCase().includes(q))
-    )
-  }, [jobs, debouncedSearch])
-
   function handleCategoryChange(cat: string) {
     setActiveCategory(cat)
     setExpandedJobs(new Set())
     feedRef.current?.closest('main')?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function clearAllFilters() {
+    setSalaryPresetIdx(0)
+    setExpPresetIdx(0)
+    setJobTypeFilter('')
+    setLocationFilter('')
+    setRecencyFilter('')
+  }
+
   function toggleSave(jobId: string) {
+    const wasSaved = savedJobs.has(jobId)
+    // Optimistic update
     setSavedJobs(prev => {
       const next = new Set(prev)
-      if (next.has(jobId)) {
-        next.delete(jobId)
-        toast('Removed from saved', { icon: '🗑️' })
-      } else {
-        next.add(jobId)
-        toast.success('Job saved!')
-      }
+      if (wasSaved) next.delete(jobId)
+      else next.add(jobId)
       return next
     })
-    // Fire-and-forget backend sync
+    if (!wasSaved) toast.success('Job saved!')
+
     fetch('/api/jobs/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ jobId }),
-    }).catch(() => {})
+    })
+      .then(r => { if (!r.ok) throw new Error() })
+      .catch(() => {
+        // Revert on failure
+        setSavedJobs(prev => {
+          const reverted = new Set(prev)
+          if (wasSaved) reverted.add(jobId)
+          else reverted.delete(jobId)
+          return reverted
+        })
+        toast.error('Failed to save. Please try again.')
+      })
   }
 
   function handleApply(jobId: string) {
+    // Optimistic update
     setAppliedJobs(prev => new Set(prev).add(jobId))
     toast.success('Application sent!')
+
     fetch('/api/jobs/apply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ jobId }),
-    }).catch(() => {})
+    })
+      .then(r => { if (!r.ok) throw new Error() })
+      .catch(() => {
+        // Revert on failure
+        setAppliedJobs(prev => {
+          const reverted = new Set(prev)
+          reverted.delete(jobId)
+          return reverted
+        })
+        toast.error('Failed to apply. Please try again.')
+      })
   }
 
   async function handleShare(job: JobPost) {
@@ -522,22 +665,138 @@ export default function JobFeedPage() {
           />
         </div>
 
-        {/* Category Pills */}
-        <div ref={pillsRef} className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4">
-          {CATEGORY_PILLS.map((cat) => (
-            <button
-              key={cat.key}
-              onClick={() => handleCategoryChange(cat.key)}
-              className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                activeCategory === cat.key
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        {/* Category Pills + Filter Button */}
+        <div className="flex items-center gap-2 mb-2">
+          <div ref={pillsRef} className="flex-1 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {CATEGORY_PILLS.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => handleCategoryChange(cat.key)}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeCategory === cat.key
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 ${
+              showFilters || activeFilterCount > 0
+                ? 'bg-gray-900 text-white border-gray-900'
+                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <SlidersHorizontal size={12} />
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="ml-0.5 w-4 h-4 rounded-full bg-white text-gray-900 text-[10px] font-bold flex items-center justify-center">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
         </div>
+
+        {/* Collapsible Filter Panel */}
+        <AnimatePresence>
+          {showFilters && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-white rounded-xl border border-gray-100 p-3 space-y-3">
+                {/* Salary */}
+                <div>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Salary</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {SALARY_PRESETS.map((preset, idx) => (
+                      <FilterChip
+                        key={preset.label}
+                        label={preset.label}
+                        active={salaryPresetIdx === idx}
+                        onClick={() => setSalaryPresetIdx(idx)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Experience */}
+                <div>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Experience</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {EXPERIENCE_PRESETS.map((preset, idx) => (
+                      <FilterChip
+                        key={preset.label}
+                        label={preset.label}
+                        active={expPresetIdx === idx}
+                        onClick={() => setExpPresetIdx(idx)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Job Type */}
+                <div>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Job Type</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {JOB_TYPE_OPTIONS.map((opt) => (
+                      <FilterChip
+                        key={opt.value}
+                        label={opt.label}
+                        active={jobTypeFilter === opt.value}
+                        onClick={() => setJobTypeFilter(opt.value)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Location */}
+                <div>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5">City</p>
+                  <input
+                    type="text"
+                    value={locationFilter}
+                    onChange={(e) => setLocationFilter(e.target.value)}
+                    placeholder="e.g. Mumbai, Delhi, Bangalore..."
+                    className="w-full px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-green-200"
+                  />
+                </div>
+
+                {/* Recency */}
+                <div>
+                  <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Posted Within</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {RECENCY_OPTIONS.map((opt) => (
+                      <FilterChip
+                        key={opt.value}
+                        label={opt.label}
+                        active={recencyFilter === opt.value}
+                        onClick={() => setRecencyFilter(opt.value)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Clear all */}
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="flex items-center gap-1 text-xs text-red-500 hover:text-red-600 font-medium"
+                  >
+                    <X size={12} />
+                    Clear all filters
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Loading Skeletons */}
@@ -553,7 +812,7 @@ export default function JobFeedPage() {
       {!loading && (
         <div className="space-y-4 mt-4">
           <AnimatePresence mode="popLayout">
-            {filteredJobs.map((job, index) => (
+            {jobs.map((job, index) => (
               <motion.div
                 key={job.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -583,7 +842,7 @@ export default function JobFeedPage() {
           </AnimatePresence>
 
           {/* Empty State */}
-          {filteredJobs.length === 0 && (
+          {jobs.length === 0 && (
             <div className="text-center py-16">
               <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
                 <Building2 size={24} className="text-gray-400" />
@@ -592,8 +851,18 @@ export default function JobFeedPage() {
               <p className="text-sm text-gray-400">
                 {debouncedSearch
                   ? `No results for "${debouncedSearch}". Try a different search.`
-                  : 'No openings found for this category. Try a different filter or check back soon.'}
+                  : activeFilterCount > 0
+                    ? 'No jobs match your current filters. Try adjusting them.'
+                    : 'No openings found for this category. Check back soon.'}
               </p>
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearAllFilters}
+                  className="mt-3 text-sm text-green-600 hover:text-green-700 font-medium"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
           )}
 
@@ -608,7 +877,7 @@ export default function JobFeedPage() {
           <div ref={observerRef} className="h-4" />
 
           {/* End of feed */}
-          {!hasMore && filteredJobs.length > 0 && (
+          {!hasMore && jobs.length > 0 && (
             <div className="text-center py-8">
               <p className="text-xs text-gray-300">You&apos;re all caught up!</p>
             </div>
@@ -634,54 +903,4 @@ export default function JobFeedPage() {
       </AnimatePresence>
     </div>
   )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Client-side match scoring                                          */
-/* ------------------------------------------------------------------ */
-
-function computeMatchScore(job: JobPost, profile: UserProfile | null): number {
-  if (!profile) return 0
-
-  let score = 0
-  const text = `${job.title} ${job.description} ${job.tags.join(' ')}`.toLowerCase()
-
-  // Location match (30 pts)
-  if (profile.city && job.location.toLowerCase().includes(profile.city.toLowerCase())) {
-    score += 30
-  } else if (profile.state && job.location.toLowerCase().includes(profile.state.toLowerCase())) {
-    score += 15
-  }
-
-  // Education match (25 pts)
-  if (profile.education_level) {
-    const edu = profile.education_level.toLowerCase()
-    if (text.includes(edu) || text.includes('graduate') || text.includes('any degree')) {
-      score += 25
-    }
-    if (text.includes('12th pass') || text.includes('10th pass')) {
-      score += 15
-    }
-  }
-
-  // Fresher boost (20 pts)
-  if (text.includes('fresher') || text.includes('no experience') || text.includes('0-1')) {
-    score += 20
-  }
-
-  // Interest/career match (25 pts)
-  const interests = [
-    ...(profile.interests || []),
-    profile.career_aspiration_raw || '',
-  ]
-    .join(' ')
-    .toLowerCase()
-
-  if (interests) {
-    const jobWords = text.split(/\s+/)
-    const matchedWords = jobWords.filter((w) => w.length > 3 && interests.includes(w))
-    score += Math.min(25, matchedWords.length * 5)
-  }
-
-  return Math.min(100, score)
 }
