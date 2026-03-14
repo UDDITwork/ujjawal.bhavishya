@@ -58,16 +58,16 @@ export default function ResumeCard({ session }: { session: ResumeSession }) {
 
       <div className="flex gap-2">
         {isActive ? (
-          <Link href={`/resume-session/${session.id}`} className="flex-1">
-            <button className="w-full px-4 py-2 rounded-lg border border-gray-900 text-gray-900 text-xs font-medium hover:bg-gray-50 transition-colors duration-200">
+          <Link href={`/resume-session/${session.id}`}>
+            <button className="px-5 py-2 rounded-lg border border-gray-300 text-gray-900 text-xs font-medium hover:bg-gray-50 transition-colors duration-200">
               Continue
             </button>
           </Link>
         ) : (
-          <Link href={`/resume-session/${session.id}`} className="flex-1">
-            <button className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-gray-900 text-gray-900 text-xs font-medium hover:bg-gray-50 transition-colors">
+          <Link href={`/resume-session/${session.id}`}>
+            <button className="flex items-center gap-1.5 px-5 py-2 rounded-lg border border-gray-300 text-gray-900 text-xs font-medium hover:bg-gray-50 transition-colors">
               <Download size={12} />
-              View & Download
+              View &amp; Download
             </button>
           </Link>
         )}
