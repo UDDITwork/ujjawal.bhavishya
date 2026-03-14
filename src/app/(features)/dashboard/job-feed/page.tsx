@@ -162,26 +162,55 @@ function getAccentForJob(job: { category: string }): string {
 }
 
 function cleanDescription(raw: string): string {
-  let text = raw
-  // Remove markdown images ![alt](url)
-  text = text.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-  // Convert markdown links [text](url) to just text
-  text = text.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-  // Remove raw URLs
-  text = text.replace(/https?:\/\/[^\s)]+/g, '')
-  // Remove markdown headers ##
-  text = text.replace(/#{1,6}\s*/g, '')
-  // Remove markdown bold/italic
-  text = text.replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
-  // Remove leftover markdown syntax
-  text = text.replace(/[[\]()]/g, '')
-  // Remove "Skip to content", "Sort by", navigation junk
-  text = text.replace(/Skip to content|Sort by\s*\w+|Refine Your Search|View More|Show less|Show more|Quick apply|Apply now/gi, '')
-  // Collapse whitespace
-  text = text.replace(/\s+/g, ' ').trim()
-  // Remove leading dashes/bullets
-  text = text.replace(/^[-–—•*]+\s*/, '')
-  return text
+  let t = raw
+  t = t.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+  t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  t = t.replace(/https?:\/\/[^\s)"']+/g, '')
+  t = t.replace(/#{1,6}\s*/g, '')
+  t = t.replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
+  const junk = [
+    /Skip to (?:content|main|navigation)/gi,
+    /Sort by\s*(?:Relevance|Date|Distance)\s*/gi,
+    /Refine Your Search/gi,
+    /(?:Show|View)\s+(?:more|less|all|details)/gi,
+    /Quick apply\s*\d*[hd]?/gi, /Apply now/gi,
+    /(?:Log ?in|Register|Sign ?up|Sign ?in)\b/gi,
+    /For employers/gi, /Buy online/gi,
+    /(?:Employer|Jobseeker)\s*(?:Login|Register)/gi,
+    /All Filters/gi, /Naukri\s*(?:Talent Cloud|Logo)/gi,
+    /Hiring solutions?/gi,
+    /Posted by\s*(?:Company|Consultant)\s*Jobs?\s*\d*/gi,
+    /Freshness\s*Select/gi, /Last \d+ days?/gi,
+    /Date Added\s*[-–]\s*(?:Anytime|24 hours|\d+ days?)/gi,
+    /Job Type\s*[-–]\s*All Job Types/gi,
+    /Minimum Salary\s*[-–]\s*All salaries/gi,
+    /(?:Sort & )?Filter\b/gi,
+    /\d+\s*[-–]\s*\d+\s*of\s*\d+/gi, /Page\s*\d+/gi,
+    /Company type\s*\w+/gi, /Work mode\s*\w+/gi,
+    /Top companies\s*\w*/gi,
+    /Industry\s+\w[\w\s&]*?\d+/gi,
+    /Role category\s+\w[\w\s&]*?\d+/gi,
+    /Department\s+\w[\w\s&,]*?\d+/gi,
+    /Location\s+\w[\w\s/]*?\d+/gi,
+    /Experience\s+Any\s+\d+\s*Yrs?/gi,
+    /Any Salary[\d\s\-LakhsCrore,₹]+/gi,
+    /Distance\s*\d+\s*kilometers?/gi,
+    /Freshers?\s*OK/gi, /Urgent Hiring/gi,
+    /Base64-Image-Removed/gi,
+    /(?:transparentImg|addFilter|search-job-icon|dummy-job-logo|whiteCallIcon|chevron-down)\.\w+/gi,
+    /Expand job summary/gi, /company-logo/gi,
+    /Education\s+Any\s+\w+/gi,
+    /Stipend\s+\w+\d+/gi, /Duration\s+\d+\s*Months?\d*/gi,
+    /\+\s*\d+\s*more/gi, /checkmark/gi,
+  ]
+  for (const p of junk) t = t.replace(p, ' ')
+  t = t.replace(/[<>[\]()]/g, ' ')
+  t = t.replace(/\s*\|\s*/g, ' ')
+  t = t.replace(/\s+[-–—]{2,}\s+/g, ' ')
+  t = t.replace(/\s+/g, ' ').trim()
+  t = t.replace(/^[-–—•*.,;:\s]+/, '')
+  if (t.length > 300) t = t.slice(0, 300).replace(/\s+\S*$/, '') + '...'
+  return t
 }
 
 /* ------------------------------------------------------------------ */

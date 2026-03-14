@@ -554,6 +554,95 @@ def _firecrawl_search(query: str, retries: int = 1) -> list[dict]:
     return []
 
 
+def _clean_description(raw: str) -> str:
+    """Strip navigation junk, markdown syntax, URLs, and site chrome from scraped content."""
+    import re
+
+    text = raw
+
+    # Remove markdown images
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)
+    # Convert markdown links to just their text
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    # Remove raw URLs
+    text = re.sub(r"https?://[^\s)\"']+", "", text)
+    # Remove markdown headers
+    text = re.sub(r"#{1,6}\s*", "", text)
+    # Remove markdown bold/italic markers
+    text = re.sub(r"\*{1,3}([^*]+)\*{1,3}", r"\1", text)
+
+    # Remove common site navigation / chrome text
+    nav_patterns = [
+        r"Skip to (?:content|main|navigation)",
+        r"Sort by\s*(?:Relevance|Date|Distance)\s*",
+        r"Refine Your Search",
+        r"(?:Show|View)\s+(?:more|less|all|details)",
+        r"Quick apply\s*\d*[hd]?",
+        r"Apply now",
+        r"Login|Log in|Register|Sign up|Sign in",
+        r"For employers",
+        r"Buy online",
+        r"Employer Login",
+        r"Jobseeker (?:Login|Register)",
+        r"All Filters",
+        r"Posted by\s*(?:Company|Consultant)\s*Jobs?\s*\d*",
+        r"Freshness\s*Select",
+        r"Last \d+ days?",
+        r"View More\s*\w*",
+        r"Date Added\s*[-–]\s*(?:Anytime|24 hours|7 days|14 days|30 days)",
+        r"Job Type\s*[-–]\s*All Job Types",
+        r"Minimum Salary\s*[-–]\s*All salaries",
+        r"(?:Sort & )?Filter",
+        r"Naukri (?:Talent Cloud|Logo)",
+        r"Hiring solutions?",
+        r"\d+\s*[-–]\s*\d+\s*of\s*\d+",
+        r"Page\s*\d+",
+        r"Company type\s*\w+",
+        r"Work mode\s*\w+",
+        r"Top companies\s*\w*",
+        r"Industry\s+\w[\w\s&]*\d+",
+        r"Role category\s+\w[\w\s&]*\d+",
+        r"Education\s+Any\s+\w+",
+        r"Department\s+\w[\w\s&,]*\d+",
+        r"Location\s+\w[\w\s/]*\d+",
+        r"Experience\s+Any\s+\d+\s*Yrs?",
+        r"Any Salary\s*[\d\s\-LakhsCrores]+",
+        r"Distance\s*\d+\s*kilometers?",
+        r"Stipend\s+\w+\d+",
+        r"Duration\s+\d+\s*Months?\d*",
+        r"Freshers?\s*OK",
+        r"Urgent Hiring",
+        r"Base64-Image-Removed",
+        r"transparentImg\.png",
+        r"checkmark",
+        r"addFilter\.svg",
+        r"search-job-icon\.svg",
+        r"dummy-job-logo\.svg",
+        r"whiteCallIcon\.svg",
+        r"chevron-down\.png",
+        r"Expand job summary",
+        r"company-logo",
+        r"filter",
+    ]
+    for pat in nav_patterns:
+        text = re.sub(pat, " ", text, flags=re.IGNORECASE)
+
+    # Remove leftover markdown/html brackets
+    text = re.sub(r"[<>[\]()]", " ", text)
+    # Remove stray pipe separators
+    text = re.sub(r"\s*\|\s*", " ", text)
+    # Remove stray dashes used as separators
+    text = re.sub(r"\s+[-–—]{2,}\s+", " ", text)
+    # Collapse multiple spaces/newlines
+    text = re.sub(r"\s+", " ", text).strip()
+
+    # If still too long after cleaning, take first 500 chars
+    if len(text) > 500:
+        text = text[:500].rsplit(" ", 1)[0] + "..."
+
+    return text
+
+
 def _process_scrape_result(
     result: dict, category: str, batch_id: str, db: Session
 ) -> Job | None:
@@ -625,7 +714,7 @@ def _process_scrape_result(
         salary=salary_text,
         job_type=detected_type.replace("-", " ").title() if detected_type else "Full-time",
         experience=exp_text,
-        description=content[:2000],
+        description=_clean_description(content),
         requirements_json=json.dumps(_extract_requirements(content)),
         tags_json=json.dumps(_extract_tags(title, content)),
         role_category=category,
