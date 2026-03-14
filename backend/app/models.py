@@ -393,3 +393,113 @@ class UserModuleProgress(Base):
     updated_at: Mapped[str] = mapped_column(
         String(50), nullable=False, default=utc_now, onupdate=utc_now
     )
+
+
+# ─── Assessments & Certificates ──────────────────────────
+
+
+class Assessment(Base):
+    __tablename__ = "assessments"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    module_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("course_modules.id"), nullable=False, index=True
+    )
+    title: Mapped[str] = mapped_column(String(300), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+    time_limit_seconds: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=600
+    )  # 10 minutes
+    pass_threshold: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=15
+    )  # out of 25
+    total_questions: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=25
+    )
+    retry_cooldown_hours: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=24
+    )
+    is_published: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=1
+    )  # 0 or 1
+    created_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )
+
+
+class AssessmentQuestion(Base):
+    __tablename__ = "assessment_questions"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    assessment_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("assessments.id"), nullable=False, index=True
+    )
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    options_json: Mapped[str] = mapped_column(
+        Text, nullable=False
+    )  # JSON: ["Option A", "Option B", "Option C", "Option D"]
+    correct_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    explanation: Mapped[str] = mapped_column(Text, nullable=True)
+    order_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
+class UserAssessment(Base):
+    __tablename__ = "user_assessments"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False, index=True
+    )
+    assessment_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("assessments.id"), nullable=False, index=True
+    )
+    started_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )
+    submitted_at: Mapped[str] = mapped_column(String(50), nullable=True)
+    answers_json: Mapped[str] = mapped_column(
+        Text, nullable=True
+    )  # JSON: [{question_id, selected_index}]
+    score: Mapped[int] = mapped_column(Integer, nullable=True)
+    passed: Mapped[int] = mapped_column(
+        Integer, nullable=True
+    )  # 0 or 1, null until submitted
+    time_taken_seconds: Mapped[int] = mapped_column(Integer, nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="in_progress"
+    )  # in_progress, submitted, expired
+
+
+class Certificate(Base):
+    __tablename__ = "certificates"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    cert_number: Mapped[str] = mapped_column(
+        String(20), nullable=False, unique=True, index=True
+    )  # IKL-2026-A7X9K2
+    cert_slug: Mapped[str] = mapped_column(
+        String(100), nullable=False, unique=True, index=True
+    )  # 80-char URL-safe random string
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False, index=True
+    )
+    user_assessment_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("user_assessments.id"), nullable=False, unique=True
+    )
+    module_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("course_modules.id"), nullable=False
+    )
+    cert_data_json: Mapped[str] = mapped_column(
+        Text, nullable=False
+    )  # Denormalized JSON blob with all rendering data
+    issued_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )

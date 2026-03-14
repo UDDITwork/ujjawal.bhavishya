@@ -316,3 +316,112 @@ class QuizAnswerResponse(BaseModel):
     correct: bool
     correct_index: int
     hint: Optional[str] = None
+
+
+# ─── Assessment & Certificate Schemas ────────────────────
+
+
+class AssessmentResponse(BaseModel):
+    id: str
+    module_id: str
+    title: str
+    description: Optional[str] = None
+    time_limit_seconds: int
+    pass_threshold: int
+    total_questions: int
+    retry_cooldown_hours: int
+    is_published: int
+    created_at: str
+    # Computed fields added by endpoint
+    module_title: Optional[str] = None
+    module_category: Optional[str] = None
+    user_status: Optional[str] = None  # locked/available/passed/failed/cooldown
+    best_score: Optional[int] = None
+    last_attempt_at: Optional[str] = None
+    cooldown_until: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+
+class AssessmentListResponse(BaseModel):
+    assessments: list[AssessmentResponse]
+
+
+class AssessmentQuestionPublic(BaseModel):
+    """Question without correct_index — sent during assessment."""
+    id: str
+    question: str
+    options_json: str
+    order_index: int
+
+    model_config = {"from_attributes": True}
+
+
+class AssessmentStartResponse(BaseModel):
+    attempt_id: str
+    assessment_id: str
+    questions: list[AssessmentQuestionPublic]
+    expires_at: str
+    time_limit_seconds: int
+
+
+class AnswerItem(BaseModel):
+    question_id: str
+    selected_index: int = Field(ge=0, le=3)
+
+
+class AssessmentSubmitRequest(BaseModel):
+    attempt_id: str
+    answers: list[AnswerItem]
+
+
+class QuestionReview(BaseModel):
+    question_id: str
+    question: str
+    options: list[str]
+    selected_index: Optional[int] = None
+    correct_index: int
+    is_correct: bool
+    explanation: Optional[str] = None
+
+
+class AssessmentResultResponse(BaseModel):
+    attempt_id: str
+    assessment_id: str
+    module_title: str
+    score: int
+    total: int
+    percentage: float
+    passed: bool
+    time_taken_seconds: int
+    submitted_at: str
+    questions: list[QuestionReview]
+    can_get_certified: bool
+    certificate_id: Optional[str] = None
+
+
+class CertificateGenerateRequest(BaseModel):
+    attempt_id: str
+
+
+class CertificateResponse(BaseModel):
+    id: str
+    cert_number: str
+    cert_slug: str
+    module_title: Optional[str] = None
+    score: Optional[int] = None
+    issued_at: str
+
+    model_config = {"from_attributes": True}
+
+
+class CertificatePublicResponse(BaseModel):
+    cert_data_json: str
+
+
+class CertificateListResponse(BaseModel):
+    certificates: list[CertificateResponse]
+
+
+class PromoteUserRequest(BaseModel):
+    email: str = Field(min_length=1)

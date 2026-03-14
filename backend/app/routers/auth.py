@@ -9,6 +9,7 @@ from app.schemas import (
     AuthResponse,
     UserResponse,
     ErrorResponse,
+    PromoteUserRequest,
 )
 from app.auth import hash_password, verify_password, create_token, get_current_user
 
@@ -68,3 +69,24 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
 )
 def me(current_user: User = Depends(get_current_user)):
     return UserResponse.model_validate(current_user)
+
+
+@router.post(
+    "/promote",
+    responses={403: {"model": ErrorResponse}, 404: {"model": ErrorResponse}},
+)
+def promote_user(
+    body: PromoteUserRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    target = db.query(User).filter(User.email == body.email).first()
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    target.role = "admin"
+    db.commit()
+    return {"message": f"{target.email} promoted to admin"}
