@@ -540,3 +540,56 @@ class Certificate(Base):
     issued_at: Mapped[str] = mapped_column(
         String(50), nullable=False, default=utc_now
     )
+
+
+# ─── Mentor Sessions (Bidirectional Chat) ───────────────
+
+
+class MentorSession(Base):
+    __tablename__ = "mentor_sessions"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    student_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False, index=True
+    )
+    mentor_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("mentors.id"), nullable=False, index=True
+    )
+    topic: Mapped[str] = mapped_column(String(300), nullable=False)
+    student_message: Mapped[str] = mapped_column(Text, nullable=True)
+    preferred_date: Mapped[str] = mapped_column(String(50), nullable=True)
+    preferred_time: Mapped[str] = mapped_column(String(50), nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="requested"
+    )  # requested, accepted, rejected, completed
+    mentor_note: Mapped[str] = mapped_column(Text, nullable=True)
+    student_last_read_at: Mapped[str] = mapped_column(String(50), nullable=True)
+    mentor_last_read_at: Mapped[str] = mapped_column(String(50), nullable=True)
+    created_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )
+    updated_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now, onupdate=utc_now
+    )
+
+
+class MentorMessage(Base):
+    __tablename__ = "mentor_messages"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    session_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("mentor_sessions.id"), nullable=False, index=True
+    )
+    sender_type: Mapped[str] = mapped_column(
+        String(10), nullable=False
+    )  # "student" or "mentor"
+    sender_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    message_order: Mapped[int] = mapped_column(Integer, nullable=False)
+    created_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )

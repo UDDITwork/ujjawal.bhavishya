@@ -38,6 +38,35 @@ export default function Sidebar() {
   const [sessions, setSessions] = useState<SessionItem[]>([])
   const [sessionsLoaded, setSessionsLoaded] = useState(false)
   const [creatingSession, setCreatingSession] = useState(false)
+  const [mentorshipUnread, setMentorshipUnread] = useState(false)
+
+  // Poll for mentorship unread messages
+  useEffect(() => {
+    const fetchUnread = async () => {
+      if (document.visibilityState === 'hidden') return
+      try {
+        const res = await fetch('/api/mentor-sessions/unread')
+        if (!res.ok) return
+        const data = await res.json()
+        setMentorshipUnread((data.count || 0) > 0)
+      } catch {
+        // silent
+      }
+    }
+
+    fetchUnread()
+    const interval = setInterval(fetchUnread, 30000)
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchUnread()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [])
 
   const isCareerGuidanceActive =
     pathname === '/dashboard/career-guidance' ||
@@ -234,7 +263,12 @@ export default function Sidebar() {
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
-                <link.icon size={18} />
+                <div className="relative">
+                  <link.icon size={18} />
+                  {link.href === '/dashboard/mentorship' && mentorshipUnread && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500" />
+                  )}
+                </div>
                 {link.label}
               </div>
             </Link>

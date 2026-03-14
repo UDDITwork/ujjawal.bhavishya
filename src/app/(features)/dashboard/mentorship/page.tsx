@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   Send, Loader2, Users, FileText, Briefcase,
@@ -12,6 +13,8 @@ import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
 import { playSend, playPop } from '@/lib/sounds'
 import { fadeInUp, fadeInUpTransition, staggerContainer, staggerItem } from '@/lib/animations'
+import BookSessionModal from '@/components/mentorship/BookSessionModal'
+import MentorshipSessionCard from '@/components/mentorship/MentorshipSessionCard'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -71,7 +74,20 @@ const ACCENT_COLORS = [
 /*  Mentor Card                                                        */
 /* ------------------------------------------------------------------ */
 
-function MentorCard({ mentor, index }: { mentor: MentorData; index: number }) {
+interface MentorSessionData {
+  id: string
+  topic: string
+  status: string
+  student_name: string
+  mentor_name: string
+  preferred_date?: string | null
+  preferred_time?: string | null
+  created_at: string
+  updated_at: string
+  unread_count: number
+}
+
+function MentorCard({ mentor, index, onBookSession }: { mentor: MentorData; index: number; onBookSession: (mentor: MentorData) => void }) {
   const initials = mentor.name.split(' ').map(n => n[0]).join('')
   const accent = ACCENT_COLORS[index % ACCENT_COLORS.length]
   const available = mentor.is_available === 1
@@ -127,11 +143,21 @@ function MentorCard({ mentor, index }: { mentor: MentorData; index: number }) {
             </div>
           )}
           <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-center gap-1.5 text-[11px]">
-              <Users size={12} className="text-gray-400" />
-              <span className={available ? 'text-green-600 font-medium' : 'text-gray-400'}>
-                {available ? 'Available for mentorship' : 'Currently unavailable'}
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-[11px]">
+                <Users size={12} className="text-gray-400" />
+                <span className={available ? 'text-green-600 font-medium' : 'text-gray-400'}>
+                  {available ? 'Available for mentorship' : 'Currently unavailable'}
+                </span>
+              </div>
+              {available && (
+                <button
+                  onClick={() => onBookSession(mentor)}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-700 text-white text-[11px] font-medium hover:bg-emerald-800 transition-colors"
+                >
+                  Book Session &rarr;
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -178,13 +204,28 @@ const quickSuggestions = [
 
 export default function MentorshipPage() {
   const { user } = useAuthStore()
+  const router = useRouter()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)
   const [activity, setActivity] = useState<ActivityContext | null>(null)
   const [mentors, setMentors] = useState<MentorData[]>([])
+  const [mySessions, setMySessions] = useState<MentorSessionData[]>([])
+  const [bookingMentor, setBookingMentor] = useState<MentorData | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  // Fetch my mentorship sessions
+  const fetchMySessions = useCallback(() => {
+    fetch('/api/mentor-sessions/my')
+      .then(res => res.ok ? res.json() : { sessions: [] })
+      .then(data => setMySessions(data.sessions || []))
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    fetchMySessions()
+  }, [fetchMySessions])
 
   // Fetch activity context
   useEffect(() => {
@@ -320,6 +361,26 @@ export default function MentorshipPage() {
               </p>
             </div>
           </div>
+          {/* Admin: Seed real mentors */}
+          {user?.role === 'admin' && mentors.length === 0 && (
+            <button
+              onClick={async () => {
+                try {
+                  const res = await fetch('/api/mentor/seed', { method: 'POST' })
+                  const data = await res.json()
+                  if (res.ok) {
+                    toast.success(data.message || 'Mentors seeded!')
+                    window.location.reload()
+                  } else {
+                    toast.error(data.error || 'Failed')
+                  }
+                } catch { toast.error('Failed to seed mentors') }
+              }}
+              className="mt-3 px-4 py-2 rounded-lg bg-emerald-700 text-white text-xs font-medium hover:bg-emerald-800 transition-colors"
+            >
+              Seed Real Mentor Profiles
+            </button>
+          )}
         </div>
       </motion.div>
 
@@ -329,13 +390,61 @@ export default function MentorshipPage() {
           variants={staggerContainer} initial="initial" animate="animate"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5"
         >
-          {mentors.map((m, i) => <MentorCard key={m.id} mentor={m} index={i} />)}
+          {mentors.map((m, i) => <MentorCard key={m.id} mentor={m} index={i} onBookSession={setBookingMentor} />)}
         </motion.div>
       ) : (
         <div className="bg-white/80 rounded-xl border border-gray-200/60 p-6 mb-5 text-center">
           <Users size={20} className="mx-auto text-gray-300 mb-2" />
           <p className="text-sm text-gray-400">No mentors available yet. Check back soon!</p>
         </div>
+      )}
+
+      {/* My Mentorship Sessions */}
+      {mySessions.length > 0 && (
+        <motion.div
+          variants={fadeInUp} initial="initial" animate="animate"
+          transition={{ ...fadeInUpTransition, delay: 0.1 }}
+          className="mb-5"
+        >
+          <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <MessageSquare size={14} className="text-emerald-600" />
+              My Mentorship Sessions
+              <span className="text-xs text-gray-400 font-normal">({mySessions.length})</span>
+            </h2>
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {mySessions.map(session => (
+                <MentorshipSessionCard
+                  key={session.id}
+                  session={session}
+                  viewAs="student"
+                  onClick={() => router.push(`/dashboard/mentorship/chat/${session.id}`)}
+                />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
+      {mySessions.length === 0 && mentors.length > 0 && (
+        <motion.div
+          variants={fadeInUp} initial="initial" animate="animate"
+          transition={{ ...fadeInUpTransition, delay: 0.1 }}
+          className="mb-5"
+        >
+          <div className="bg-white/60 rounded-xl border border-gray-100 p-4 text-center">
+            <p className="text-xs text-gray-400">No mentorship sessions yet. Book a session with a mentor above!</p>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Book Session Modal */}
+      {bookingMentor && (
+        <BookSessionModal
+          mentor={{ id: bookingMentor.id, name: bookingMentor.name, specialization: bookingMentor.specialization }}
+          isOpen={!!bookingMentor}
+          onClose={() => setBookingMentor(null)}
+          onBooked={fetchMySessions}
+        />
       )}
 
       {/* Main Content: Chat + Timeline */}

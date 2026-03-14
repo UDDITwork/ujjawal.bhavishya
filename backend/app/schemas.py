@@ -508,3 +508,69 @@ class MentorListResponse(BaseModel):
 class MentorVerifyRequest(BaseModel):
     email: str = Field(min_length=1)
     action: str = Field(pattern=r"^(verify|reject)$")
+
+
+# ─── Mentor Session (Bidirectional Chat) ────────────────
+
+
+class SessionBookRequest(BaseModel):
+    mentor_id: str = Field(min_length=1, max_length=36)
+    topic: str = Field(min_length=2, max_length=300)
+    student_message: Optional[str] = None
+    preferred_date: Optional[str] = None
+    preferred_time: Optional[str] = None
+
+
+class SessionRespondRequest(BaseModel):
+    action: str = Field(pattern=r"^(accept|reject)$")
+    mentor_note: Optional[str] = None
+
+
+class MentorMessageCreate(BaseModel):
+    content: str = Field(min_length=1, max_length=5000)
+
+
+class MentorMessageResponse(BaseModel):
+    id: str
+    session_id: str
+    sender_type: str
+    sender_id: str
+    sender_name: Optional[str] = None
+    content: str
+    message_order: int
+    created_at: str
+
+    model_config = {"from_attributes": True}
+
+
+class MentorSessionResponse(BaseModel):
+    id: str
+    student_id: str
+    mentor_id: str
+    topic: str
+    student_message: Optional[str] = None
+    preferred_date: Optional[str] = None
+    preferred_time: Optional[str] = None
+    status: str
+    mentor_note: Optional[str] = None
+    created_at: str
+    updated_at: str
+    # Computed
+    student_name: Optional[str] = None
+    mentor_name: Optional[str] = None
+    unread_count: int = 0
+
+    model_config = {"from_attributes": True}
+
+
+class MentorSessionListResponse(BaseModel):
+    sessions: list[MentorSessionResponse]
+
+
+class MentorSessionDetailResponse(BaseModel):
+    session: MentorSessionResponse
+    messages: list[MentorMessageResponse]
+
+
+class UnreadCountResponse(BaseModel):
+    count: int

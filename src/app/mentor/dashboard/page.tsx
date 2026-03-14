@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
   Loader2,
   CheckCircle2,
@@ -11,6 +12,9 @@ import {
   User,
   Briefcase,
   LinkIcon,
+  MessageSquare,
+  Inbox,
+  ChevronRight,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { fadeInUp, fadeInUpTransition } from '@/lib/animations'
@@ -29,11 +33,21 @@ interface Mentor {
   is_available: boolean
 }
 
+interface SessionSummary {
+  id: string
+  topic: string
+  status: string
+  student_name: string
+  created_at: string
+  unread_count: number
+}
+
 export default function MentorDashboardPage() {
   const router = useRouter()
   const [mentor, setMentor] = useState<Mentor | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [sessions, setSessions] = useState<SessionSummary[]>([])
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -75,6 +89,21 @@ export default function MentorDashboardPage() {
   useEffect(() => {
     fetchMentor()
   }, [fetchMentor])
+
+  // Fetch sessions for summary
+  useEffect(() => {
+    async function fetchSessions() {
+      try {
+        const res = await fetch('/api/mentor/sessions/inbox')
+        if (!res.ok) return
+        const data = await res.json()
+        setSessions(data.sessions || [])
+      } catch {
+        // silent
+      }
+    }
+    fetchSessions()
+  }, [])
 
   function handleChange(field: string, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -220,6 +249,73 @@ export default function MentorDashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Recent Sessions Summary */}
+      {sessions.length > 0 && (
+        <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <Inbox size={18} className="text-emerald-600" />
+              Recent Sessions
+            </h2>
+            <Link
+              href="/mentor/dashboard/sessions"
+              className="text-xs font-medium text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+            >
+              View All <ChevronRight size={12} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+            <div className="bg-amber-50 rounded-lg p-3 text-center">
+              <p className="text-xl font-bold text-amber-700">
+                {sessions.filter(s => s.status === 'requested').length}
+              </p>
+              <p className="text-[11px] text-amber-600">Pending</p>
+            </div>
+            <div className="bg-emerald-50 rounded-lg p-3 text-center">
+              <p className="text-xl font-bold text-emerald-700">
+                {sessions.filter(s => s.status === 'accepted').length}
+              </p>
+              <p className="text-[11px] text-emerald-600">Active</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <p className="text-xl font-bold text-gray-600">
+                {sessions.filter(s => s.status === 'completed').length}
+              </p>
+              <p className="text-[11px] text-gray-500">Completed</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {sessions.slice(0, 3).map(s => (
+              <Link
+                key={s.id}
+                href={`/mentor/dashboard/sessions/${s.id}`}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group"
+              >
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                  s.status === 'requested' ? 'bg-amber-50 text-amber-600' :
+                  s.status === 'accepted' ? 'bg-emerald-50 text-emerald-600' :
+                  'bg-gray-50 text-gray-400'
+                }`}>
+                  <MessageSquare size={13} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-800 truncate">{s.topic}</p>
+                  <p className="text-[11px] text-gray-400">{s.student_name}</p>
+                </div>
+                {s.unread_count > 0 && (
+                  <span className="text-[10px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded-full">
+                    {s.unread_count}
+                  </span>
+                )}
+                <ChevronRight size={14} className="text-gray-300 group-hover:text-gray-500 shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Edit Profile Form */}
       <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-6">
