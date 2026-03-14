@@ -142,10 +142,14 @@ def update_profile(
 # ─── Profile Image ──────────────────────────────────────────
 
 
-def _cloudinary_signature(timestamp: int, folder: str) -> str:
-    """Generate Cloudinary signed upload signature."""
-    params = f"folder={folder}&timestamp={timestamp}{CLOUDINARY_API_SECRET}"
-    return hashlib.sha1(params.encode()).hexdigest()
+def _cloudinary_signature(params: dict) -> str:
+    """Generate Cloudinary signed upload signature.
+    All params (except file, api_key, resource_type, signature) must be included,
+    sorted alphabetically by key.
+    """
+    sorted_params = "&".join(f"{k}={v}" for k, v in sorted(params.items()))
+    to_sign = f"{sorted_params}{CLOUDINARY_API_SECRET}"
+    return hashlib.sha1(to_sign.encode()).hexdigest()
 
 
 @router.put(
@@ -175,17 +179,21 @@ async def update_profile_image(
     # Upload to Cloudinary
     timestamp = int(time.time())
     folder = "iklavya/profiles"
-    signature = _cloudinary_signature(timestamp, folder)
+    transformation = "c_fill,w_400,h_400,g_face,q_auto,f_auto"
+    sign_params = {
+        "folder": folder,
+        "timestamp": str(timestamp),
+        "transformation": transformation,
+    }
+    signature = _cloudinary_signature(sign_params)
 
     async with httpx.AsyncClient(timeout=30) as client:
         resp = await client.post(
             f"https://api.cloudinary.com/v1_1/{CLOUDINARY_CLOUD_NAME}/image/upload",
             data={
                 "api_key": CLOUDINARY_API_KEY,
-                "timestamp": str(timestamp),
                 "signature": signature,
-                "folder": folder,
-                "transformation": "c_fill,w_400,h_400,g_face,q_auto,f_auto",
+                **sign_params,
             },
             files={"file": (file.filename or "profile.jpg", contents, file.content_type)},
         )
