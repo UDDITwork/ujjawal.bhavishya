@@ -58,7 +58,7 @@ export default function SessionCard({ session }: { session: Session }) {
 
       <div className="flex gap-2">
         {isActive ? (
-          <button className="w-full px-4 py-2 rounded-lg bg-green-800 text-white text-xs font-medium hover:bg-green-900 transition-colors duration-200">
+          <button className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-green-800 text-white text-xs font-medium hover:bg-green-900 transition-colors duration-200">
             Resume
           </button>
         ) : (
