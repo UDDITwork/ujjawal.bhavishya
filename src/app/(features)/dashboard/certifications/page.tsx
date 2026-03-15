@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Award, Loader2, ExternalLink, Calendar } from 'lucide-react'
+import { Loader2, ExternalLink } from 'lucide-react'
 import { fadeInUp, fadeInUpTransition, staggerContainer, staggerItem } from '@/lib/animations'
 
 interface Certificate {
@@ -49,21 +49,12 @@ export default function CertificationsPage() {
         initial="initial"
         animate="animate"
         transition={fadeInUpTransition}
-        className="mb-6"
+        className="mb-8"
       >
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800">
-              <Award size={22} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">My Certifications</h1>
-              <p className="text-sm text-gray-500">
-                Certificates earned from completed assessments
-              </p>
-            </div>
-          </div>
-        </div>
+        <h1 className="text-3xl font-bold text-gray-900">Certifications</h1>
+        <p className="text-gray-500 mt-1">
+          Credentials earned upon successful completion of assessments
+        </p>
       </motion.div>
 
       {/* Content */}
@@ -78,17 +69,14 @@ export default function CertificationsPage() {
           animate="animate"
           transition={{ ...fadeInUpTransition, delay: 0.1 }}
         >
-          <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
-            <Award size={48} className="mx-auto text-gray-300 mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              No Certificates Yet
-            </h2>
-            <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
-              Complete classroom modules and pass assessments to earn certificates.
+          <div className="border border-gray-200 rounded-lg p-12 text-center">
+            <p className="text-lg text-gray-500 mb-2">No certificates earned yet</p>
+            <p className="text-sm text-gray-400 max-w-md mx-auto mb-6">
+              Complete classroom modules and pass the associated assessments to receive your certifications.
             </p>
             <button
               onClick={() => router.push('/dashboard/assessments')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-800 text-white text-sm font-medium hover:bg-green-900 transition-colors"
+              className="px-5 py-2.5 rounded-lg bg-gray-900 text-white text-sm hover:bg-gray-800 transition-colors"
             >
               Go to Assessments
             </button>
@@ -99,60 +87,47 @@ export default function CertificationsPage() {
           variants={staggerContainer}
           initial="initial"
           animate="animate"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="space-y-4"
         >
-          {certs.map((cert) => {
+          {certs.map((cert, idx) => {
             const date = new Date(cert.issued_at).toLocaleDateString('en-IN', {
               day: 'numeric',
-              month: 'short',
+              month: 'long',
               year: 'numeric',
             })
 
             return (
               <motion.div key={cert.id} variants={staggerItem}>
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
-                  {/* Green top accent */}
-                  <div className="h-1.5 bg-gradient-to-r from-green-600 to-emerald-500" />
-
-                  <div className="p-5">
-                    {/* Award icon */}
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 mb-3">
-                      <Award size={20} />
-                    </div>
-
-                    {/* Module title */}
-                    <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2">
-                      {cert.module_title || 'Certificate'}
-                    </h3>
-
-                    {/* Cert number */}
-                    <p className="text-[10px] text-gray-400 font-mono mb-3">
-                      {cert.cert_number}
-                    </p>
-
-                    {/* Meta */}
-                    <div className="flex items-center gap-3 text-xs text-gray-400 mb-4">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        {date}
+                <div className="border border-gray-200 rounded-lg bg-white hover:border-gray-300 transition-colors">
+                  <div className="flex items-center justify-between p-5 gap-4">
+                    {/* Left: Number + Details */}
+                    <div className="flex items-start gap-4 min-w-0">
+                      <span className="text-2xl font-bold text-gray-300 tabular-nums shrink-0 w-8 text-right">
+                        {String(idx + 1).padStart(2, '0')}
                       </span>
-                      {cert.score !== null && (
-                        <span className="font-semibold text-green-700">
-                          Score: {cert.score}
-                        </span>
-                      )}
+                      <div className="min-w-0">
+                        <h3 className="text-base font-semibold text-gray-900 truncate">
+                          {cert.module_title || 'Certificate'}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1.5 text-sm text-gray-500">
+                          <span>{date}</span>
+                          {cert.score !== null && (
+                            <span>Score: <span className="font-semibold text-gray-700">{cert.score}</span></span>
+                          )}
+                          <span className="text-gray-400 text-xs">{cert.cert_number}</span>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* View button — opens in new tab */}
+                    {/* Right: View button */}
                     <a
                       href={`/cert/${cert.cert_slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-green-600 text-white text-xs font-semibold hover:bg-green-700 transition-colors"
+                      className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
                     >
-                      <Award size={14} />
-                      View Certificate
-                      <ExternalLink size={12} />
+                      View
+                      <ExternalLink size={14} />
                     </a>
                   </div>
                 </div>
