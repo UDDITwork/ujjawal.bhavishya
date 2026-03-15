@@ -6,10 +6,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   LayoutDashboard, MessageSquare, User, LogOut, Menu, X, FileText,
-  ChevronDown, Plus, Loader2, PlaySquare, Briefcase, Users, ClipboardCheck, Award
+  ChevronDown, Plus, Loader2, PlaySquare, Briefcase, Users, ClipboardCheck, Award, Bell
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth-store'
+import { useNotificationStore } from '@/store/notification-store'
 import { playPop } from '@/lib/sounds'
 
 interface SessionItem {
@@ -34,6 +35,7 @@ export default function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const { user, logout } = useAuthStore()
+  const { unreadCount: notifUnread, setUnreadCount: setNotifUnread } = useNotificationStore()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [sessionsExpanded, setSessionsExpanded] = useState(false)
   const [sessions, setSessions] = useState<SessionItem[]>([])
@@ -68,6 +70,34 @@ export default function Sidebar() {
       document.removeEventListener('visibilitychange', handleVisibility)
     }
   }, [])
+
+  // Poll for notification unread count
+  useEffect(() => {
+    const fetchNotifUnread = async () => {
+      if (document.visibilityState === 'hidden') return
+      try {
+        const res = await fetch('/api/notifications/unread')
+        if (!res.ok) return
+        const data = await res.json()
+        setNotifUnread(data.count || 0)
+      } catch {
+        // silent
+      }
+    }
+
+    fetchNotifUnread()
+    const interval = setInterval(fetchNotifUnread, 30000)
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchNotifUnread()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [setNotifUnread])
 
   const isCareerGuidanceActive =
     pathname === '/dashboard/career-guidance' ||
@@ -155,10 +185,18 @@ export default function Sidebar() {
               {user?.name.charAt(0).toUpperCase()}
             </div>
           )}
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-gray-900 truncate">{user?.name}</p>
             <p className="text-xs text-gray-400 truncate">{user?.email}</p>
           </div>
+          <Link href="/dashboard/notifications" onClick={() => setMobileOpen(false)} className="relative shrink-0 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <Bell size={18} className="text-gray-500" />
+            {notifUnread > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] font-bold text-white">
+                {notifUnread > 9 ? '9+' : notifUnread}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
 

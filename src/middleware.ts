@@ -6,7 +6,7 @@ const COOKIE_NAME = 'iklavya-token'
 const MENTOR_COOKIE_NAME = 'iklavya-mentor-token'
 
 const protectedPaths = ['/dashboard', '/admin', '/session', '/sessions', '/profile', '/resume-builder', '/resume-session', '/assessments']
-const authPaths = ['/login', '/register']
+const authPaths = ['/login', '/register', '/forgot-password', '/reset-password']
 // Public landing pages that should redirect to dashboard when authenticated
 const landingPaths = ['/', '/students', '/institutions', '/for-employers']
 // Mentor auth pages (redirect to mentor dashboard if already logged in)
@@ -77,5 +77,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/students', '/institutions', '/for-employers', '/dashboard/:path*', '/admin/:path*', '/session/:path*', '/sessions/:path*', '/profile/:path*', '/resume-builder/:path*', '/resume-session/:path*', '/login', '/register', '/career-guidance/:path*', '/assessments/:path*', '/cert/:path*', '/mentor/:path*'],
+  matcher: ['/', '/students', '/institutions', '/for-employers', '/dashboard/:path*', '/admin/:path*', '/session/:path*', '/sessions/:path*', '/profile/:path*', '/resume-builder/:path*', '/resume-session/:path*', '/login', '/register', '/forgot-password', '/reset-password', '/career-guidance/:path*', '/assessments/:path*', '/cert/:path*', '/mentor/:path*'],
 }

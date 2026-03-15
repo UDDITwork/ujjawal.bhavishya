@@ -8,6 +8,8 @@ from app.auth import get_current_user
 from app.database import get_db
 from app.models import MentorSession, MentorMessage, Mentor, User, utc_now
 from app.routers.mentor_auth import get_current_mentor
+from app.routers.notifications import create_notification
+from app.email import send_mentor_session_accepted_email
 from app.schemas import (
     SessionBookRequest,
     SessionRespondRequest,
@@ -254,6 +256,16 @@ def student_send_message(
     session.updated_at = utc_now()
     # Auto mark-read for sender
     session.student_last_read_at = utc_now()
+
+    # Notify mentor about new message
+    preview = body.content[:80] + ("..." if len(body.content) > 80 else "")
+    create_notification(
+        db, "mentor", session.mentor_id, "mentor_reply",
+        f"New message from {user.name}",
+        preview,
+        f"/mentor/dashboard/sessions/{session_id}",
+    )
+
     db.commit()
     db.refresh(msg)
 
@@ -340,12 +352,31 @@ def mentor_respond(
     if session.status != "requested":
         raise HTTPException(status_code=400, detail="Session is not in requested state")
 
+    student = db.query(User).filter(User.id == session.student_id).first()
+    student_name = student.name if student else "Student"
+
     if body.action == "accept":
         session.status = "accepted"
         session.mentor_note = body.mentor_note
+        # Notify student
+        create_notification(
+            db, "student", session.student_id, "session_accepted",
+            f"Session accepted by {mentor.name}!",
+            f"Your mentorship session on \"{session.topic}\" has been accepted. You can now start chatting.",
+            f"/dashboard/mentorship/chat/{session.id}",
+        )
+        # Send email
+        if student:
+            send_mentor_session_accepted_email(student.name, student.email, mentor.name, session.topic)
     else:
         session.status = "rejected"
         session.mentor_note = body.mentor_note
+        create_notification(
+            db, "student", session.student_id, "session_rejected",
+            f"Session declined by {mentor.name}",
+            body.mentor_note or "Your mentorship request was declined.",
+            "/dashboard/mentorship",
+        )
 
     session.updated_at = utc_now()
     db.commit()
@@ -414,6 +445,16 @@ def mentor_send_message(
     db.add(msg)
     session.updated_at = utc_now()
     session.mentor_last_read_at = utc_now()
+
+    # Notify student about new message
+    preview = body.content[:80] + ("..." if len(body.content) > 80 else "")
+    create_notification(
+        db, "student", session.student_id, "mentor_reply",
+        f"New message from {mentor.name}",
+        preview,
+        f"/dashboard/mentorship/chat/{session_id}",
+    )
+
     db.commit()
     db.refresh(msg)
 

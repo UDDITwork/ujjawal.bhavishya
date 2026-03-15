@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.auth import get_current_user
+from app.routers.notifications import create_notification
+from app.email import send_certificate_earned_email
 from app.models import (
     User,
     Assessment,
@@ -451,6 +453,24 @@ def submit_assessment(
 
     # Get module title
     module = db.query(CourseModule).filter(CourseModule.id == assessment.module_id).first()
+    module_title = module.title if module else "Assessment"
+
+    # Notification on pass/fail
+    if passed:
+        create_notification(
+            db, "student", current_user.id, "assessment_passed",
+            f"Congratulations! You passed {module_title}!",
+            f"You scored {score}/{assessment.total_questions}. You can now earn your certificate.",
+            f"/dashboard/assessments/{assessment_id}/results/{attempt.id}",
+        )
+    else:
+        create_notification(
+            db, "student", current_user.id, "assessment_failed",
+            f"Keep going! You didn't pass {module_title} yet.",
+            f"You scored {score}/{assessment.total_questions}. You can retry in 24 hours.",
+            f"/dashboard/assessments/{assessment_id}/results/{attempt.id}",
+        )
+    db.commit()
 
     # Check if certificate already exists
     existing_cert = (
@@ -630,6 +650,23 @@ def generate_certificate(
     db.commit()
     db.refresh(cert)
 
+    # Notification + email for certificate
+    mod_title = module.title if module else "Module"
+    create_notification(
+        db, "student", current_user.id, "cert_earned",
+        f"Certificate earned for {mod_title}!",
+        f"Your certificate #{cert_number} is ready to download and share.",
+        f"/dashboard/certificates",
+    )
+    db.commit()
+
+    try:
+        send_certificate_earned_email(
+            current_user.name, current_user.email, mod_title, cert_slug
+        )
+    except Exception:
+        pass  # Don't fail cert generation if email fails
+
     return CertificateResponse(
         id=cert.id,
         cert_number=cert.cert_number,
@@ -676,12 +713,20 @@ def public_certificate(cert_slug: str, db: Session = Depends(get_db)):
     if not cert:
         raise HTTPException(status_code=404, detail="Certificate not found")
 
+    # Enrich cert_data with live profile_image from user record
+    import json as _json
+    cert_data = _json.loads(cert.cert_data_json)
+    user = db.query(User).filter(User.id == cert.user_id).first()
+    if user and user.profile_image:
+        cert_data["profile_image"] = user.profile_image
+    enriched_json = _json.dumps(cert_data)
+
     from fastapi.responses import JSONResponse
 
     return JSONResponse(
-        content={"cert_data_json": cert.cert_data_json},
+        content={"cert_data_json": enriched_json},
         headers={
-            "Cache-Control": "public, max-age=86400, immutable",
+            "Cache-Control": "public, max-age=3600",
         },
     )
 

@@ -575,3 +575,42 @@ class MentorSessionDetailResponse(BaseModel):
 
 class UnreadCountResponse(BaseModel):
     count: int
+
+
+# ─── Password Reset ──────────────────────────────────────
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=1)
+    new_password: str = Field(min_length=6)
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=1)
+    new_password: str = Field(min_length=6)
+
+
+# ─── Notifications ──────────────────────────────────────
+
+
+class NotificationResponse(BaseModel):
+    id: str
+    recipient_type: str
+    recipient_id: str
+    type: str
+    title: str
+    message: Optional[str] = None
+    link: Optional[str] = None
+    is_read: int = 0
+    created_at: str
+
+    model_config = {"from_attributes": True}
+
+
+class NotificationListResponse(BaseModel):
+    notifications: list[NotificationResponse]
+    total: int

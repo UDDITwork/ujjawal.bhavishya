@@ -8,6 +8,7 @@ import Image from 'next/image'
 import {
   Plus, Loader2, MessageSquare, FileText, Clock,
   BarChart3, Calendar, Flame, ArrowRight, Activity,
+  BookOpen, Award, Users, Briefcase, CheckCircle, Lock,
   type LucideIcon,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -347,6 +348,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [profileGender, setProfileGender] = useState<string | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [analytics, setAnalytics] = useState<any>(null)
 
   const firstName = user?.name?.split(' ')[0] || 'there'
 
@@ -367,6 +370,20 @@ export default function DashboardPage() {
       }
     }
     load()
+
+    // Fetch analytics summary
+    async function loadAnalytics() {
+      try {
+        const res = await fetch('/api/analytics/student-summary')
+        if (res.ok) {
+          const data = await res.json()
+          setAnalytics(data)
+        }
+      } catch {
+        // silently fail
+      }
+    }
+    loadAnalytics()
   }, [])
 
   /* --- Computed stats --- */
@@ -642,6 +659,142 @@ export default function DashboardPage() {
           />
         </motion.div>
       </div>
+
+      {/* Row 5: Learning Progress (from analytics) */}
+      {analytics && (
+        <>
+          {/* Extended Stats Row */}
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-5"
+          >
+            <StatCard icon={BookOpen} value={analytics.modules?.completed || 0} label={`/ ${analytics.modules?.total || 0} Modules`} color="green" />
+            <StatCard icon={CheckCircle} value={analytics.assessments?.passed || 0} label={`/ ${analytics.assessments?.total || 0} Assessments`} color="blue" />
+            <StatCard icon={Award} value={analytics.certificates?.total || 0} label="Certificates" color="amber" />
+            <StatCard icon={Users} value={analytics.mentorship?.total_sessions || 0} label="Mentor Sessions" color="purple" />
+            <StatCard icon={Briefcase} value={analytics.jobs?.applied || 0} label="Jobs Applied" color="green" />
+            <StatCard icon={Flame} value={analytics.streak?.longest || 0} label="Longest Streak" color="amber" />
+          </motion.div>
+
+          {/* Row 6: Module Progress Cards */}
+          {analytics.modules?.modules_detail?.length > 0 && (
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              transition={{ ...fadeInUpTransition, delay: 0.3 }}
+              className="mt-5"
+            >
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <BookOpen size={16} className="text-gray-400" />
+                    <h2 className="text-sm font-semibold text-gray-900">Learning Path</h2>
+                  </div>
+                  <span className="text-xs text-gray-400">
+                    {analytics.modules.completion_percentage?.toFixed(0) || 0}% complete
+                  </span>
+                </div>
+
+                {/* Overall progress bar */}
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-5">
+                  <div
+                    className="h-full bg-green-600 rounded-full transition-all duration-700"
+                    style={{ width: `${analytics.modules.completion_percentage || 0}%` }}
+                  />
+                </div>
+
+                {/* Module cards grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {analytics.modules.modules_detail.map((mod: { id: string; title: string; category: string; is_completed: number; progress_pct: number; score: number; max_score: number }) => (
+                    <Link
+                      key={mod.id}
+                      href={`/dashboard/classroom/${mod.id}`}
+                      className="group"
+                    >
+                      <div className={`rounded-lg border p-3 transition-all ${
+                        mod.is_completed
+                          ? 'border-green-200 bg-green-50/30'
+                          : mod.progress_pct > 0
+                            ? 'border-blue-200 bg-blue-50/20'
+                            : 'border-gray-200 hover:border-gray-300'
+                      }`}>
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <p className="text-sm font-medium text-gray-800 leading-tight group-hover:text-green-800 transition-colors">
+                            {mod.title}
+                          </p>
+                          {mod.is_completed ? (
+                            <CheckCircle size={14} className="text-green-600 shrink-0 mt-0.5" />
+                          ) : mod.progress_pct > 0 ? (
+                            <Activity size={14} className="text-blue-500 shrink-0 mt-0.5" />
+                          ) : (
+                            <Lock size={12} className="text-gray-300 shrink-0 mt-0.5" />
+                          )}
+                        </div>
+                        <p className="text-[10px] text-gray-400 mb-2">{mod.category}</p>
+                        <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${
+                              mod.is_completed ? 'bg-green-500' : 'bg-blue-400'
+                            }`}
+                            style={{ width: `${mod.progress_pct}%` }}
+                          />
+                        </div>
+                        {mod.is_completed && (
+                          <p className="text-[10px] text-green-600 mt-1.5 font-medium">
+                            Score: {mod.score}/{mod.max_score}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Row 7: Certificates earned */}
+          {analytics.certificates?.list?.length > 0 && (
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              transition={{ ...fadeInUpTransition, delay: 0.35 }}
+              className="mt-5"
+            >
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Award size={16} className="text-amber-500" />
+                    <h2 className="text-sm font-semibold text-gray-900">Certificates Earned</h2>
+                  </div>
+                  <Link
+                    href="/dashboard/certifications"
+                    className="flex items-center gap-1 text-xs text-gray-400 hover:text-green-700 transition-colors"
+                  >
+                    View all <ArrowRight size={12} />
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {analytics.certificates.list.map((cert: { title: string; cert_number: string; issued_at: string }, idx: number) => (
+                    <div key={idx} className="flex items-center gap-3 p-3 rounded-lg border border-amber-100 bg-amber-50/30">
+                      <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                        <Award size={16} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-gray-800 truncate">{cert.title}</p>
+                        <p className="text-[10px] text-gray-400">{cert.cert_number} &middot; {new Date(cert.issued_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </>
+      )}
     </div>
   )
 }

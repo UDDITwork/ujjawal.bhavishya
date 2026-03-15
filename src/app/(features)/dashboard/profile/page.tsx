@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
   Loader2, Save, User, GraduationCap, Heart, Phone, School, Camera,
-  Briefcase, MapPin, Upload, FileText, Globe, Code,
+  Briefcase, MapPin, Upload, FileText, Globe, Code, Lock, Eye, EyeOff,
 } from 'lucide-react'
 
 function LinkedInIcon({ size = 14 }: { size?: number }) {
@@ -85,6 +85,108 @@ const CERTIFICATION_FIELDS: FieldSchema[] = [
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024
 const MAX_DOC_SIZE = 5 * 1024 * 1024
+
+function ChangePasswordSection() {
+  const [showCurrent, setShowCurrent] = useState(false)
+  const [showNew, setShowNew] = useState(false)
+  const [changingPassword, setChangingPassword] = useState(false)
+  const [pwForm, setPwForm] = useState({ current_password: '', new_password: '', confirm: '' })
+
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault()
+    if (pwForm.new_password.length < 6) {
+      toast.error('New password must be at least 6 characters')
+      return
+    }
+    if (pwForm.new_password !== pwForm.confirm) {
+      toast.error('Passwords do not match')
+      return
+    }
+    setChangingPassword(true)
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          current_password: pwForm.current_password,
+          new_password: pwForm.new_password,
+        }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        toast.success('Password updated successfully')
+        setPwForm({ current_password: '', new_password: '', confirm: '' })
+      } else {
+        toast.error(data.error || 'Failed to update password')
+      }
+    } catch {
+      toast.error('Something went wrong')
+    } finally {
+      setChangingPassword(false)
+    }
+  }
+
+  const inputClass = 'w-full px-4 py-3 min-h-[44px] rounded-lg border border-gray-200 bg-gray-50 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-100 transition-all duration-200 text-sm'
+
+  return (
+    <div className="rounded-2xl bg-white border border-gray-200 shadow-sm overflow-hidden">
+      <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <Lock size={16} className="text-green-800" />
+        <h2 className="text-sm font-bold text-gray-900">Change Password</h2>
+      </div>
+      <form onSubmit={handleChangePassword} className="p-6 space-y-4">
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Current Password</label>
+          <div className="relative">
+            <input
+              type={showCurrent ? 'text' : 'password'}
+              value={pwForm.current_password}
+              onChange={(e) => setPwForm({ ...pwForm, current_password: e.target.value })}
+              placeholder="Enter current password"
+              className={`${inputClass} pr-11`}
+            />
+            <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">New Password</label>
+          <div className="relative">
+            <input
+              type={showNew ? 'text' : 'password'}
+              value={pwForm.new_password}
+              onChange={(e) => setPwForm({ ...pwForm, new_password: e.target.value })}
+              placeholder="At least 6 characters"
+              className={`${inputClass} pr-11`}
+            />
+            <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Confirm New Password</label>
+          <input
+            type="password"
+            value={pwForm.confirm}
+            onChange={(e) => setPwForm({ ...pwForm, confirm: e.target.value })}
+            placeholder="Re-enter new password"
+            className={inputClass}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={changingPassword || !pwForm.current_password || !pwForm.new_password}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-green-800 text-white text-sm font-medium hover:bg-green-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {changingPassword ? <Loader2 size={14} className="animate-spin" /> : <Lock size={14} />}
+          Update Password
+        </button>
+      </form>
+    </div>
+  )
+}
 
 export default function ProfilePage() {
   const { user, setUser } = useAuthStore()
@@ -868,12 +970,22 @@ export default function ProfilePage() {
             </div>
           </motion.div>
 
-          {/* Save Button */}
+          {/* Change Password */}
           <motion.div
             variants={fadeInUp}
             initial="initial"
             animate="animate"
             transition={{ ...fadeInUpTransition, delay: 0.45 }}
+          >
+            <ChangePasswordSection />
+          </motion.div>
+
+          {/* Save Button */}
+          <motion.div
+            variants={fadeInUp}
+            initial="initial"
+            animate="animate"
+            transition={{ ...fadeInUpTransition, delay: 0.5 }}
           >
             <button
               onClick={handleSave}

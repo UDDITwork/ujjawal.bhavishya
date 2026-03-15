@@ -35,6 +35,8 @@ class User(Base):
     profile_completed: Mapped[int] = mapped_column(
         Integer, nullable=False, default=0
     )
+    reset_token: Mapped[str] = mapped_column(String(100), nullable=True)
+    reset_token_expiry: Mapped[str] = mapped_column(String(50), nullable=True)
     created_at: Mapped[str] = mapped_column(
         String(50), nullable=False, default=utc_now
     )
@@ -590,6 +592,35 @@ class MentorMessage(Base):
     sender_id: Mapped[str] = mapped_column(String(36), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
     message_order: Mapped[int] = mapped_column(Integer, nullable=False)
+    created_at: Mapped[str] = mapped_column(
+        String(50), nullable=False, default=utc_now
+    )
+
+
+# ─── Notifications ──────────────────────────────────────
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=generate_uuid
+    )
+    recipient_type: Mapped[str] = mapped_column(
+        String(10), nullable=False
+    )  # "student" or "mentor"
+    recipient_id: Mapped[str] = mapped_column(
+        String(36), nullable=False, index=True
+    )
+    type: Mapped[str] = mapped_column(
+        String(30), nullable=False
+    )  # mentor_reply, session_accepted, session_rejected, cert_earned, assessment_passed, assessment_failed, system
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    message: Mapped[str] = mapped_column(Text, nullable=True)
+    link: Mapped[str] = mapped_column(String(300), nullable=True)
+    is_read: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )  # 0 or 1
     created_at: Mapped[str] = mapped_column(
         String(50), nullable=False, default=utc_now
     )
