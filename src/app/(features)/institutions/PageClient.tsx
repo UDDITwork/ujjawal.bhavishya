@@ -176,8 +176,8 @@ const indianRealities = [
 
 const contactInfo = [
   { icon: Phone, label: '+91 95991 71744', href: 'tel:+919599171744' },
-  { icon: Mail, label: 'contact@iklavya.in', href: 'mailto:contact@iklavya.in' },
-  { icon: Globe, label: 'www.iklavya.in', href: 'https://www.iklavya.in' },
+  { icon: Mail, label: 'contact@ujjwalbhavishya.in', href: 'mailto:contact@ujjwalbhavishya.in' },
+  { icon: Globe, label: 'www.ujjwalbhavishya.in', href: 'https://www.ujjwalbhavishya.in' },
   { icon: MapPin, label: 'Gaur City, Greater Noida West, Uttar Pradesh', href: null },
 ]
 
@@ -219,12 +219,12 @@ export default function InstitutionsPage() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a href="mailto:contact@iklavya.in?subject=Institutional%20Partnership%20Inquiry">
+                <a href="mailto:contact@ujjwalbhavishya.in?subject=Institutional%20Partnership%20Inquiry">
                   <button className="border-2 border-green-800 text-green-800 bg-white hover:bg-green-50/50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all shadow-lg shadow-green-200/30">
-                    Partner With IKLAVYA
+                    Partner With UJJWAL BHAVISHYA
                   </button>
                 </a>
-                <a href="mailto:contact@iklavya.in?subject=Schedule%20a%20Demo">
+                <a href="mailto:contact@ujjwalbhavishya.in?subject=Schedule%20a%20Demo">
                   <button className="border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                     Schedule a Demo
                   </button>
@@ -295,7 +295,7 @@ export default function InstitutionsPage() {
           <RevealSection>
             <div className="bg-green-50/40 border-2 border-green-800 rounded-2xl p-8 sm:p-12 text-center">
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-green-800 mb-4">
-                IKLAVYA partners with institutions to deliver all four.
+                UJJWAL BHAVISHYA partners with institutions to deliver all four.
               </h3>
               <p className="text-lg text-slate-600 font-light max-w-3xl mx-auto">
                 We work with colleges to directly onboard students into our AI-powered Career Readiness System &mdash;
@@ -323,7 +323,7 @@ export default function InstitutionsPage() {
                   A Strategic <span className="text-green-800">Placement Partnership</span>.
                 </h2>
                 <p className="text-lg text-slate-600 font-light leading-relaxed">
-                  When institutions collaborate with IKLAVYA:
+                  When institutions collaborate with UJJWAL BHAVISHYA:
                 </p>
                 <div className="space-y-4">
                   {partnershipBenefits.map((item, i) => (
@@ -392,7 +392,7 @@ export default function InstitutionsPage() {
                 <span className="text-green-800">Structured &amp; Transparent</span>.
               </h2>
               <p className="text-lg text-slate-600 font-light mt-6 max-w-3xl mx-auto">
-                We work with institutions to onboard students directly into the IKLAVYA Career System
+                We work with institutions to onboard students directly into the UJJWAL BHAVISHYA Career System
                 under an institutional partnership model.
               </p>
             </div>
@@ -781,10 +781,10 @@ export default function InstitutionsPage() {
           <RevealSection>
             <div className="text-center mb-14 sm:mb-20">
               <span className="text-sm font-black text-green-800 uppercase tracking-[0.4em]">
-                The IKLAVYA Advantage
+                The UJJWAL BHAVISHYA Advantage
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900 mt-4 leading-tight">
-                Why Institutions Partner With <span className="text-green-800">IKLAVYA</span>.
+                Why Institutions Partner With <span className="text-green-800">UJJWAL BHAVISHYA</span>.
               </h2>
             </div>
           </RevealSection>
@@ -886,7 +886,7 @@ export default function InstitutionsPage() {
                       Your Placement Technology Partner
                     </h3>
                     <p className="text-sm text-slate-500 leading-relaxed">
-                      IKLAVYA becomes your placement technology partner &mdash;
+                      UJJWAL BHAVISHYA becomes your placement technology partner &mdash;
                       working alongside you to deliver stronger results.
                     </p>
                     <p className="text-lg font-serif font-bold text-green-800 italic">
@@ -910,10 +910,10 @@ export default function InstitutionsPage() {
               <div className="space-y-8">
                 <div>
                   <span className="text-[10px] font-black text-green-800 uppercase tracking-widest">
-                    Partner With IKLAVYA Today
+                    Partner With UJJWAL BHAVISHYA Today
                   </span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 mt-3 leading-tight">
-                    With IKLAVYA as your placement partner, your institution can lead the future &mdash;
+                    With UJJWAL BHAVISHYA as your placement partner, your institution can lead the future &mdash;
                     producing <span className="text-green-800">job-ready graduates</span> trusted by Indian employers.
                   </h3>
                 </div>
@@ -945,17 +945,17 @@ export default function InstitutionsPage() {
 
               <div className="text-center md:text-left space-y-8">
                 <div className="space-y-4">
-                  <a href="mailto:contact@iklavya.in?subject=Institutional%20Partnership%20Inquiry" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Institutional%20Partnership%20Inquiry" className="block">
                     <button className="w-full sm:w-auto border-2 border-green-800 text-green-800 hover:bg-green-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg hover:scale-105 transition-all shadow-lg shadow-green-200/30">
-                      Partner With IKLAVYA
+                      Partner With UJJWAL BHAVISHYA
                     </button>
                   </a>
-                  <a href="mailto:contact@iklavya.in?subject=Schedule%20a%20Campus%20Demo" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Schedule%20a%20Campus%20Demo" className="block">
                     <button className="w-full sm:w-auto border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Schedule a Campus Demo
                     </button>
                   </a>
-                  <a href="mailto:contact@iklavya.in?subject=Placement%20Cell%20Setup%20Inquiry" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Placement%20Cell%20Setup%20Inquiry" className="block">
                     <button className="w-full sm:w-auto border-2 border-amber-700 text-amber-700 hover:bg-amber-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Setup Your Placement Cell
                     </button>

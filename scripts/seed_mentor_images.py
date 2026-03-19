@@ -13,19 +13,19 @@ API_SECRET = "KEi87vzFvSBQwfPsjpKb2mIvl-w"
 UPLOAD_URL = f"https://api.cloudinary.com/v1_1/{CLOUD_NAME}/image/upload"
 
 # Backend API
-API_BASE = "https://iklavya-api-472075970266.asia-south1.run.app"
-ADMIN_EMAIL = "uddit@iklavya.com"
-ADMIN_PASSWORD = "Iklavya@2026"
+API_BASE = "https://ujjwal-bhavishya-api-472075970266.asia-south1.run.app"
+ADMIN_EMAIL = "uddit@ujjwalbhavishya.com"
+ADMIN_PASSWORD = "Ujjwal Bhavishya@2026"
 
 # Mentor emails → image source URLs (professional headshots)
 MENTOR_IMAGES = {
-    "priya.sharma@iklavya.in": "https://randomuser.me/api/portraits/women/68.jpg",
-    "rajesh.verma@iklavya.in": "https://randomuser.me/api/portraits/men/32.jpg",
-    "ananya.desai@iklavya.in": "https://randomuser.me/api/portraits/women/44.jpg",
-    "vikram.rathore@iklavya.in": "https://randomuser.me/api/portraits/men/46.jpg",
-    "meera.iyer@iklavya.in": "https://randomuser.me/api/portraits/women/26.jpg",
-    "arjun.mehta@iklavya.in": "https://randomuser.me/api/portraits/men/81.jpg",
-    "sunita.choudhary@iklavya.in": "https://randomuser.me/api/portraits/women/89.jpg",
+    "priya.sharma@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/women/68.jpg",
+    "rajesh.verma@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/men/32.jpg",
+    "ananya.desai@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/women/44.jpg",
+    "vikram.rathore@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/men/46.jpg",
+    "meera.iyer@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/women/26.jpg",
+    "arjun.mehta@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/men/81.jpg",
+    "sunita.choudhary@ujjwalbhavishya.in": "https://randomuser.me/api/portraits/women/89.jpg",
 }
 
 
@@ -42,7 +42,7 @@ def upload_to_cloudinary(image_url: str, public_id: str) -> str:
     params = {
         "public_id": public_id,
         "timestamp": timestamp,
-        "folder": "iklavya/mentors",
+        "folder": "ujjwal-bhavishya/mentors",
         "transformation": "c_fill,w_400,h_400,g_face,q_auto,f_auto",
     }
     signature = cloudinary_signature(params)

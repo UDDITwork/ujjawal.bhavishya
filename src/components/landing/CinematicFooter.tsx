@@ -104,8 +104,8 @@ export default function CinematicFooter() {
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-block">
               <Image
-                src="/iklavya logo.png"
-                alt="IKLAVYA"
+                src="/ujjwal-bhavishya logo.png"
+                alt="UJJWAL BHAVISHYA"
                 width={220}
                 height={110}
                 className="h-16 w-auto object-contain brightness-0 invert"
@@ -121,9 +121,9 @@ export default function CinematicFooter() {
                 <Phone size={15} className="text-slate-500 group-hover:text-green-500 transition-colors flex-shrink-0" />
                 +91 95991 71744
               </a>
-              <a href="mailto:contact@iklavya.in" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
+              <a href="mailto:contact@ujjwalbhavishya.in" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
                 <Mail size={15} className="text-slate-500 group-hover:text-green-500 transition-colors flex-shrink-0" />
-                contact@iklavya.in
+                contact@ujjwalbhavishya.in
               </a>
               <div className="flex items-center gap-2.5 text-slate-400 text-[13px]">
                 <MapPin size={15} className="text-slate-500 flex-shrink-0" />
@@ -234,7 +234,7 @@ export default function CinematicFooter() {
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-600">
-            &copy; {new Date().getFullYear()} IKLAVYA TECHNOLOGIES PVT. LTD. All rights reserved.
+            &copy; {new Date().getFullYear()} UJJWAL BHAVISHYA TECHNOLOGIES PVT. LTD. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-slate-600">
             <Link href="/privacy" className="hover:text-slate-400 transition-colors">Privacy</Link>

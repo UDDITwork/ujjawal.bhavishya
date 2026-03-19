@@ -1,5 +1,5 @@
 /**
- * Remotion CLI entry point for iKlavya Classroom.
+ * Remotion CLI entry point for Ujjwal Bhavishya Classroom.
  *
  * This file is passed to the Remotion CLI:
  *   npx remotion render remotion/render.ts <CompositionId> output.mp4

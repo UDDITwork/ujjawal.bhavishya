@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UJJWAL BHAVISHYA — Prototype</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  @page{size:A4;margin:0;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;color:#1e293b;background:#ccc;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{width:210mm;height:297mm;margin:0 auto;background:#fff;overflow:hidden;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+  @media screen{.page{margin:20px auto;box-shadow:0 8px 40px rgba(0,0,0,.18);}}
+
+  /* ═══════════════════════════════════════
+     PAGE 1
+     ═══════════════════════════════════════ */
+
+  .p1-top{
+    padding:24px 44px 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1.5px solid #e2e8f0;
+  }
+  .p1-brand{display:flex;align-items:center;gap:10px;}
+  .p1-brand img{height:38px;}
+  .p1-brand span{font-size:22px;font-weight:800;color:#14532d;}
+  .p1-top-r{font-size:10px;color:#94a3b8;}
+
+  .p1-hero{
+    padding:36px 44px 0;
+    display:flex;align-items:center;gap:32px;
+    flex:0 0 auto;
+  }
+  .p1-hero-text{flex:1;}
+  .p1-hero-text h1{font-size:30px;font-weight:900;line-height:1.2;color:#0f172a;margin-bottom:14px;}
+  .p1-hero-text h1 em{font-style:normal;color:#16a34a;}
+  .p1-hero-text p{font-size:13px;color:#64748b;line-height:1.65;}
+  .p1-hero-img img{width:200px;height:auto;}
+
+  .p1-stats{
+    padding:32px 44px;
+    display:flex;gap:0;
+    border-top:1.5px solid #e2e8f0;
+    border-bottom:1.5px solid #e2e8f0;
+    margin:32px 0 0;
+    flex:0 0 auto;
+  }
+  .p1-stat{flex:1;text-align:center;padding:0 16px;border-right:1.5px solid #e2e8f0;}
+  .p1-stat:last-child{border-right:none;}
+  .p1-stat-num{font-size:52px;font-weight:900;color:#dc2626;line-height:1;}
+  .p1-stat-unit{font-size:22px;font-weight:700;}
+  .p1-stat-label{font-size:11.5px;color:#64748b;margin-top:6px;line-height:1.4;}
+
+  .p1-pains{
+    padding:32px 44px;
+    flex:1;
+    display:flex;flex-direction:column;
+  }
+  .p1-pains-title{font-size:15px;font-weight:800;color:#0f172a;text-transform:uppercase;letter-spacing:1px;margin-bottom:24px;}
+  .p1-pain-grid{
+    flex:1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:24px;
+  }
+  .p1-pain{display:flex;align-items:flex-start;gap:18px;}
+  .p1-pain img{width:120px;height:auto;flex-shrink:0;}
+  .p1-pain h3{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px;}
+  .p1-pain p{font-size:11.5px;color:#64748b;line-height:1.6;}
+
+  .p1-foot{
+    padding:10px 44px;
+    border-top:1px solid #e2e8f0;
+    display:flex;justify-content:space-between;
+    font-size:8.5px;color:#cbd5e1;
+    flex:0 0 auto;
+  }
+
+  /* ═══════════════════════════════════════
+     PAGE 2
+     ═══════════════════════════════════════ */
+
+  .p2-top{
+    padding:28px 44px 20px;
+    border-bottom:1.5px solid #e2e8f0;
+    flex:0 0 auto;
+  }
+  .p2-top h2{font-size:26px;font-weight:900;color:#0f172a;}
+  .p2-top p{font-size:12.5px;color:#94a3b8;margin-top:4px;}
+
+  .p2-modules{
+    padding:28px 44px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr 1fr;
+    gap:24px;
+    flex:1;
+  }
+  .p2-mod{display:flex;gap:16px;align-items:flex-start;}
+  .p2-mod img{width:110px;height:auto;flex-shrink:0;}
+  .p2-mod h3{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:5px;}
+  .p2-mod p{font-size:11px;color:#64748b;line-height:1.55;}
+
+  .p2-pathway{
+    margin:0 44px;
+    background:#f8fafc;
+    border:1.5px solid #e2e8f0;
+    border-radius:14px;
+    padding:24px;
+    flex:0 0 auto;
+  }
+  .p2-pw-title{text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-bottom:18px;}
+  .p2-steps{display:flex;align-items:center;gap:10px;}
+  .p2-stp{
+    flex:1;background:#fff;
+    border:1.5px solid #e2e8f0;
+    border-radius:10px;padding:18px 14px;text-align:center;
+  }
+  .p2-stp-n{font-size:30px;font-weight:900;color:#e2e8f0;line-height:1;}
+  .p2-stp h4{font-size:12.5px;font-weight:700;margin:6px 0 4px;color:#0f172a;}
+  .p2-stp p{font-size:9.5px;color:#94a3b8;line-height:1.4;}
+  .p2-arr{font-size:22px;color:#cbd5e1;flex-shrink:0;}
+
+  .p2-biz{
+    display:flex;gap:14px;
+    padding:22px 44px 28px;
+    flex:0 0 auto;
+  }
+  .p2-bz{flex:1;padding:18px 20px;border-radius:12px;}
+  .p2-bz h4{font-size:12.5px;font-weight:700;margin-bottom:6px;}
+  .p2-bz p{font-size:10.5px;color:#64748b;line-height:1.5;}
+  .bz1{background:#eff6ff;border:1.5px solid #bfdbfe;} .bz1 h4{color:#1d4ed8;}
+  .bz2{background:#f5f3ff;border:1.5px solid #ddd6fe;} .bz2 h4{color:#6d28d9;}
+  .bz3{background:#fff7ed;border:1.5px solid #fed7aa;} .bz3 h4{color:#c2410c;}
+
+  .p2-foot{
+    padding:10px 44px;
+    border-top:1px solid #e2e8f0;
+    display:flex;justify-content:space-between;
+    font-size:8.5px;color:#cbd5e1;
+    flex:0 0 auto;
+  }
+
+  /* ═══════════════════════════════════════
+     PAGE 3
+     ═══════════════════════════════════════ */
+
+  .p3-top{
+    padding:28px 44px 20px;
+    border-bottom:1.5px solid #e2e8f0;
+    flex:0 0 auto;
+  }
+  .p3-top h2{font-size:24px;font-weight:900;color:#0f172a;}
+  .p3-top p{font-size:12px;color:#94a3b8;margin-top:4px;}
+
+  .p3-links{
+    display:flex;gap:14px;
+    padding:20px 44px;
+    flex:0 0 auto;
+  }
+  .p3-lk{
+    flex:1;text-align:center;padding:14px;
+    border:1.5px solid #e2e8f0;border-radius:10px;
+    background:#fafafa;
+  }
+  .p3-lk h4{font-size:11.5px;font-weight:700;color:#0f172a;margin-bottom:4px;}
+  .p3-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:5px;}
+  .p3-lk a{font-size:10px;color:#2563eb;text-decoration:none;font-weight:500;}
+
+  .p3-screens{
+    padding:0 44px 20px;
+    flex:1;
+    display:flex;flex-direction:column;
+  }
+  .p3-screens h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0f172a;margin-bottom:16px;}
+  .p3-ss-row{display:flex;flex-direction:column;gap:12px;flex:1;}
+  .p3-ss-item{flex:1;}
+  .p3-ss-item img{
+    width:100%;
+    height:auto;
+    display:block;
+    box-shadow:0 4px 20px rgba(0,0,0,.1);
+    border-radius:8px;
+  }
+  .p3-ss-item h4{font-size:11px;font-weight:700;color:#0f172a;margin-top:10px;}
+  .p3-ss-item p{font-size:9.5px;color:#94a3b8;margin-top:3px;line-height:1.4;}
+
+  .p3-traction{
+    margin:0 44px;
+    background:#f8fafc;
+    border:1.5px solid #e2e8f0;
+    border-radius:14px;
+    padding:24px 20px;
+    display:flex;gap:12px;
+    flex:0 0 auto;
+  }
+  .p3-tr{flex:1;text-align:center;}
+  .p3-tr-num{font-size:28px;font-weight:900;color:#0f172a;line-height:1;}
+  .p3-tr-label{font-size:9.5px;color:#94a3b8;margin-top:5px;line-height:1.3;}
+
+  .p3-bottom{
+    margin-top:auto;
+    padding:16px 44px;
+    border-top:1.5px solid #e2e8f0;
+    display:flex;justify-content:space-between;align-items:center;
+    flex:0 0 auto;
+    background:#f8fafc;
+  }
+  .p3-bl{display:flex;align-items:center;gap:10px;}
+  .p3-bl img{height:30px;}
+  .p3-bl span{font-size:13px;font-weight:700;color:#14532d;}
+  .p3-br{font-size:9.5px;color:#94a3b8;text-align:right;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="p1-top">
+    <div class="p1-brand"><img src="public/ujjwal-bhavishya logo.png" alt=""><span>UJJWAL BHAVISHYA</span></div>
+    <div class="p1-top-r">Prototype Overview &bull; 2026</div>
+  </div>
+
+  <div class="p1-hero">
+    <div class="p1-hero-text">
+      <h1>From Educated to <em>Employed</em> &mdash;<br>India's Own AI Career System</h1>
+      <p>Every year, millions of Indian students graduate with degrees. But only a small percentage feel truly confident walking into interviews. The problem isn't intelligence &mdash; it's <strong>preparation aligned to real hiring expectations.</strong></p>
+    </div>
+    <div class="p1-hero-img">
+      <img src="public/multiple features.png" alt="">
+    </div>
+  </div>
+
+  <div class="p1-stats">
+    <div class="p1-stat">
+      <div class="p1-stat-num">80<span class="p1-stat-unit">%</span></div>
+      <div class="p1-stat-label">of Indian graduates are<br>unemployable (NASSCOM)</div>
+    </div>
+    <div class="p1-stat">
+      <div class="p1-stat-num">75<span class="p1-stat-unit">%</span></div>
+      <div class="p1-stat-label">of resumes rejected by ATS<br>before a human sees them</div>
+    </div>
+    <div class="p1-stat">
+      <div class="p1-stat-num">1.5<span class="p1-stat-unit">Cr</span></div>
+      <div class="p1-stat-label">graduates enter job market<br>yearly with zero preparation</div>
+    </div>
+  </div>
+
+  <div class="p1-pains">
+    <div class="p1-pains-title">Core Pain Points We Solve</div>
+    <div class="p1-pain-grid">
+      <div class="p1-pain">
+        <img src="public/communication.png" alt="">
+        <div>
+          <h3>Interview Anxiety</h3>
+          <p>Students ace written exams but freeze in interviews. There's no safe, realistic space to practice &mdash; especially for Tier 2/3 college students who lack any exposure to corporate interview environments.</p>
+        </div>
+      </div>
+      <div class="p1-pain">
+        <img src="public/man filling resume.png" alt="">
+        <div>
+          <h3>Resume Black Hole</h3>
+          <p>75% of resumes are auto-rejected by Applicant Tracking Systems before a human ever sees them. Most students don't even know ATS exists, let alone how to optimize their resumes for it.</p>
+        </div>
+      </div>
+      <div class="p1-pain">
+        <img src="public/career_guidance.png" alt="">
+        <div>
+          <h3>Blind Career Choices</h3>
+          <p>No data-driven guidance available. Students pick careers based on parental pressure or peer influence &mdash; not market demand, industry growth trends, or their own strengths and aptitudes.</p>
+        </div>
+      </div>
+      <div class="p1-pain">
+        <img src="public/mentorship and collaboration.png" alt="">
+        <div>
+          <h3>Placement Infrastructure Gap</h3>
+          <p>Top colleges have dedicated placement cells and direct employer connections. Tier 2/3 colleges have a notice board. The infrastructure gap is structural, systemic, and massive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p1-foot">
+    <span>UJJWAL BHAVISHYA</span>
+    <span>Page 1 of 3</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div class="p2-top">
+    <h2>How UJJWAL BHAVISHYA Solves This</h2>
+    <p>6 AI-powered modules, one platform &mdash; built for Indian students &amp; Indian employers</p>
+  </div>
+
+  <div class="p2-modules">
+    <div class="p2-mod">
+      <img src="public/ai interviewers.png" alt="">
+      <div>
+        <h3>AI Mock Interviews</h3>
+        <p>Text, Voice &amp; Video simulations trained on Indian hiring patterns. Real-time AI feedback on communication clarity, confidence, body language, and content quality.</p>
+      </div>
+    </div>
+    <div class="p2-mod">
+      <img src="public/man filling resume.png" alt="">
+      <div>
+        <h3>ATS-Optimized Resume Builder</h3>
+        <p>AI analyzes job descriptions, aligns keywords, highlights measurable achievements, and tailors resumes per role. ATS scores improve by up to 45%.</p>
+      </div>
+    </div>
+    <div class="p2-mod">
+      <img src="public/career_guidance.png" alt="">
+      <div>
+        <h3>AI Career Guidance Engine</h3>
+        <p>Data-driven career path recommendations based on skills, strengths, and real-time Indian market demand. Structured roadmaps with milestone tracking.</p>
+      </div>
+    </div>
+    <div class="p2-mod">
+      <img src="public/gamifed quiz competition.png" alt="">
+      <div>
+        <h3>Demand-Based Skilling</h3>
+        <p>7+ interactive video modules with embedded quizzes covering Time Management, Communication, Workplace Etiquette, Financial Literacy, Leadership &amp; Digital Skills.</p>
+      </div>
+    </div>
+    <div class="p2-mod">
+      <img src="public/certificates and achievement.png" alt="">
+      <div>
+        <h3>Assessments &amp; Certificates</h3>
+        <p>Skill assessments with verified, QR-coded certificates. Shareable digital credentials with scores &amp; grades, recognized by 150+ employer partners.</p>
+      </div>
+    </div>
+    <div class="p2-mod">
+      <img src="public/mentorship and collaboration.png" alt="">
+      <div>
+        <h3>Verified Mentor Network</h3>
+        <p>1-on-1 sessions with verified industry mentors. Chat-based guidance, session booking, expertise matching &amp; structured career support.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p2-pathway">
+    <div class="p2-pw-title">The UJJWAL BHAVISHYA Verified Student Pathway</div>
+    <div class="p2-steps">
+      <div class="p2-stp">
+        <div class="p2-stp-n">01</div>
+        <h4>Practice AI Interviews</h4>
+        <p>Train for HR, technical, behavioral &amp; salary negotiation rounds</p>
+      </div>
+      <div class="p2-arr">&#10132;</div>
+      <div class="p2-stp">
+        <div class="p2-stp-n">02</div>
+        <h4>Get Skill-Matched</h4>
+        <p>AI evaluates skills against 150+ active job requirements</p>
+      </div>
+      <div class="p2-arr">&#10132;</div>
+      <div class="p2-stp">
+        <div class="p2-stp-n">03</div>
+        <h4>Get Placed</h4>
+        <p>Structured access to 150+ MNCs as a Verified Student</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p2-biz">
+    <div class="p2-bz bz1">
+      <h4>B2C &mdash; Students</h4>
+      <p>Direct platform access for interview prep, resume building, career guidance, and AI-powered job matching.</p>
+    </div>
+    <div class="p2-bz bz2">
+      <h4>B2B &mdash; Institutions</h4>
+      <p>AI-powered placement infrastructure for colleges. Improve placement rates, NAAC documentation &amp; employer relationships.</p>
+    </div>
+    <div class="p2-bz bz3">
+      <h4>B2B &mdash; Employers</h4>
+      <p>Pre-assessed, verified talent pipeline. Reduce hiring costs by 60%. 90-day replacement guarantee on every hire.</p>
+    </div>
+  </div>
+
+  <div class="p2-foot">
+    <span>UJJWAL BHAVISHYA</span>
+    <span>Page 2 of 3</span>
+    <span>Confidential</span>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+  <div class="p3-top">
+    <h2>Our Product is Live &amp; Being Used</h2>
+    <p>UJJWAL BHAVISHYA is a fully deployed, working platform accessible at ujjwalbhavishya.in &mdash; not just an idea.</p>
+  </div>
+
+  <div class="p3-links">
+    <div class="p3-lk">
+      <h4><span class="p3-dot"></span>Live Website</h4>
+      <a href="https://ujjwalbhavishya.in">https://ujjwalbhavishya.in</a>
+    </div>
+    <div class="p3-lk">
+      <h4><span class="p3-dot"></span>Backend API</h4>
+      <a>Hosted on Google Cloud (Asia)</a>
+    </div>
+    <div class="p3-lk">
+      <h4><span class="p3-dot"></span>Database</h4>
+      <a>Turso (AWS ap-south-1)</a>
+    </div>
+  </div>
+
+  <div class="p3-screens">
+    <h3>Live Product Screenshots</h3>
+    <div class="p3-ss-row">
+      <div class="p3-ss-item">
+        <img src="dashbaord profile.png" alt="">
+        <h4>Student Dashboard &amp; Profile</h4>
+        <p>AI-parsed resume auto-fills profile. Skill tags, education, experience tracking.</p>
+      </div>
+      <div class="p3-ss-item">
+        <img src="course module.png" alt="">
+        <h4>Interactive Classroom</h4>
+        <p>Video modules with stop-and-quiz checkpoints. Progress tracking &amp; badges.</p>
+      </div>
+      <div class="p3-ss-item">
+        <img src="certificate image screenshot.png" alt="">
+        <h4>Verified Certificates</h4>
+        <p>QR-verified credentials with scores, grades. Shareable public URL.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p3-traction">
+    <div class="p3-tr">
+      <div class="p3-tr-num">52,847+</div>
+      <div class="p3-tr-label">Students<br>Registered</div>
+    </div>
+    <div class="p3-tr">
+      <div class="p3-tr-num">128K+</div>
+      <div class="p3-tr-label">Courses<br>Completed</div>
+    </div>
+    <div class="p3-tr">
+      <div class="p3-tr-num">34,201+</div>
+      <div class="p3-tr-label">Certifications<br>Earned</div>
+    </div>
+    <div class="p3-tr">
+      <div class="p3-tr-num">150+</div>
+      <div class="p3-tr-label">Employer<br>Partners</div>
+    </div>
+    <div class="p3-tr">
+      <div class="p3-tr-num">19+</div>
+      <div class="p3-tr-label">Job Categories<br>Live Scraped</div>
+    </div>
+  </div>
+
+  <div class="p3-bottom">
+    <div class="p3-bl">
+      <img src="public/ujjwal-bhavishya logo.png" alt="">
+      <span>UJJWAL BHAVISHYA &mdash; Built for India, by India</span>
+    </div>
+    <div class="p3-br">
+      contact@ujjwalbhavishya.in &nbsp;|&nbsp; ujjwalbhavishya.in<br>
+      &copy; 2026 UJJWAL BHAVISHYA. All rights reserved.
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+  <img src="public/ujjwal-bhavishya logo.png" alt="" style="width:120px;height:auto;margin-bottom:40px;">
+  <div style="font-size:18px;font-weight:600;color:#94a3b8;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">Visit Our Live Platform</div>
+  <a href="https://ujjwalbhavishya.in" style="font-size:56px;font-weight:900;color:#0f172a;text-decoration:none;letter-spacing:-1px;line-height:1.2;">www.ujjwalbhavishya.in</a>
+  <div style="width:80px;height:4px;background:#16a34a;border-radius:4px;margin:32px 0;"></div>
+  <div style="font-size:16px;color:#64748b;line-height:1.7;max-width:480px;">
+    From Educated to Employed<br>
+    <span style="font-weight:700;color:#0f172a;">India's Own AI Career System</span>
+  </div>
+  <div style="margin-top:48px;font-size:13px;color:#94a3b8;">contact@ujjwalbhavishya.in</div>
+</div>
+
+</body>
+</html>

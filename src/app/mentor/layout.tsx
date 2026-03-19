@@ -48,7 +48,7 @@ export default function MentorLayout({ children }: { children: React.ReactNode }
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
           <Link href="/mentor/dashboard" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-gray-900 tracking-tight">IKLAVYA</span>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">UJJWAL BHAVISHYA</span>
             <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
               Mentor Portal
             </span>

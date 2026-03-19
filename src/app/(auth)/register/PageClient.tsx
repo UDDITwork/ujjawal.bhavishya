@@ -174,7 +174,7 @@ export default function RegisterPage() {
         setUser(meData.user)
       }
 
-      toast.success('Profile complete! Welcome to IKLAVYA.')
+      toast.success('Profile complete! Welcome to UJJWAL BHAVISHYA.')
       router.push('/dashboard')
     } catch {
       toast.error('Something went wrong. Please try again.')
@@ -188,7 +188,7 @@ export default function RegisterPage() {
       <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-8">
         <div className="text-center mb-6">
           <Link href="/" className="text-2xl font-bold text-gray-900 tracking-tight">
-            IKLAVYA
+            UJJWAL BHAVISHYA
           </Link>
           <h1 className="mt-3 text-lg font-semibold text-gray-900">
             {currentStep === 1 && 'Create your account'}

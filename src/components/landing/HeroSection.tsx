@@ -190,7 +190,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
             >
-              IKLAVYA
+              UJJWAL BHAVISHYA
             </motion.h1>
 
             <motion.p

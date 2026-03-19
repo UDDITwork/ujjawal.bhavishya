@@ -1,5 +1,5 @@
 // ============================================================================
-// iKlavya Classroom — Complete Course Scripts
+// Ujjwal Bhavishya Classroom — Complete Course Scripts
 // 7 Modules × 4 Segments × 150 seconds each
 // ============================================================================
 

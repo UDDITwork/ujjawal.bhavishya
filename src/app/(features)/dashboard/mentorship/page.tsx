@@ -542,7 +542,7 @@ export default function MentorshipPage() {
                   {streaming ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                 </button>
               </div>
-              <p className="text-[10px] text-gray-300 mt-1.5 text-center">Powered by IKLAVYA AI</p>
+              <p className="text-[10px] text-gray-300 mt-1.5 text-center">Powered by UJJWAL BHAVISHYA AI</p>
             </div>
           </div>
         </motion.div>

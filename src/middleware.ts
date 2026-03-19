@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
-const COOKIE_NAME = 'iklavya-token'
-const MENTOR_COOKIE_NAME = 'iklavya-mentor-token'
+const COOKIE_NAME = 'ujjwal-bhavishya-token'
+const MENTOR_COOKIE_NAME = 'ujjwal-bhavishya-mentor-token'
 
 const protectedPaths = ['/dashboard', '/admin', '/session', '/sessions', '/profile', '/resume-builder', '/resume-session', '/assessments']
 const authPaths = ['/login', '/register', '/forgot-password', '/reset-password']

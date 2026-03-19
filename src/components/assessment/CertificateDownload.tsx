@@ -10,7 +10,7 @@ interface CertificateDownloadProps {
   fileName?: string
 }
 
-export default function CertificateDownload({ certRef, fileName = 'iklavya-certificate' }: CertificateDownloadProps) {
+export default function CertificateDownload({ certRef, fileName = 'ujjwal-bhavishya-certificate' }: CertificateDownloadProps) {
   const [downloading, setDownloading] = useState(false)
 
   const handleDownload = useCallback(async () => {

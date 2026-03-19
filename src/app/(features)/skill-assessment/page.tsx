@@ -4,10 +4,10 @@ import SkillAssessmentPage from './PageClient'
 export const metadata: Metadata = {
   title: 'AI Skill Assessment',
   description:
-    'Discover your strengths and gaps with IKLAVYA\'s AI skill assessment. Get a detailed radar chart of communication, leadership, confidence and more.',
+    'Discover your strengths and gaps with UJJWAL BHAVISHYA\'s AI skill assessment. Get a detailed radar chart of communication, leadership, confidence and more.',
   keywords: ['skill assessment', 'AI skill test', 'soft skills evaluation', 'competency analysis', 'skill gap analysis'],
   openGraph: {
-    title: 'AI Skill Assessment — IKLAVYA',
+    title: 'AI Skill Assessment — UJJWAL BHAVISHYA',
     description: 'AI-powered skill assessment with detailed radar charts and personalised roadmaps.',
     url: '/skill-assessment',
   },

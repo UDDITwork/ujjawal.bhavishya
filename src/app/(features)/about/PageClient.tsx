@@ -114,7 +114,7 @@ const gridFeatures = [
   {
     tag: 'From Skill to Salary',
     tagColor: 'text-emerald-600',
-    title: 'IKLAVYA Verified Student Advantage.',
+    title: 'UJJWAL BHAVISHYA Verified Student Advantage.',
     shortDescription: 'Earned. Evaluated. Employer-Ready. Assessment completion, ATS-approved resume, interview validation, skill scoring, and priority visibility to 150+ companies.',
     image: '/about graphics/ChatGPT Image Feb 15, 2026, 07_00_30 PM.png',
     link: '/support',
@@ -178,7 +178,7 @@ const differentiators = [
     iconColor: 'text-emerald-600',
     iconBg: 'bg-emerald-50',
     title: 'We Match & Connect You to Employers',
-    description: 'IKLAVYA Verified Students get matched and connected with 150+ employers. You are verified, refined, and then introduced. Not the other way around.',
+    description: 'UJJWAL BHAVISHYA Verified Students get matched and connected with 150+ employers. You are verified, refined, and then introduced. Not the other way around.',
   },
 ]
 
@@ -204,14 +204,14 @@ const problems = [
   {
     number: '03',
     problem: 'Skill mismatch and no employer access',
-    solution: 'iKlavya Verified Students get access to 150+ MNCs. We prepare first \u2014 resume, interviews, communication, skill matching \u2014 then introduce you to employers.',
+    solution: 'Ujjwal Bhavishya Verified Students get access to 150+ MNCs. We prepare first \u2014 resume, interviews, communication, skill matching \u2014 then introduce you to employers.',
   },
 ]
 
 const contactInfo = [
   { icon: Phone, label: '+91 95991 71744', href: 'tel:+919599171744' },
-  { icon: Mail, label: 'contact@iklavya.in', href: 'mailto:contact@iklavya.in' },
-  { icon: Globe, label: 'www.iklavya.in', href: 'https://www.iklavya.in' },
+  { icon: Mail, label: 'contact@ujjwalbhavishya.in', href: 'mailto:contact@ujjwalbhavishya.in' },
+  { icon: Globe, label: 'www.ujjwalbhavishya.in', href: 'https://www.ujjwalbhavishya.in' },
   { icon: MapPin, label: 'Gaur City, Greater Noida West, Uttar Pradesh', href: null },
 ]
 
@@ -224,8 +224,8 @@ export default function AboutPage() {
           <RevealSection>
             <div className="max-w-4xl">
               <Image
-                src="/iklavya logo.png"
-                alt="iKlavya"
+                src="/ujjwal-bhavishya logo.png"
+                alt="Ujjwal Bhavishya"
                 width={180}
                 height={90}
                 className="h-20 w-auto object-contain mb-8"
@@ -234,7 +234,7 @@ export default function AboutPage() {
 
               <div className="inline-block px-4 py-2 bg-stone-100 rounded-full mb-8">
                 <span className="text-sm font-black text-green-800 uppercase tracking-[0.4em]">
-                  About iKlavya
+                  About Ujjwal Bhavishya
                 </span>
               </div>
 
@@ -249,7 +249,7 @@ export default function AboutPage() {
               <p className="text-lg sm:text-xl text-slate-600 font-light max-w-2xl leading-relaxed mb-10">
                 Every year, millions graduate &mdash; but only a small percentage feel truly confident
                 for interviews. The problem is not intelligence, it&apos;s preparation aligned to real
-                hiring expectations. Most tools are built for global markets. iKlavya is different &mdash;
+                hiring expectations. Most tools are built for global markets. Ujjwal Bhavishya is different &mdash;
                 our own AI model, purpose-built for Indian youth and Indian employers.
               </p>
 
@@ -545,7 +545,7 @@ export default function AboutPage() {
           <RevealSection>
             <div className="text-center mb-14 sm:mb-20">
               <span className="text-sm font-black text-amber-800 uppercase tracking-[0.4em]">
-                Why iKlavya Is Different
+                Why Ujjwal Bhavishya Is Different
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900 mt-4">
                 What We Actually Do for You.
@@ -641,7 +641,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-green-800 italic"
               >
-                IKLAVYA partners with institutions to deliver all four.
+                UJJWAL BHAVISHYA partners with institutions to deliver all four.
               </motion.p>
               <p className="text-base sm:text-lg text-slate-600 font-light mt-4 max-w-2xl mx-auto leading-relaxed">
                 We work with colleges to directly onboard students into our AI-powered Career Readiness System &mdash; ensuring they graduate not just with degrees, but with employability proof.
@@ -659,7 +659,7 @@ export default function AboutPage() {
                   This Is <span className="text-green-800">Infrastructure Support</span> for Your Placement Ecosystem.
                 </h3>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  When institutions collaborate with IKLAVYA, your placement ecosystem gains technology-backed structure, employer confidence, and measurable outcomes.
+                  When institutions collaborate with UJJWAL BHAVISHYA, your placement ecosystem gains technology-backed structure, employer confidence, and measurable outcomes.
                 </p>
                 <div className="space-y-5">
                   {[
@@ -692,7 +692,7 @@ export default function AboutPage() {
                   Structured &amp; Transparent
                 </h3>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  We work with institutions to onboard students directly into the IKLAVYA Career System under an institutional partnership model. This ensures:
+                  We work with institutions to onboard students directly into the UJJWAL BHAVISHYA Career System under an institutional partnership model. This ensures:
                 </p>
                 <div className="space-y-5">
                   {[
@@ -825,7 +825,7 @@ export default function AboutPage() {
             <div className="bg-gradient-to-br from-[#FDFCF6] to-green-50/20 rounded-3xl p-8 sm:p-12 md:p-16 mb-16 sm:mb-24 shadow-lg border border-green-100/50">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
-                  <span className="text-[10px] font-black text-green-800 uppercase tracking-widest">Why Institutions Partner With IKLAVYA</span>
+                  <span className="text-[10px] font-black text-green-800 uppercase tracking-widest">Why Institutions Partner With UJJWAL BHAVISHYA</span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-tight">
                     We Do Not Take Students Away. <br />
                     We Help Institutions Produce <span className="text-green-800">Employable Graduates</span> at Scale.
@@ -883,7 +883,7 @@ export default function AboutPage() {
                     ))}
                   </div>
                   <p className="text-base text-slate-600 font-light leading-relaxed mt-4">
-                    IKLAVYA becomes your placement technology partner &mdash; working alongside you to deliver stronger results.
+                    UJJWAL BHAVISHYA becomes your placement technology partner &mdash; working alongside you to deliver stronger results.
                   </p>
                 </div>
               </div>
@@ -895,16 +895,16 @@ export default function AboutPage() {
             <div className="text-center">
               <div className="inline-block bg-gradient-to-br from-white to-green-50/20 rounded-3xl shadow-2xl shadow-green-100/30 border border-slate-100 px-8 sm:px-16 py-10 sm:py-14 max-w-4xl">
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-snug italic">
-                  &ldquo;The future of education is employability. With IKLAVYA as your placement partner, your institution can lead that future &mdash; producing job-ready graduates trusted by Indian employers.&rdquo;
+                  &ldquo;The future of education is employability. With UJJWAL BHAVISHYA as your placement partner, your institution can lead that future &mdash; producing job-ready graduates trusted by Indian employers.&rdquo;
                 </h3>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10">
-                  <a href="mailto:contact@iklavya.in">
+                  <a href="mailto:contact@ujjwalbhavishya.in">
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
                       className="border-2 border-green-800 text-green-800 hover:bg-green-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all shadow-lg shadow-green-200/30"
                     >
-                      Partner With IKLAVYA
+                      Partner With UJJWAL BHAVISHYA
                     </motion.button>
                   </a>
                   <a
@@ -937,7 +937,7 @@ export default function AboutPage() {
                 India&apos;s AI-Verified Talent Pipeline &mdash; Built for Faster, Smarter Hiring.
                 Hiring fresh graduates is expensive &mdash; not just because of recruitment costs,
                 but because of training time, productivity delays, and early attrition.
-                IKLAVYA delivers pre-evaluated, job-ready, AI-verified candidates who are prepared
+                UJJWAL BHAVISHYA delivers pre-evaluated, job-ready, AI-verified candidates who are prepared
                 before they enter your organization.
               </p>
             </div>
@@ -975,7 +975,7 @@ export default function AboutPage() {
               <div className="space-y-6">
                 <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest">AI-Verified Candidates</span>
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-tight">
-                  Iklavya Verified Candidates &mdash; Ready for{' '}
+                  Ujjwal Bhavishya Verified Candidates &mdash; Ready for{' '}
                   <span className="text-green-800">Immediate Contribution</span>.
                 </h3>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
@@ -1010,7 +1010,7 @@ export default function AboutPage() {
               <div className="space-y-6">
                 <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Employer Benefits</span>
                 <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 leading-tight">
-                  The IKLAVYA <span className="text-green-800">Hiring Advantage</span>.
+                  The UJJWAL BHAVISHYA <span className="text-green-800">Hiring Advantage</span>.
                 </h3>
                 <div className="space-y-4">
                   {[
@@ -1074,7 +1074,7 @@ export default function AboutPage() {
 
                 <div className="text-center space-y-8">
                   <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 leading-tight">
-                    Build a Smarter Hiring Pipeline with <span className="text-green-800">IKLAVYA</span>.
+                    Build a Smarter Hiring Pipeline with <span className="text-green-800">UJJWAL BHAVISHYA</span>.
                   </h3>
                   <p className="text-base text-slate-600 font-light leading-relaxed">
                     Stop spending months training candidates who are not role-ready.
@@ -1082,7 +1082,7 @@ export default function AboutPage() {
                     Stop paying high recruitment costs without performance assurance.
                   </p>
                   <p className="text-xl font-serif font-bold text-green-800 italic">
-                    Hire smarter. Hire prepared. Hire IKLAVYA Verified.
+                    Hire smarter. Hire prepared. Hire UJJWAL BHAVISHYA Verified.
                   </p>
                 </div>
               </div>
@@ -1102,7 +1102,7 @@ export default function AboutPage() {
                   </button>
                 </Link>
                 <a
-                  href="mailto:contact@iklavya.in"
+                  href="mailto:contact@ujjwalbhavishya.in"
                   className="text-slate-700 font-black uppercase text-xs tracking-[0.2em] underline decoration-green-700 decoration-4 underline-offset-8 hover:text-green-800 transition-colors"
                 >
                   Schedule a Hiring Consultation
@@ -1163,8 +1163,8 @@ export default function AboutPage() {
         <RevealSection>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <Image
-              src="/iklavya logo.png"
-              alt="iKlavya"
+              src="/ujjwal-bhavishya logo.png"
+              alt="Ujjwal Bhavishya"
               width={120}
               height={60}
               className="h-14 w-auto object-contain mx-auto mb-6"
@@ -1175,7 +1175,7 @@ export default function AboutPage() {
             </span>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-snug italic mt-8">
-              &ldquo;Your degree shows you studied. iKlavya proves you are ready.
+              &ldquo;Your degree shows you studied. Ujjwal Bhavishya proves you are ready.
               Built in India. Built for Indian youth. Built for Indian employers.&rdquo;
             </h2>
 

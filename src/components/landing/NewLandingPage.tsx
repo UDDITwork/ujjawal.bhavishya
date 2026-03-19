@@ -385,7 +385,7 @@ export default function NewLandingPage() {
               {[
                 { step: 1, icon: <Mic className="w-6 h-6" />, title: "Practice AI Interviews", desc: "We train you for HR interviews, technical rounds, behavioral questions, and salary negotiation discussions. By the time you attend a real interview, it feels familiar \u2014 not frightening.", color: "border-2 border-green-800", textColor: "text-green-800", delay: 0 },
                 { step: 2, icon: <BarChart3 className="w-6 h-6" />, title: "Get Skill Matched", desc: "Our AI evaluates your skill set and compares it with active job requirements in the Indian market. It shows where you are strong, where you need improvement, and which roles suit you best.", color: "border-2 border-amber-700", textColor: "text-amber-700", delay: 0.15 },
-                { step: 3, icon: <Target className="w-6 h-6" />, title: "Get Placed", desc: "IKLAVYA Verified Students receive structured access to 150+ multinational companies. We prepare you first \u2014 resume, interviews, communication, skill matching \u2014 then introduce you.", color: "border-2 border-emerald-700", textColor: "text-emerald-700", delay: 0.3 }
+                { step: 3, icon: <Target className="w-6 h-6" />, title: "Get Placed", desc: "UJJWAL BHAVISHYA Verified Students receive structured access to 150+ multinational companies. We prepare you first \u2014 resume, interviews, communication, skill matching \u2014 then introduce you.", color: "border-2 border-emerald-700", textColor: "text-emerald-700", delay: 0.3 }
               ].map((s) => (
                 <motion.div
                   key={s.step}
@@ -410,14 +410,14 @@ export default function NewLandingPage() {
         </RevealSection>
       </section>
 
-      {/* ===== 4. IKLAVYA VERIFIED STUDENT ===== */}
+      {/* ===== 4. UJJWAL BHAVISHYA VERIFIED STUDENT ===== */}
       <section className="py-16 sm:py-20 md:py-28 lg:py-32 bg-white relative">
         <RevealSection>
           <div className="max-w-5xl mx-auto px-6 text-center">
-            <p className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">IKLAVYA Verified Student Advantage</p>
+            <p className="text-sm font-black text-green-800 uppercase tracking-[0.4em] mb-4">UJJWAL BHAVISHYA Verified Student Advantage</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6">Earned. Evaluated. Employer-Ready.</h2>
             <p className="text-lg text-slate-600 font-light max-w-3xl mx-auto leading-relaxed mb-12">
-              An IKLAVYA Verified Student is not just registered on the platform &mdash; they are assessed, improved, and validated through our in-house AI system built for Indian hiring standards. This verification reflects structured preparation and real job readiness.
+              An UJJWAL BHAVISHYA Verified Student is not just registered on the platform &mdash; they are assessed, improved, and validated through our in-house AI system built for Indian hiring standards. This verification reflects structured preparation and real job readiness.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
               {[
@@ -426,7 +426,7 @@ export default function NewLandingPage() {
                 'Interview performance validation (text, voice & video simulations)',
                 'Skill-to-job alignment scoring',
                 'Priority visibility to 150+ multinational companies & employers',
-                'Employer-recognized credibility backed by IKLAVYA\'s AI model',
+                'Employer-recognized credibility backed by UJJWAL BHAVISHYA\'s AI model',
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -552,7 +552,7 @@ export default function NewLandingPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-green-800 italic"
               >
-                IKLAVYA partners with institutions to deliver all four.
+                UJJWAL BHAVISHYA partners with institutions to deliver all four.
               </motion.p>
               <p className="text-base sm:text-lg text-slate-600 font-light mt-4 max-w-2xl mx-auto leading-relaxed">
                 We work with colleges to directly onboard students into our AI-powered Career Readiness System &mdash; ensuring they graduate not just with degrees, but with employability proof.
@@ -572,7 +572,7 @@ export default function NewLandingPage() {
                   </h3>
                 </div>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  When institutions collaborate with IKLAVYA, your placement ecosystem gains technology-backed structure, employer confidence, and measurable outcomes.
+                  When institutions collaborate with UJJWAL BHAVISHYA, your placement ecosystem gains technology-backed structure, employer confidence, and measurable outcomes.
                 </p>
                 <div className="space-y-5">
                   {[
@@ -632,7 +632,7 @@ export default function NewLandingPage() {
             <div className="text-center mt-16 sm:mt-24">
               <div className="inline-block bg-white rounded-3xl shadow-2xl shadow-green-100/40 border border-slate-100 px-8 sm:px-16 py-10 sm:py-14">
                 <p className="text-lg sm:text-xl text-slate-600 font-light mb-8 max-w-2xl mx-auto leading-relaxed">
-                  Built for Indian colleges. Built for Indian employers. IKLAVYA becomes your placement technology partner &mdash; working alongside you to deliver stronger results.
+                  Built for Indian colleges. Built for Indian employers. UJJWAL BHAVISHYA becomes your placement technology partner &mdash; working alongside you to deliver stronger results.
                 </p>
                 <Link href="/students#institutions">
                   <motion.button
@@ -694,7 +694,7 @@ export default function NewLandingPage() {
             <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">
               <div className="space-y-6">
                 <div>
-                  <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest">IKLAVYA Verified Candidates</span>
+                  <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest">UJJWAL BHAVISHYA Verified Candidates</span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-tight mt-3">
                     Ready for Immediate <span className="text-green-800">Contribution</span>.
                   </h3>
@@ -777,7 +777,7 @@ export default function NewLandingPage() {
                 className="object-contain"
               />
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900">Your Degree Shows You Studied. <br /> iKlavya Proves You Are Ready.</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900">Your Degree Shows You Studied. <br /> Ujjwal Bhavishya Proves You Are Ready.</h2>
             <p className="text-slate-500 text-lg font-light">From educated graduate to verified candidate to confident professional to real hiring opportunities. Built in India. Built for Indian youth. Built for Indian employers.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link href="/register">
@@ -793,12 +793,12 @@ export default function NewLandingPage() {
         </RevealSection>
       </section>
 
-      {/* ===== 9. INDIA MAP — WHY IKLAVYA IS DIFFERENT ===== */}
+      {/* ===== 9. INDIA MAP — WHY UJJWAL BHAVISHYA IS DIFFERENT ===== */}
       <section className="bg-[#FDFCF6] py-16 sm:py-20 md:py-28 overflow-hidden">
         <RevealSection>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
             <span className="text-[10px] font-black text-green-800 uppercase tracking-widest">
-              Why IKLAVYA Is Different
+              Why UJJWAL BHAVISHYA Is Different
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-slate-900 mt-4 leading-tight">
               We built our own AI system <br className="hidden sm:block" />

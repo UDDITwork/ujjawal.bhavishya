@@ -92,8 +92,8 @@ const indianHiringUnderstanding = [
 
 const contactInfo = [
   { icon: Phone, label: '+91 95991 71744', href: 'tel:+919599171744' },
-  { icon: Mail, label: 'contact@iklavya.in', href: 'mailto:contact@iklavya.in' },
-  { icon: Globe, label: 'www.iklavya.in', href: 'https://www.iklavya.in' },
+  { icon: Mail, label: 'contact@ujjwalbhavishya.in', href: 'mailto:contact@ujjwalbhavishya.in' },
+  { icon: Globe, label: 'www.ujjwalbhavishya.in', href: 'https://www.ujjwalbhavishya.in' },
   { icon: MapPin, label: 'Gaur City, Greater Noida West, Uttar Pradesh', href: null },
 ]
 
@@ -125,12 +125,12 @@ export default function ForEmployersPage() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a href="mailto:contact@iklavya.in">
+                <a href="mailto:contact@ujjwalbhavishya.in">
                   <button className="border-2 border-green-800 text-green-800 bg-white hover:bg-green-50/50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all shadow-lg shadow-green-200/30">
                     Schedule a Hiring Consultation
                   </button>
                 </a>
-                <a href="mailto:contact@iklavya.in?subject=Candidate%20Access%20Request">
+                <a href="mailto:contact@ujjwalbhavishya.in?subject=Candidate%20Access%20Request">
                   <button className="border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                     Request Candidate Access
                   </button>
@@ -189,7 +189,7 @@ export default function ForEmployersPage() {
           <RevealSection className="mt-16">
             <div className="bg-green-50/40 border-2 border-green-800 rounded-2xl p-8 sm:p-12 text-center">
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-green-800 mb-4">
-                IKLAVYA solves this problem.
+                UJJWAL BHAVISHYA solves this problem.
               </h3>
               <p className="text-lg text-slate-600 font-light max-w-2xl mx-auto">
                 We deliver pre-evaluated, job-ready, AI-verified candidates who are prepared
@@ -209,7 +209,7 @@ export default function ForEmployersPage() {
                 AI-Verified Pipeline
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900 mt-4">
-                Iklavya Verified Candidates &mdash; Ready for
+                Ujjwal Bhavishya Verified Candidates &mdash; Ready for
                 <br className="hidden sm:block" />
                 <span className="text-green-800"> Immediate Contribution</span>.
               </h2>
@@ -262,7 +262,7 @@ export default function ForEmployersPage() {
                   <span className="text-green-800">2 Weeks</span>.
                 </h2>
                 <p className="text-lg text-slate-600 font-light leading-relaxed">
-                  Traditional freshers require long onboarding cycles. IKLAVYA candidates are trained
+                  Traditional freshers require long onboarding cycles. UJJWAL BHAVISHYA candidates are trained
                   according to real employer demand and industry expectations. They understand workplace
                   communication, structured reporting, interview culture, and job-role clarity.
                 </p>
@@ -301,7 +301,7 @@ export default function ForEmployersPage() {
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">With IKLAVYA</span>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">With UJJWAL BHAVISHYA</span>
                       <span className="text-sm font-bold text-green-800">14 Days</span>
                     </div>
                     <div className="h-3 w-full bg-green-100 rounded-full overflow-hidden">
@@ -398,7 +398,7 @@ export default function ForEmployersPage() {
                   <h3 className="text-xl font-bold text-slate-900">Lowest Industry Cost Per Hire</h3>
                   <p className="text-sm text-slate-500 leading-relaxed">
                     Recruitment agencies often charge high percentages without guaranteeing readiness
-                    or retention. IKLAVYA operates on optimized, industry-competitive hiring models
+                    or retention. UJJWAL BHAVISHYA operates on optimized, industry-competitive hiring models
                     designed to lower your cost per hire while maintaining candidate quality.
                   </p>
                   <div className="space-y-3 pt-2">
@@ -510,7 +510,7 @@ export default function ForEmployersPage() {
                   ))}
                 </div>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  IKLAVYA supports hiring across PAN India. We streamline screening, evaluation,
+                  UJJWAL BHAVISHYA supports hiring across PAN India. We streamline screening, evaluation,
                   and matching at scale.
                 </p>
                 <p className="text-lg font-serif font-bold text-green-800 italic">
@@ -569,7 +569,7 @@ export default function ForEmployersPage() {
 
                 <div>
                   <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 leading-tight mb-8">
-                    The IKLAVYA <span className="text-green-800">Hiring Advantage</span>.
+                    The UJJWAL BHAVISHYA <span className="text-green-800">Hiring Advantage</span>.
                   </h3>
                   <motion.div
                     variants={staggerContainer}
@@ -612,7 +612,7 @@ export default function ForEmployersPage() {
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-slate-900 mt-4 leading-tight">
                 Build a Smarter Hiring Pipeline
                 <br className="hidden sm:block" />
-                with <span className="text-green-800">IKLAVYA</span>.
+                with <span className="text-green-800">UJJWAL BHAVISHYA</span>.
               </h2>
             </div>
           </RevealSection>
@@ -644,7 +644,7 @@ export default function ForEmployersPage() {
           <RevealSection>
             <div className="text-center mb-12">
               <p className="text-xl sm:text-2xl text-slate-700 font-light">
-                With IKLAVYA, you hire candidates who are:
+                With UJJWAL BHAVISHYA, you hire candidates who are:
               </p>
             </div>
           </RevealSection>
@@ -678,7 +678,7 @@ export default function ForEmployersPage() {
                 Reduce training time. Lower attrition. Increase productivity from day one.
               </p>
               <p className="text-2xl sm:text-3xl font-serif font-bold text-green-800 italic">
-                Hire smarter. Hire prepared. Hire IKLAVYA Verified.
+                Hire smarter. Hire prepared. Hire UJJWAL BHAVISHYA Verified.
               </p>
             </div>
           </RevealSection>
@@ -694,7 +694,7 @@ export default function ForEmployersPage() {
               <div className="space-y-8">
                 <div>
                   <span className="text-[10px] font-black text-green-800 uppercase tracking-widest">
-                    Partner With IKLAVYA Today
+                    Partner With UJJWAL BHAVISHYA Today
                   </span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 mt-3 leading-tight">
                     Let&apos;s build a faster, more reliable hiring pipeline for your organization.
@@ -729,17 +729,17 @@ export default function ForEmployersPage() {
               {/* CTA Buttons */}
               <div className="text-center md:text-left space-y-8">
                 <div className="space-y-4">
-                  <a href="mailto:contact@iklavya.in" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in" className="block">
                     <button className="w-full sm:w-auto border-2 border-green-800 text-green-800 hover:bg-green-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg hover:scale-105 transition-all shadow-lg shadow-green-200/30">
                       Schedule a Hiring Consultation
                     </button>
                   </a>
-                  <a href="mailto:contact@iklavya.in?subject=Candidate%20Access%20Request" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Candidate%20Access%20Request" className="block">
                     <button className="w-full sm:w-auto border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Request Candidate Access
                     </button>
                   </a>
-                  <a href="mailto:contact@iklavya.in?subject=Bulk%20Hiring%20Drive" className="block">
+                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Bulk%20Hiring%20Drive" className="block">
                     <button className="w-full sm:w-auto border-2 border-amber-700 text-amber-700 hover:bg-amber-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Start Your Next Bulk Hiring Drive
                     </button>

@@ -15,7 +15,7 @@ const testimonials = [
   {
     name: 'Rahul Verma',
     role: 'Management Trainee at Deloitte',
-    content: 'Iklavya\'s skill assessment showed me exactly where my communication gaps were. The AI-generated learning roadmap was incredibly accurate. I went from beginner to advanced in confidence within 3 months.',
+    content: 'Ujjwal Bhavishya\'s skill assessment showed me exactly where my communication gaps were. The AI-generated learning roadmap was incredibly accurate. I went from beginner to advanced in confidence within 3 months.',
     avatar: 'RV',
   },
   {

@@ -66,7 +66,7 @@ export default function MentorLoginPage() {
         <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-8">
           <div className="text-center mb-8">
             <Link href="/" className="text-2xl font-bold text-gray-900 tracking-tight">
-              IKLAVYA
+              UJJWAL BHAVISHYA
             </Link>
             <span className="ml-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
               Mentor Portal

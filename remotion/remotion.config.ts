@@ -1,5 +1,5 @@
 /**
- * Remotion configuration for iKlavya Classroom video rendering.
+ * Remotion configuration for Ujjwal Bhavishya Classroom video rendering.
  */
 
 import { Config } from '@remotion/cli/config'

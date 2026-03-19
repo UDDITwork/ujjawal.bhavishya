@@ -634,7 +634,7 @@ def generate_certificate(
         "cert_slug": cert_slug,
         "issued_date": _utc_now().strftime("%B %d, %Y"),
         "issued_at": _utc_now().isoformat(),
-        "cert_url": f"https://iklavya.in/cert/{cert_slug}",
+        "cert_url": f"https://ujjwalbhavishya.in/cert/{cert_slug}",
     }
 
     cert = Certificate(

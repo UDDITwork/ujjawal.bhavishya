@@ -23,7 +23,7 @@ def send_email(to: str, subject: str, html: str):
         return
     try:
         r.Emails.send({
-            "from": "Iklavya <noreply@uddit.site>",
+            "from": "Ujjwal Bhavishya <noreply@uddit.site>",
             "to": to,
             "subject": subject,
             "html": html,
@@ -38,11 +38,11 @@ def send_email(to: str, subject: str, html: str):
 def send_welcome_email(name: str, email: str):
     send_email(
         to=email,
-        subject="Welcome to Iklavya! 🎓",
+        subject="Welcome to Ujjwal Bhavishya! 🎓",
         html=f"""
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px;">
             <div style="text-align: center; margin-bottom: 24px;">
-                <h1 style="color: #059669; font-size: 24px; margin: 0;">Welcome to Iklavya!</h1>
+                <h1 style="color: #059669; font-size: 24px; margin: 0;">Welcome to Ujjwal Bhavishya!</h1>
             </div>
             <p style="color: #374151; font-size: 15px; line-height: 1.6;">Hi <strong>{name}</strong>,</p>
             <p style="color: #374151; font-size: 15px; line-height: 1.6;">
@@ -61,7 +61,7 @@ def send_welcome_email(name: str, email: str):
                 </a>
             </div>
             <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 32px;">
-                &copy; 2026 Iklavya. All rights reserved.
+                &copy; 2026 Ujjwal Bhavishya. All rights reserved.
             </p>
         </div>
         """,
@@ -72,7 +72,7 @@ def send_password_reset_email(name: str, email: str, reset_token: str):
     reset_link = f"{APP_URL}/reset-password?token={reset_token}"
     send_email(
         to=email,
-        subject="Reset Your Iklavya Password",
+        subject="Reset Your Ujjwal Bhavishya Password",
         html=f"""
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px;">
             <h2 style="color: #111827; font-size: 20px;">Password Reset Request</h2>
@@ -89,7 +89,7 @@ def send_password_reset_email(name: str, email: str, reset_token: str):
                 This link expires in 1 hour. If you didn't request this, ignore this email.
             </p>
             <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 32px;">
-                &copy; 2026 Iklavya. All rights reserved.
+                &copy; 2026 Ujjwal Bhavishya. All rights reserved.
             </p>
         </div>
         """,
@@ -118,7 +118,7 @@ def send_mentor_session_accepted_email(
                 </a>
             </div>
             <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 32px;">
-                &copy; 2026 Iklavya. All rights reserved.
+                &copy; 2026 Ujjwal Bhavishya. All rights reserved.
             </p>
         </div>
         """,
@@ -148,7 +148,7 @@ def send_certificate_earned_email(
                 Share your certificate link: <a href="{cert_url}" style="color: #059669;">{cert_url}</a>
             </p>
             <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 32px;">
-                &copy; 2026 Iklavya. All rights reserved.
+                &copy; 2026 Ujjwal Bhavishya. All rights reserved.
             </p>
         </div>
         """,

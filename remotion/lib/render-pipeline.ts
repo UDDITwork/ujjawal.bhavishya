@@ -1,5 +1,5 @@
 /**
- * Master render pipeline for iKlavya Classroom.
+ * Master render pipeline for Ujjwal Bhavishya Classroom.
  *
  * Orchestrates the full video production process:
  *   1. Generate voiceover audio via ElevenLabs (skips existing files)
@@ -39,7 +39,7 @@ function ensureDir(dir: string): void {
 
 async function main(): Promise<void> {
   console.log('='.repeat(60))
-  console.log('  iKlavya Classroom – Video Render Pipeline')
+  console.log('  Ujjwal Bhavishya Classroom – Video Render Pipeline')
   console.log('='.repeat(60))
 
   // Determine which modules to process

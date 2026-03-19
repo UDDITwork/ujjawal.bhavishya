@@ -146,7 +146,7 @@ function TypingIndicator() {
           />
         ))}
       </div>
-      <span className="text-xs text-gray-400 ml-2">IKLAVYA is thinking...</span>
+      <span className="text-xs text-gray-400 ml-2">UJJWAL BHAVISHYA is thinking...</span>
     </div>
   )
 }
@@ -278,7 +278,7 @@ export default function ChatBot() {
 
   // Quick suggestions for new users
   const suggestions = [
-    'What is IKLAVYA?',
+    'What is UJJWAL BHAVISHYA?',
     'How do AI interviews work?',
     'Help me build a resume',
   ]
@@ -310,7 +310,7 @@ export default function ChatBot() {
               </p>
               <div className="flex items-center gap-1.5 mt-1">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="text-[10px] text-emerald-600 font-semibold">IKLAVYA AI</span>
+                <span className="text-[10px] text-emerald-600 font-semibold">UJJWAL BHAVISHYA AI</span>
               </div>
             </div>
             {/* Triangle pointer */}
@@ -362,7 +362,7 @@ export default function ChatBot() {
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-300 rounded-full border-2 border-emerald-600" />
                 </motion.div>
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-sm tracking-wide">IKLAVYA Support</h3>
+                  <h3 className="text-white font-bold text-sm tracking-wide">UJJWAL BHAVISHYA Support</h3>
                   <p className="text-emerald-100 text-xs">AI-powered assistant</p>
                 </div>
                 <button
@@ -396,7 +396,7 @@ export default function ChatBot() {
                     </motion.div>
                     <h4 className="font-bold text-gray-800 mb-1">Hi there!</h4>
                     <p className="text-gray-500 text-sm mb-5">
-                      I&apos;m your IKLAVYA AI assistant. How can I help you today?
+                      I&apos;m your UJJWAL BHAVISHYA AI assistant. How can I help you today?
                     </p>
                     {/* Quick suggestions */}
                     <div className="flex flex-wrap justify-center gap-2">
@@ -507,7 +507,7 @@ export default function ChatBot() {
                   </motion.button>
                 </div>
                 <p className="text-[10px] text-gray-400 mt-1.5 text-center">
-                  Powered by IKLAVYA AI
+                  Powered by UJJWAL BHAVISHYA AI
                 </p>
               </div>
             </motion.div>

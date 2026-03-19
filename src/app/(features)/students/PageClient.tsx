@@ -288,7 +288,7 @@ const verifiedChecks = [
   'Interview performance validation (text, voice & video simulations)',
   'Skill-to-job alignment scoring',
   'Priority visibility to 150+ multinational companies & employers',
-  'Employer-recognized credibility backed by IKLAVYA\'s AI model',
+  'Employer-recognized credibility backed by UJJWAL BHAVISHYA\'s AI model',
 ]
 
 export default function StudentsPage() {
@@ -456,7 +456,7 @@ export default function StudentsPage() {
 
               <div className="grid md:grid-cols-2 gap-12 md:gap-16">
                 <div className="space-y-4">
-                  <span className="text-[10px] font-black text-green-800 uppercase tracking-[0.4em]">IKLAVYA is Different</span>
+                  <span className="text-[10px] font-black text-green-800 uppercase tracking-[0.4em]">UJJWAL BHAVISHYA is Different</span>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-snug">
                     We have built our own AI model — specifically designed for{' '}
                     <span className="text-green-800">Indian youth</span> and{' '}
@@ -746,7 +746,7 @@ export default function StudentsPage() {
                 <div className="space-y-3">
                   <h3 className="text-xl font-bold text-slate-900">Assured Placement Pathway</h3>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    We do not believe in random job applications. IKLAVYA Verified Students receive structured access
+                    We do not believe in random job applications. UJJWAL BHAVISHYA Verified Students receive structured access
                     to 150+ multinational companies and employers. But before we connect you to opportunities, we prepare
                     you properly. We improve your resume. We train you for interviews. We help you understand negotiation.
                     We strengthen your communication. We match you intelligently to suitable roles.
@@ -769,7 +769,7 @@ export default function StudentsPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <RevealSection>
             <div className="text-center mb-16">
-              <span className="text-xs font-black text-amber-800 uppercase tracking-[0.4em]">Why IKLAVYA Is Different</span>
+              <span className="text-xs font-black text-amber-800 uppercase tracking-[0.4em]">Why UJJWAL BHAVISHYA Is Different</span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900 mt-4">
                 We built our own AI system for one reason.
               </h2>
@@ -861,7 +861,7 @@ export default function StudentsPage() {
                 <div className="rounded-3xl overflow-hidden shadow-2xl border border-green-100/50">
                   <Image
                     src="/about graphics/ChatGPT Image Feb 15, 2026, 07_00_30 PM.png"
-                    alt="IKLAVYA Verified Student"
+                    alt="UJJWAL BHAVISHYA Verified Student"
                     width={500}
                     height={500}
                     className="w-full h-auto object-contain"
@@ -890,14 +890,14 @@ export default function StudentsPage() {
               <div className="space-y-6">
                 <span className="text-[10px] font-black text-green-800 uppercase tracking-[0.4em]">From Skill to Salary</span>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-900 leading-tight">
-                  IKLAVYA Verified
+                  UJJWAL BHAVISHYA Verified
                   <br />
                   <span className="text-green-800">Student Advantage</span>
                 </h2>
                 <p className="text-lg text-slate-600 font-light leading-relaxed">
                   <strong className="text-slate-800">Earned. Evaluated. Employer-Ready.</strong>
                   <br />
-                  An IKLAVYA Verified Student is not just registered on the platform — they are assessed, improved,
+                  An UJJWAL BHAVISHYA Verified Student is not just registered on the platform — they are assessed, improved,
                   and validated through our in-house AI system built for Indian hiring standards. This verification
                   reflects structured preparation and real job readiness.
                 </p>
@@ -987,7 +987,7 @@ export default function StudentsPage() {
               <p className="text-xl sm:text-2xl font-serif font-bold leading-relaxed">
                 Your degree shows you studied.
                 <br />
-                <span className="text-green-400">IKLAVYA proves you are ready.</span>
+                <span className="text-green-400">UJJWAL BHAVISHYA proves you are ready.</span>
               </p>
 
               <div className="flex flex-wrap justify-center gap-3 mt-8 text-sm text-slate-400 font-light">
@@ -1071,7 +1071,7 @@ export default function StudentsPage() {
           <RevealSection>
             <div className="text-center mb-16">
               <p className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-green-800 italic">
-                IKLAVYA partners with institutions to deliver all four.
+                UJJWAL BHAVISHYA partners with institutions to deliver all four.
               </p>
               <p className="text-base sm:text-lg text-slate-600 font-light mt-4 max-w-2xl mx-auto leading-relaxed">
                 We work with colleges to directly onboard students into our AI-powered Career Readiness System —
@@ -1090,7 +1090,7 @@ export default function StudentsPage() {
                   <br />This Is <span className="text-green-800">Infrastructure Support</span>.
                 </h3>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  When institutions collaborate with IKLAVYA, your placement ecosystem gains technology-backed structure,
+                  When institutions collaborate with UJJWAL BHAVISHYA, your placement ecosystem gains technology-backed structure,
                   employer confidence, and measurable outcomes.
                 </p>
                 <div className="space-y-3">
@@ -1117,7 +1117,7 @@ export default function StudentsPage() {
                   Structured &amp; Transparent
                 </h3>
                 <p className="text-base text-slate-600 font-light leading-relaxed">
-                  We work with institutions to onboard students directly into the IKLAVYA Career System under an institutional partnership model.
+                  We work with institutions to onboard students directly into the UJJWAL BHAVISHYA Career System under an institutional partnership model.
                 </p>
                 <div className="space-y-3">
                   {[
@@ -1190,7 +1190,7 @@ export default function StudentsPage() {
             <div className="bg-gradient-to-br from-[#FDFCF6] to-green-50/20 rounded-3xl p-8 sm:p-12 md:p-16 shadow-xl border border-green-100/50">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
-                  <span className="text-[10px] font-black text-green-800 uppercase tracking-[0.3em]">Why Institutions Partner With IKLAVYA</span>
+                  <span className="text-[10px] font-black text-green-800 uppercase tracking-[0.3em]">Why Institutions Partner With UJJWAL BHAVISHYA</span>
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-slate-900 leading-tight">
                     We Do Not Take Students Away.
                     <br />We Help Institutions Produce <span className="text-green-800">Employable Graduates</span> at Scale.

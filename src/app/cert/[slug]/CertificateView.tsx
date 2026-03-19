@@ -22,7 +22,7 @@ export default function CertificateView({ cert, children }: CertificateViewProps
         </div>
         <CertificateDownload
           certRef={certRef}
-          fileName={`iklavya-cert-${cert.cert_number}`}
+          fileName={`ujjwal-bhavishya-cert-${cert.cert_number}`}
         />
       </div>
       <div ref={certRef}>

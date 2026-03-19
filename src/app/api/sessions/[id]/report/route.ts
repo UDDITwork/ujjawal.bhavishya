@@ -34,7 +34,7 @@ export async function GET(
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': res.headers.get('Content-Disposition') || `attachment; filename="iklavya-report.pdf"`,
+        'Content-Disposition': res.headers.get('Content-Disposition') || `attachment; filename="ujjwal-bhavishya-report.pdf"`,
       },
     })
   } catch {

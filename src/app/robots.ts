@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/dashboard/', '/session/', '/resume-session/', '/admin'],
       },
     ],
-    sitemap: 'https://iklavya.in/sitemap.xml',
+    sitemap: 'https://ujjwalbhavishya.in/sitemap.xml',
   }
 }

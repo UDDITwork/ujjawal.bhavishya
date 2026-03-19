@@ -51,7 +51,7 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
     # Welcome notification
     create_notification(
         db, "student", user.id, "welcome",
-        "Welcome to IKLAVYA!",
+        "Welcome to UJJWAL BHAVISHYA!",
         "Your account is ready. Explore courses, build your resume, and start your career journey.",
         "/dashboard",
     )

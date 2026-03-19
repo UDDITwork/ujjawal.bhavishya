@@ -12,16 +12,16 @@ const inter = Inter({
   display: 'swap',
 })
 
-const SITE_URL = 'https://iklavya.in'
-const SITE_NAME = 'IKLAVYA'
+const SITE_URL = 'https://ujjwalbhavishya.in'
+const SITE_NAME = 'UJJWAL BHAVISHYA'
 const DEFAULT_DESCRIPTION =
   'AI-powered career readiness platform for students — mock interviews, resume builder, skill assessments, video courses, certifications & career guidance.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'IKLAVYA — AI-Powered Career Readiness for Students',
-    template: '%s | IKLAVYA',
+    default: 'UJJWAL BHAVISHYA — AI-Powered Career Readiness for Students',
+    template: '%s | UJJWAL BHAVISHYA',
   },
   description: DEFAULT_DESCRIPTION,
   keywords: [
@@ -57,20 +57,20 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: 'IKLAVYA — AI-Powered Career Readiness for Students',
+    title: 'UJJWAL BHAVISHYA — AI-Powered Career Readiness for Students',
     description: DEFAULT_DESCRIPTION,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'IKLAVYA — AI-Powered Career Readiness Platform',
+        alt: 'UJJWAL BHAVISHYA — AI-Powered Career Readiness Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'IKLAVYA — AI-Powered Career Readiness for Students',
+    title: 'UJJWAL BHAVISHYA — AI-Powered Career Readiness for Students',
     description: DEFAULT_DESCRIPTION,
     images: ['/og-image.png'],
   },
@@ -109,16 +109,16 @@ export default function RootLayout({
               '@type': 'Organization',
               name: SITE_NAME,
               url: SITE_URL,
-              logo: `${SITE_URL}/iklavya logo.png`,
+              logo: `${SITE_URL}/ujjwal-bhavishya logo.png`,
               description: DEFAULT_DESCRIPTION,
               sameAs: [
-                'https://twitter.com/iklavya',
-                'https://linkedin.com/company/iklavya',
-                'https://instagram.com/iklavya',
+                'https://twitter.com/ujjwal-bhavishya',
+                'https://linkedin.com/company/ujjwal-bhavishya',
+                'https://instagram.com/ujjwal-bhavishya',
               ],
               contactPoint: {
                 '@type': 'ContactPoint',
-                email: 'contact@iklavya.in',
+                email: 'contact@ujjwalbhavishya.in',
                 contactType: 'customer support',
               },
             }),

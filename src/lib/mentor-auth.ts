@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-export const MENTOR_COOKIE = 'iklavya-mentor-token'
+export const MENTOR_COOKIE = 'ujjwal-bhavishya-mentor-token'
 
 export async function setMentorAuthCookie(token: string) {
   const cookieStore = await cookies()

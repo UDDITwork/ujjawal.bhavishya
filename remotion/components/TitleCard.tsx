@@ -191,7 +191,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({
         )}
       </div>
 
-      {/* iKlavya branding */}
+      {/* Ujjwal Bhavishya branding */}
       <div
         style={{
           position: 'absolute',
@@ -219,7 +219,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({
             letterSpacing: 1.5,
           }}
         >
-          iKlavya
+          Ujjwal Bhavishya
         </span>
       </div>
     </AbsoluteFill>

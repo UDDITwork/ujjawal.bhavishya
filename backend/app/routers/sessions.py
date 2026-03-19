@@ -371,6 +371,6 @@ def download_report(
         content=pdf_bytes,
         media_type="application/pdf",
         headers={
-            "Content-Disposition": f'attachment; filename="iklavya-report-{session_id[:8]}.pdf"',
+            "Content-Disposition": f'attachment; filename="ujjwal-bhavishya-report-{session_id[:8]}.pdf"',
         },
     )

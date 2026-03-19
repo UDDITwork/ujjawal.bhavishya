@@ -99,7 +99,7 @@ export default function AdminPage() {
         >
           <div>
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">Admin Dashboard</h1>
-            <p className="text-gray-500">Mission control for Iklavya platform</p>
+            <p className="text-gray-500">Mission control for Ujjwal Bhavishya platform</p>
           </div>
           <div className="flex gap-2">
             <button className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-sm text-gray-600

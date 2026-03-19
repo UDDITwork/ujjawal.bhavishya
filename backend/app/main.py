@@ -9,8 +9,8 @@ from app.routers import auth, profile, sessions, resume, classroom, jobs, mentor
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="IKLAVYA API",
-    description="Backend API for IKLAVYA Student Career Readiness Portal",
+    title="UJJWAL BHAVISHYA API",
+    description="Backend API for UJJWAL BHAVISHYA Student Career Readiness Portal",
     version="1.0.0",
 )
 

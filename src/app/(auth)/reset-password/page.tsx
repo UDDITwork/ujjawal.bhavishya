@@ -4,7 +4,7 @@ import ResetPasswordClient from './PageClient'
 
 export const metadata: Metadata = {
   title: 'Reset Password',
-  description: 'Set a new password for your IKLAVYA account.',
+  description: 'Set a new password for your UJJWAL BHAVISHYA account.',
   robots: { index: false, follow: true },
 }
 

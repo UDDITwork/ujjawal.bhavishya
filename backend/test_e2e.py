@@ -1,5 +1,5 @@
 """
-End-to-end test for IKLAVYA Career Guidance System.
+End-to-end test for UJJWAL BHAVISHYA Career Guidance System.
 Tests against the live Cloud Run backend.
 
 Usage:
@@ -15,7 +15,7 @@ import io
 # Fix Windows console encoding for emojis
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
-BASE_URL = "https://iklavya-api-472075970266.asia-south1.run.app"
+BASE_URL = "https://ujjwal-bhavishya-api-472075970266.asia-south1.run.app"
 
 # Test user credentials (unique per run)
 TEST_EMAIL = f"test_{uuid.uuid4().hex[:8]}@example.com"
@@ -683,7 +683,7 @@ def test_wrong_password():
 # ──────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
-    print("  IKLAVYA E2E Test Suite")
+    print("  UJJWAL BHAVISHYA E2E Test Suite")
     print(f"  Backend: {BASE_URL}")
     print(f"  Test user: {TEST_EMAIL}")
     print("=" * 60)

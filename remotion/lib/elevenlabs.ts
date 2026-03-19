@@ -1,5 +1,5 @@
 /**
- * ElevenLabs Text-to-Speech utility for iKlavya Classroom.
+ * ElevenLabs Text-to-Speech utility for Ujjwal Bhavishya Classroom.
  *
  * Uses the ElevenLabs API to generate voiceover MP3 files from course scripts.
  * Reads ELEVENLABS_API_KEY from process.env.

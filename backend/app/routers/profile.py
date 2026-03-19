@@ -178,7 +178,7 @@ async def update_profile_image(
 
     # Upload to Cloudinary
     timestamp = int(time.time())
-    folder = "iklavya/profiles"
+    folder = "ujjwal-bhavishya/profiles"
     transformation = "c_fill,w_400,h_400,g_face,q_auto,f_auto"
     sign_params = {
         "folder": folder,

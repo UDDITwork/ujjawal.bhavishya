@@ -73,8 +73,8 @@ export default async function CertificatePage({ params }: { params: Promise<{ sl
                 <div className="flex items-center gap-3 mb-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/iklavya logo.png"
-                    alt="IKLAVYA"
+                    src="/ujjwal-bhavishya logo.png"
+                    alt="UJJWAL BHAVISHYA"
                     style={{ height: '48px', width: 'auto' }}
                     crossOrigin="anonymous"
                   />
@@ -159,7 +159,7 @@ export default async function CertificatePage({ params }: { params: Promise<{ sl
                     <p className="text-[10px] text-gray-300 tracking-wider">
                       Certificate No: {cert.cert_number}
                     </p>
-                    <p className="text-[9px] text-gray-300 mt-0.5">iklavya.in</p>
+                    <p className="text-[9px] text-gray-300 mt-0.5">ujjwalbhavishya.in</p>
                   </div>
 
                   <div className="flex flex-col items-center">

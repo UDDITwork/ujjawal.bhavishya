@@ -68,7 +68,7 @@ export default function LoginPage() {
       <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-8">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-bold text-gray-900 tracking-tight">
-            IKLAVYA
+            UJJWAL BHAVISHYA
           </Link>
           <h1 className="mt-4 text-xl font-semibold text-gray-900">
             Welcome back

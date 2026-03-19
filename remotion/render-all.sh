@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────────────────────────────────────
-# iKlavya Classroom – Full Render Pipeline
+# Ujjwal Bhavishya Classroom – Full Render Pipeline
 #
 # Generates voiceover audio via ElevenLabs and renders module videos
 # using Remotion.
@@ -19,7 +19,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "============================================================"
-echo "  iKlavya Classroom – Render Pipeline"
+echo "  Ujjwal Bhavishya Classroom – Render Pipeline"
 echo "============================================================"
 echo ""
 

@@ -414,6 +414,6 @@ def download_resume(
         content=pdf_bytes,
         media_type="application/pdf",
         headers={
-            "Content-Disposition": f'attachment; filename="iklavya-resume-{resume_id[:8]}.pdf"',
+            "Content-Disposition": f'attachment; filename="ujjwal-bhavishya-resume-{resume_id[:8]}.pdf"',
         },
     )

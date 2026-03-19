@@ -2,7 +2,7 @@ import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
-export const COOKIE_NAME = 'iklavya-token'
+export const COOKIE_NAME = 'ujjwal-bhavishya-token'
 
 export interface TokenPayload {
   sub: string

@@ -208,7 +208,7 @@ def list_pending_mentors(
 REAL_MENTORS = [
     {
         "name": "Dr. Priya Sharma",
-        "email": "priya.sharma@iklavya.in",
+        "email": "priya.sharma@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-9876543210",
         "specialization": "Career Counseling & HR Strategy",
@@ -219,7 +219,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Rajesh Kumar Verma",
-        "email": "rajesh.verma@iklavya.in",
+        "email": "rajesh.verma@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-9988776655",
         "specialization": "Financial Literacy & Personal Finance",
@@ -230,7 +230,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Ananya Desai",
-        "email": "ananya.desai@iklavya.in",
+        "email": "ananya.desai@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-9123456789",
         "specialization": "Communication & Soft Skills Training",
@@ -241,7 +241,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Vikram Singh Rathore",
-        "email": "vikram.rathore@iklavya.in",
+        "email": "vikram.rathore@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-8877665544",
         "specialization": "Digital Skills & Personal Branding",
@@ -252,7 +252,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Dr. Meera Iyer",
-        "email": "meera.iyer@iklavya.in",
+        "email": "meera.iyer@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-7766554433",
         "specialization": "Leadership Development & Team Management",
@@ -263,7 +263,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Arjun Mehta",
-        "email": "arjun.mehta@iklavya.in",
+        "email": "arjun.mehta@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-9556677889",
         "specialization": "Placement Preparation & Technical Interviews",
@@ -274,7 +274,7 @@ REAL_MENTORS = [
     },
     {
         "name": "Sunita Choudhary",
-        "email": "sunita.choudhary@iklavya.in",
+        "email": "sunita.choudhary@ujjwalbhavishya.in",
         "password": "Mentor@2026",
         "phone": "+91-8899001122",
         "specialization": "Workplace Etiquette & Professional Development",
