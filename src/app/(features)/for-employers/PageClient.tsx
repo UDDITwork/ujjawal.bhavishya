@@ -91,10 +91,10 @@ const indianHiringUnderstanding = [
 ]
 
 const contactInfo = [
-  { icon: Phone, label: '+91 95991 71744', href: 'tel:+919599171744' },
-  { icon: Mail, label: 'contact@ujjwalbhavishya.in', href: 'mailto:contact@ujjwalbhavishya.in' },
+  { icon: Phone, label: '', href: 'tel:+91' },
+  { icon: Mail, label: 'hello@ujjawalbhavishya.online', href: 'mailto:hello@ujjawalbhavishya.online' },
   { icon: Globe, label: 'www.ujjwalbhavishya.in', href: 'https://www.ujjwalbhavishya.in' },
-  { icon: MapPin, label: 'Gaur City, Greater Noida West, Uttar Pradesh', href: null },
+  { icon: MapPin, label: 'New Delhi, India West, Uttar Pradesh', href: null },
 ]
 
 export default function ForEmployersPage() {
@@ -125,12 +125,12 @@ export default function ForEmployersPage() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a href="mailto:contact@ujjwalbhavishya.in">
+                <a href="mailto:hello@ujjawalbhavishya.online">
                   <button className="border-2 border-green-800 text-green-800 bg-white hover:bg-green-50/50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all shadow-lg shadow-green-200/30">
                     Schedule a Hiring Consultation
                   </button>
                 </a>
-                <a href="mailto:contact@ujjwalbhavishya.in?subject=Candidate%20Access%20Request">
+                <a href="mailto:hello@ujjawalbhavishya.online?subject=Candidate%20Access%20Request">
                   <button className="border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-10 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                     Request Candidate Access
                   </button>
@@ -729,17 +729,17 @@ export default function ForEmployersPage() {
               {/* CTA Buttons */}
               <div className="text-center md:text-left space-y-8">
                 <div className="space-y-4">
-                  <a href="mailto:contact@ujjwalbhavishya.in" className="block">
+                  <a href="mailto:hello@ujjawalbhavishya.online" className="block">
                     <button className="w-full sm:w-auto border-2 border-green-800 text-green-800 hover:bg-green-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg hover:scale-105 transition-all shadow-lg shadow-green-200/30">
                       Schedule a Hiring Consultation
                     </button>
                   </a>
-                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Candidate%20Access%20Request" className="block">
+                  <a href="mailto:hello@ujjawalbhavishya.online?subject=Candidate%20Access%20Request" className="block">
                     <button className="w-full sm:w-auto border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Request Candidate Access
                     </button>
                   </a>
-                  <a href="mailto:contact@ujjwalbhavishya.in?subject=Bulk%20Hiring%20Drive" className="block">
+                  <a href="mailto:hello@ujjawalbhavishya.online?subject=Bulk%20Hiring%20Drive" className="block">
                     <button className="w-full sm:w-auto border-2 border-amber-700 text-amber-700 hover:bg-amber-50/50 px-6 sm:px-12 py-4 sm:py-5 font-black uppercase text-xs tracking-[0.2em] rounded-lg transition-all">
                       Start Your Next Bulk Hiring Drive
                     </button>

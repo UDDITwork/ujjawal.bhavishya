@@ -209,10 +209,10 @@ const problems = [
 ]
 
 const contactInfo = [
-  { icon: Phone, label: '+91 95991 71744', href: 'tel:+919599171744' },
-  { icon: Mail, label: 'contact@ujjwalbhavishya.in', href: 'mailto:contact@ujjwalbhavishya.in' },
+  { icon: Phone, label: '', href: 'tel:+91' },
+  { icon: Mail, label: 'hello@ujjawalbhavishya.online', href: 'mailto:hello@ujjawalbhavishya.online' },
   { icon: Globe, label: 'www.ujjwalbhavishya.in', href: 'https://www.ujjwalbhavishya.in' },
-  { icon: MapPin, label: 'Gaur City, Greater Noida West, Uttar Pradesh', href: null },
+  { icon: MapPin, label: 'New Delhi, India West, Uttar Pradesh', href: null },
 ]
 
 export default function AboutPage() {
@@ -898,7 +898,7 @@ export default function AboutPage() {
                   &ldquo;The future of education is employability. With UJJWAL BHAVISHYA as your placement partner, your institution can lead that future &mdash; producing job-ready graduates trusted by Indian employers.&rdquo;
                 </h3>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10">
-                  <a href="mailto:contact@ujjwalbhavishya.in">
+                  <a href="mailto:hello@ujjawalbhavishya.online">
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
@@ -908,7 +908,7 @@ export default function AboutPage() {
                     </motion.button>
                   </a>
                   <a
-                    href="tel:+919599171744"
+                    href="tel:+91"
                     className="text-slate-700 font-black uppercase text-xs tracking-[0.2em] underline decoration-green-700 decoration-4 underline-offset-8 hover:text-green-800 transition-colors"
                   >
                     Speak With Our Team
@@ -1102,7 +1102,7 @@ export default function AboutPage() {
                   </button>
                 </Link>
                 <a
-                  href="mailto:contact@ujjwalbhavishya.in"
+                  href="mailto:hello@ujjawalbhavishya.online"
                   className="text-slate-700 font-black uppercase text-xs tracking-[0.2em] underline decoration-green-700 decoration-4 underline-offset-8 hover:text-green-800 transition-colors"
                 >
                   Schedule a Hiring Consultation

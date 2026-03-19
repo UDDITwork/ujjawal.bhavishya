@@ -117,17 +117,17 @@ export default function CinematicFooter() {
 
             {/* Contact info — lighter icons, no heavy bg boxes */}
             <div className="space-y-2.5 pt-1">
-              <a href="tel:+919599171744" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
+              <a href="tel:+91" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
                 <Phone size={15} className="text-slate-500 group-hover:text-green-500 transition-colors flex-shrink-0" />
-                +91 95991 71744
+                
               </a>
-              <a href="mailto:contact@ujjwalbhavishya.in" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
+              <a href="mailto:hello@ujjawalbhavishya.online" className="flex items-center gap-2.5 text-slate-400 hover:text-white transition-colors text-[13px] group">
                 <Mail size={15} className="text-slate-500 group-hover:text-green-500 transition-colors flex-shrink-0" />
-                contact@ujjwalbhavishya.in
+                hello@ujjawalbhavishya.online
               </a>
               <div className="flex items-center gap-2.5 text-slate-400 text-[13px]">
                 <MapPin size={15} className="text-slate-500 flex-shrink-0" />
-                Gaur City, Greater Noida West, UP
+                New Delhi, India
               </div>
             </div>
           </div>

@@ -118,7 +118,7 @@ export default function RootLayout({
               ],
               contactPoint: {
                 '@type': 'ContactPoint',
-                email: 'contact@ujjwalbhavishya.in',
+                email: 'hello@ujjawalbhavishya.online',
                 contactType: 'customer support',
               },
             }),
