@@ -515,8 +515,8 @@ export default function ChatBot() {
         )}
       </AnimatePresence>
 
-      {/* Floating action button */}
-      <motion.div
+      {/* Floating action button — hidden when chat is open */}
+      {!isOpen && <motion.div
         className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] cursor-pointer"
         animate={controls}
         initial={{ scale: 0, opacity: 0 }}
@@ -527,7 +527,7 @@ export default function ChatBot() {
         onClick={toggleChat}
       >
         <ChatOrb isOpen={isOpen} hasNewMessage={hasNewMessage} />
-      </motion.div>
+      </motion.div>}
     </>
   )
 }
