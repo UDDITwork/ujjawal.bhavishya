@@ -293,7 +293,7 @@ export default function ChatBot() {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 40, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="fixed bottom-24 right-6 z-[9998] max-w-[260px] cursor-pointer"
+            className="fixed bottom-24 right-4 sm:right-6 z-[9998] max-w-[220px] sm:max-w-[260px] cursor-pointer"
             onClick={toggleChat}
           >
             <div className="relative bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 px-4 py-3">
@@ -343,7 +343,7 @@ export default function ChatBot() {
                 damping: 28,
                 mass: 0.8,
               }}
-              className="fixed bottom-24 right-4 sm:right-6 z-[9999] w-[calc(100vw-2rem)] sm:w-[400px] h-[min(70vh,560px)] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
+              className="fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-[9999] w-[calc(100vw-1rem)] sm:w-[400px] h-[min(65vh,560px)] sm:h-[min(70vh,560px)] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
               style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.15), 0 0 40px rgba(16,185,129,0.1)' }}
             >
               {/* Header */}
@@ -517,7 +517,7 @@ export default function ChatBot() {
 
       {/* Floating action button */}
       <motion.div
-        className="fixed bottom-6 right-6 z-[9999] cursor-pointer"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] cursor-pointer"
         animate={controls}
         initial={{ scale: 0, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
