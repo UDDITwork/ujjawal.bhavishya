@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -151,7 +152,12 @@ function TypingIndicator() {
   )
 }
 
+// Pages where chatbot should be hidden (e.g. interview sessions, resume sessions)
+const HIDDEN_PATHS = ['/session', '/resume-session']
+
 export default function ChatBot() {
+  const pathname = usePathname()
+  const hidden = HIDDEN_PATHS.some((p) => pathname.startsWith(p))
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -282,6 +288,8 @@ export default function ChatBot() {
     'How do AI interviews work?',
     'Help me build a resume',
   ]
+
+  if (hidden) return null
 
   return (
     <>
