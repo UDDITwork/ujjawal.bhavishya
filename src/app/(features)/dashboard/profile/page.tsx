@@ -396,9 +396,8 @@ export default function ProfilePage() {
         className="mb-6"
       >
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="h-16 bg-gradient-to-r from-green-800 to-emerald-700" />
-          <div className="px-6 pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-8">
+          <div className="bg-gradient-to-r from-green-800 to-emerald-700 px-6 pb-6 pt-5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {/* Avatar */}
               <div className="relative group shrink-0">
                 <input
@@ -414,10 +413,10 @@ export default function ProfilePage() {
                     alt={user.name}
                     width={80}
                     height={80}
-                    className="w-20 h-20 rounded-full object-cover shadow-md border-4 border-white"
+                    className="w-20 h-20 rounded-full object-cover shadow-md border-4 border-white/30"
                   />
                 ) : (
-                  <div className={`w-20 h-20 rounded-full ${avatarGradient} flex items-center justify-center text-white text-3xl font-bold shadow-md border-4 border-white`}>
+                  <div className={`w-20 h-20 rounded-full ${avatarGradient} flex items-center justify-center text-white text-3xl font-bold shadow-md border-4 border-white/30`}>
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -434,15 +433,17 @@ export default function ProfilePage() {
                 </button>
               </div>
 
-              <div className="flex-1 min-w-0 sm:pb-1">
-                <h1 className="text-xl font-bold text-gray-900">{user.name}</h1>
-                <p className="text-sm text-gray-500">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl font-bold text-white">{user.name}</h1>
+                <p className="text-sm text-green-100">
                   {profile.stream || profile.education_level || user.college}
                   {profile.stream && profile.institution ? ` at ${profile.institution}` : ''}
                   {!profile.stream && !profile.education_level ? '' : ` -- ${user.college}`}
                 </p>
               </div>
             </div>
+          </div>
+          <div className="px-6 pb-6">
 
             {/* Contact row */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4 text-xs text-gray-500">
